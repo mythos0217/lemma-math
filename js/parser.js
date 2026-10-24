@@ -312,7 +312,10 @@ export function equivalent(userSrc, expectSrc, vars = {}) {
   let valid = 0;
   for (let k = 0; k < 40 && valid < 8; k++) {
     const s = {};
-    for (const n of names) { const [lo, hi] = vars[n]; s[n] = lo + (hi - lo) * rand(); }
+    for (const n of names) {
+      const [lo, hi, kind] = vars[n];
+      s[n] = kind === 'int' ? lo + Math.floor(rand() * (hi - lo + 1)) : lo + (hi - lo) * rand();
+    }
     const a = fe(s), b = fu(s);
     if (!Number.isFinite(a)) continue;
     if (!Number.isFinite(b)) return { ok: false };

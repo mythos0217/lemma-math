@@ -2,7 +2,15 @@
 // 記憶の安定度 S（日）と難しさ D（1〜10）を解法カードごとに持つ。
 // 想起確率 R(t) = 1 / (1 + t / (9S))。R が 0.9 を切ったら復習（t = S 日後）。
 
-import { CARDS, PROBLEMS, cardById, problemsFor, unitOf } from './content.js';
+import { CARDS, PROBLEMS, UNITS, cardById, problemsFor, unitOf, subjectOf } from './content.js';
+
+// 新しいカードの導入順：単元を巡回して、科目が偏らないようにする
+const CARD_ORDER = (() => {
+  const byUnit = UNITS.map(u => CARDS.filter(c => c.unit === u.id));
+  const out = [];
+  for (let i = 0; out.length < CARDS.length; i++) for (const list of byUnit) if (list[i]) out.push(list[i]);
+  return out;
+})();
 
 const DAY = 86400000;
 const INIT_S = { 1: 0.4, 2: 1.2, 3: 3, 4: 8 }; // 初回の評価ごとの安定度（日）
@@ -85,7 +93,7 @@ export function buildSession(state, { size = 6, newPerDay = 2, now = Date.now(),
     .filter(x => x.R < TARGET_R)
     .sort((a, b) => a.R - b.R);
   const newToday = state.newIntroduced && state.newIntroduced.date === dayKey(now) ? state.newIntroduced.count : 0;
-  const fresh = CARDS.filter(c => !(state.cards[c.id] && state.cards[c.id].reps > 0) && isUnlocked(c, state.cards))
+  const fresh = CARD_ORDER.filter(c => !(state.cards[c.id] && state.cards[c.id].reps > 0) && isUnlocked(c, state.cards))
     .slice(0, Math.max(0, newPerDay - newToday));
 
   const dueSlots = Math.max(2, size - fresh.length * 2); // 入りきらない復習は次回・追加演習へ
@@ -138,3 +146,19 @@ export function nextDueTime(state) {
 }
 
 export { PROBLEMS, cardById };
+
+// 分野選択・ランダム演習：条件に合う問題から、未着手・久しぶりのものを優先して選び、単元を混ぜて並べる
+export function buildPractice(state, { units = null, levels = null, size = 8 } = {}) {
+  const pool = PROBLEMS.filter(p => (!units || units.includes(unitOf(p))) && (!levels || levels.includes(p.level)));
+  const scored = pool.map(p => {
+    const rec = state.problems[p.id];
+    return { p, key: rec ? rec.last : -1e15 + Math.random() * 1e12 };
+  }).sort((a, b) => a.key - b.key);
+  const picked = scored.slice(0, size).map(x => x.p);
+  const blocks = picked.map(p => ({ unit: unitOf(p), steps: [{ kind: 'problem', pid: p.id, card: p.cards[0] }] }));
+  return interleave(blocks).flatMap(b => b.steps);
+}
+
+export function poolSize({ units = null, levels = null } = {}) {
+  return PROBLEMS.filter(p => (!units || units.includes(unitOf(p))) && (!levels || levels.includes(p.level))).length;
+}

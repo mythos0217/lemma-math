@@ -1,13 +1,13 @@
 import { parse, toTeX, relationToTeX, equivalent, sameNumberSet } from './parser.js';
 import { Graph, COLORS } from './graph.js';
-import { UNITS, LEVELS, CARDS, PROBLEMS, cardById, problemById, unitById, unitOf } from './content.js';
+import { SUBJECTS, UNITS, LEVELS, CARDS, PROBLEMS, cardById, problemById, unitById, subjectById, unitOf } from './content.js';
 import {
   review, retrievability, cardStatus, isUnlocked, buildSession, buildExtra,
-  dayKey, countDue, nextDueTime,
+  dayKey, countDue, nextDueTime, buildPractice, poolSize,
 } from './scheduler.js';
 
-const VERSION = '0.1.0';
-const KEY = 'lemma.v1';
+const VERSION = '0.2.0';
+const KEY = 'lemma.v2';
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
 
@@ -15,7 +15,8 @@ const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
 function freshState() {
   return {
     cards: {}, problems: {}, log: [], explains: {},
-    settings: { size: 6, newPerDay: 2 },
+    settings: { size: 6, newPerDay: 3 },
+    practice: { units: null, levels: [2, 3, 4], size: 8 },
     newIntroduced: null, streak: { last: null, count: 0 },
     graphExprs: null,
   };
@@ -117,13 +118,14 @@ let session = null; // { steps, i, results: [], extra }
 
 function route() {
   const tab = (location.hash || '#today').slice(1);
-  $$('.tabbar a').forEach(a => a.classList.toggle('on', a.dataset.tab === tab));
+  $$('.tabbar a').forEach(a => a.classList.toggle('on', a.dataset.tab === (tab === 'practice' ? 'today' : tab)));
   clearGraphs();
   document.body.classList.remove('immersive');
   window.scrollTo(0, 0);
   if (tab === 'graph') return renderGraphPage();
   if (tab === 'map') return renderMap();
   if (tab === 'settings') return renderSettings();
+  if (tab === 'practice') return renderPractice();
   if (session) return renderStep();
   return renderToday();
 }
@@ -151,7 +153,12 @@ function renderToday() {
         <div class="stat"><b>${state.streak.count}</b><span>連続日数${doneToday ? ' ✓' : ''}</span></div>
       </div>
       ${nProblems ? '<button class="btn primary block" id="start">始める</button>' : ''}
-      ${learned ? `<button class="btn ${nProblems ? 'ghost' : 'primary'} block" id="extra" style="margin-top:10px">追加で解く（定着度の低い順）</button>` : ''}
+      ${learned ? `<button class="btn ghost block" id="extra" style="margin-top:10px">追加で解く（定着度の低い順）</button>` : ''}
+      <h2>演習モード</h2>
+      <div class="mode-grid">
+        <button class="mode" id="pick"><b>分野を選ぶ</b><span>科目・単元・難易度を指定</span></button>
+        <button class="mode" id="random"><b>ランダム</b><span>数I〜数Cの全範囲から${state.settings.size}問</span></button>
+      </div>
       <h2>このアプリの学び方</h2>
       <div class="panel">
         <ol style="margin:0;padding-left:1.2em">
@@ -163,6 +170,11 @@ function renderToday() {
       </div>
     </div>`;
   $('#start')?.addEventListener('click', () => startSession(steps));
+  $('#pick').addEventListener('click', () => { location.hash = '#practice'; });
+  $('#random').addEventListener('click', () => {
+    const st = buildPractice(state, { size: state.settings.size });
+    if (st.length) startSession(st, true);
+  });
   $('#extra')?.addEventListener('click', () => {
     const st = buildExtra(state, { size: state.settings.size });
     if (st.length) startSession(st, true);
@@ -204,11 +216,11 @@ function renderIntro(step) {
   view.innerHTML = `
     <div class="fade-in intro">
       ${topBar()}
-      <div class="kicker">新しい解法 · ${esc(unitById[c.unit].name)}</div>
-      <h1>${esc(c.name)}</h1>
+      <div class="kicker">新しい解法 · ${esc(subjectById[unitById[c.unit].subject].name)} ${esc(unitById[c.unit].name)}</div>
+      <h1>${rich(c.name)}</h1>
       <div class="panel" style="margin-top:14px">
         <div class="point">${rich(c.point)}</div>
-        <div class="example"><span class="chip plain">例</span> ${rich(c.example)}</div>
+        ${c.example ? `<div class="example"><span class="chip plain">例</span> ${rich(c.example)}</div>` : ''}
       </div>
       ${c.graph ? '<div id="ig"></div><div class="sliders" id="isl"></div>' : ''}
       <button class="btn primary block" id="go" style="margin-top:16px">この解法で問題を解く</button>
@@ -231,7 +243,7 @@ function renderProblem(step) {
     <div class="fade-in">
       ${topBar()}
       <div class="meta">
-        <span class="chip">${esc(unit.name)}</span>
+        <span class="chip">${esc(subjectById[unit.subject].name)}・${esc(unit.name)}</span>
         <span class="chip lv${p.level}">${LEVELS[p.level]}</span>
         <span class="count">${session.i + 1} / ${session.steps.length}</span>
       </div>
@@ -438,13 +450,15 @@ function renderProblem(step) {
     const fb = $('#feedback');
     const box = document.createElement('div');
     box.className = 'fade-in';
-    const names = p.cards.map(id => `<span class="chip plain">${esc(cardById[id].name)}</span>`).join('');
+    const names = p.cards.map(id => `<span class="chip plain">${rich(cardById[id].name)}</span>`).join('');
+    const key = cardById[p.cards[0]];
     const canGraph = p.graph && !sketch;
     box.innerHTML = `
       <div class="solution">
         <div class="title">解答</div>
         <div>${rich(p.sol)}</div>
         <div class="methods">${names}</div>
+        <div class="keypoint"><b>要点</b>${rich(key.point)}</div>
       </div>
       ${canGraph ? '<div class="btn-row"><button class="btn" id="showg">グラフで確かめる</button></div><div id="pg" style="margin-top:12px"></div><div class="sliders" id="psl"></div>' : ''}
       <div class="label">${gaveUp ? '次に同じ型を見たら、最初に何をする？' : 'この問題で最初に気づくべきことを1行で'}</div>
@@ -592,14 +606,14 @@ function renderMap() {
   const now = Date.now();
   const rows = UNITS.map(u => {
     const cards = CARDS.filter(c => c.unit === u.id);
-    return `<div class="unit"><h2>${esc(u.name)}</h2>${cards.map(c => {
+    return `<div class="unit"><h2>${esc(subjectById[u.subject].name)}・${esc(u.name)}</h2>${cards.map(c => {
       const st = state.cards[c.id];
       const s = cardStatus(st, now);
       const unlocked = isUnlocked(c, state.cards);
       const R = retrievability(st, now);
       const pre = !unlocked ? `前提：${c.pre.map(id => cardById[id].name).join('、')}` : st?.reps ? `思い出せる見込み ${Math.round(R * 100)}%` : 'タップで学習';
       return `<button class="card-row ${unlocked ? '' : 'locked'}" data-c="${c.id}" ${unlocked ? '' : 'disabled'}>
-        <span><span class="nm">${esc(c.name)}</span><br><span class="muted">${esc(pre)}</span></span>
+        <span><span class="nm">${rich(c.name)}</span><br><span class="muted">${esc(pre)}</span></span>
         <span class="chip st-${s}">${STATUS[s]}</span>
         <span class="bar"><div style="width:${st?.reps ? Math.round(R * 100) : 0}%;background:${STATUS_COLOR[s] || 'transparent'}"></div></span>
       </button>`;
@@ -627,6 +641,7 @@ function renderMap() {
       <p class="muted" style="margin:8px 2px 0">${total ? `これまで ${total}問、うち自力で正解 ${solo}問。` : 'まだ記録がありません。'}過信が多いときは、解き終えたら検算する習慣を。</p>
       ${rows}
     </div>`;
+  math(view);
   $$('.card-row:not(.locked)').forEach(b => b.addEventListener('click', () => {
     const cid = b.dataset.c;
     const learned = state.cards[cid]?.reps > 0;
@@ -635,6 +650,53 @@ function renderMap() {
       : (() => { const p = PROBLEMS.filter(x => x.cards[0] === cid || x.cards.includes(cid)).sort((a, c) => a.level - c.level)[0]; return p ? [{ kind: 'intro', cid }, { kind: 'problem', pid: p.id, card: cid, fresh: cid }] : []; })();
     if (steps.length) startSession(steps, true);
   }));
+}
+
+// ---------- 分野を選ぶ ----------
+function renderPractice() {
+  const pr = state.practice || (state.practice = { units: null, levels: [2, 3, 4], size: 8 });
+  let units = new Set(pr.units || UNITS.map(u => u.id));
+  let levels = new Set(pr.levels || [2, 3, 4]);
+  const draw = () => {
+    const n = poolSize({ units: [...units], levels: [...levels] });
+    view.innerHTML = `
+      <div class="fade-in">
+        <div class="kicker">演習モード</div>
+        <h1>分野を選ぶ</h1>
+        <p class="sub">選んだ範囲から、まだ解いていない問題・久しぶりの問題を優先して、単元を混ぜて出します。</p>
+        <h2>難易度</h2>
+        <div class="toggles" id="lv">${Object.entries(LEVELS).map(([k, v]) => `<button class="tog lv${k} ${levels.has(+k) ? 'on' : ''}" data-l="${k}">${v}</button>`).join('')}</div>
+        <div class="btn-row" style="margin-top:20px"><button class="btn ghost" id="all">すべて選択</button><button class="btn ghost" id="none">すべて解除</button></div>
+        ${SUBJECTS.map(sub => {
+          const us = UNITS.filter(u => u.subject === sub.id);
+          const allOn = us.every(u => units.has(u.id));
+          return `<div class="subject">
+            <button class="subj ${allOn ? 'on' : ''}" data-s="${sub.id}">${esc(sub.name)}</button>
+            <div class="toggles">${us.map(u => `<button class="tog ${units.has(u.id) ? 'on' : ''}" data-u="${u.id}">${esc(u.name)}<small>${poolSize({ units: [u.id], levels: [...levels] })}</small></button>`).join('')}</div>
+          </div>`;
+        }).join('')}
+        <div class="setting" style="margin-top:12px"><span>問題数</span>
+          <select id="psize">${[4, 6, 8, 10, 15, 20].map(k => `<option ${k === pr.size ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
+        <button class="btn primary block" id="go" style="margin-top:16px" ${n ? '' : 'disabled'}>${n ? `始める（該当 ${n}問から ${Math.min(n, pr.size)}問）` : '該当する問題がありません'}</button>
+      </div>`;
+    const persist = () => { pr.units = [...units]; pr.levels = [...levels]; save(); draw(); };
+    $$('#lv .tog').forEach(b => b.addEventListener('click', () => { const k = +b.dataset.l; levels.has(k) ? levels.delete(k) : levels.add(k); persist(); }));
+    $$('.tog[data-u]').forEach(b => b.addEventListener('click', () => { const u = b.dataset.u; units.has(u) ? units.delete(u) : units.add(u); persist(); }));
+    $$('.subj').forEach(b => b.addEventListener('click', () => {
+      const us = UNITS.filter(u => u.subject === b.dataset.s).map(u => u.id);
+      const allOn = us.every(u => units.has(u));
+      us.forEach(u => allOn ? units.delete(u) : units.add(u));
+      persist();
+    }));
+    $('#all').addEventListener('click', () => { units = new Set(UNITS.map(u => u.id)); persist(); });
+    $('#none').addEventListener('click', () => { units = new Set(); persist(); });
+    $('#psize').addEventListener('change', (e) => { pr.size = +e.target.value; persist(); });
+    $('#go').addEventListener('click', () => {
+      const st = buildPractice(state, { units: [...units], levels: [...levels], size: pr.size });
+      if (st.length) startSession(st, true);
+    });
+  };
+  draw();
 }
 
 // ---------- 設定 ----------
