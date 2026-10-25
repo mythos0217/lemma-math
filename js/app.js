@@ -1,12 +1,13 @@
 import { parse, toTeX, relationToTeX, equivalent, sameNumberSet } from './parser.js';
 import { Graph, COLORS } from './graph.js';
+import { Graph3D } from './graph3d.js';
 import { SUBJECTS, UNITS, LEVELS, CARDS, PROBLEMS, cardById, problemById, unitById, subjectById, unitOf } from './content.js';
 import {
   review, retrievability, cardStatus, isUnlocked, buildSession, buildExtra,
   dayKey, countDue, nextDueTime, buildPractice, poolSize,
 } from './scheduler.js';
 
-const VERSION = '0.2.0';
+const VERSION = '0.3.0';
 const KEY = 'lemma.v2';
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
@@ -66,9 +67,9 @@ let activeGraphs = [];
 function clearGraphs() { activeGraphs.forEach(g => g.destroy()); activeGraphs = []; }
 
 // グラフ部品（ツールボタンとスライダー付き）
-function mountGraph(host, exprs, { view: bounds, sliders, sketch = false, hidden = false, height } = {}) {
+function mountGraph(host, exprs, { view: bounds, sliders, sketch = false, hidden = false, height, three = false } = {}) {
   if (height) host.style.height = height + 'px';
-  const g = new Graph(host, {});
+  const g = three ? new Graph3D(host) : new Graph(host, {});
   activeGraphs.push(g);
   g.setExpressions(exprs.map((src, i) => ({ src, color: COLORS[i % COLORS.length] })));
   if (bounds) g.setView(bounds);
@@ -133,56 +134,80 @@ window.addEventListener('hashchange', route);
 
 // ---------- 今日 ----------
 function renderToday() {
+  const pr = state.practice || (state.practice = { units: null, levels: [2, 3, 4], size: 8 });
+  const levels = new Set(pr.levels && pr.levels.length ? pr.levels : [2, 3, 4]);
+  const lv = [...levels];
   const due = countDue(state);
-  const learned = CARDS.filter(c => state.cards[c.id] && state.cards[c.id].reps > 0).length;
-  const steps = buildSession(state, state.settings);
-  const nProblems = steps.filter(s => s.kind === 'problem').length;
-  const nNew = steps.filter(s => s.kind === 'intro').length;
+  const inPool = (u) => PROBLEMS.filter(p => unitOf(p) === u && levels.has(p.level));
+  const doneCount = (list) => list.filter(p => state.problems[p.id]).length;
+  const total = PROBLEMS.filter(p => levels.has(p.level));
   const doneToday = state.streak.last === dayKey();
-  const next = nextDueTime(state);
   view.innerHTML = `
     <div class="fade-in">
       <div class="kicker">LEMMA · 受験数学</div>
-      <h1>${nProblems ? '今日のセット' : '今日の分は完了'}</h1>
-      <p class="sub">${nProblems
-        ? `${nProblems}問・約${Math.max(5, nProblems * 3)}分。単元は混ぜて出します。どの解法を使うかを考えるところから練習です。`
-        : next ? `次の復習は ${relTime(next)}。間をあけて思い出すほど記憶は長持ちします。` : 'すべての解法を学びました。'}</p>
-      <div class="stat-row">
-        <div class="stat"><b>${due}</b><span>復習待ち</span></div>
-        <div class="stat"><b>${nNew}</b><span>新しい解法</span></div>
-        <div class="stat"><b>${state.streak.count}</b><span>連続日数${doneToday ? ' ✓' : ''}</span></div>
+      <h1>演習</h1>
+      <p class="sub">${state.streak.count ? `連続 ${state.streak.count}日${doneToday ? '（今日の分 ✓）' : ''}・` : ''}解いた問題 ${doneCount(total)} / ${total.length}</p>
+      <div class="toolbar">
+        <div class="toggles" id="lv">${Object.entries(LEVELS).map(([k, v]) => `<button class="tog lv${k} ${levels.has(+k) ? 'on' : ''}" data-l="${k}">${v}</button>`).join('')}</div>
+        <select id="tsize" aria-label="問題数">${[4, 6, 8, 10, 15, 20].map(k => `<option value="${k}" ${k === pr.size ? 'selected' : ''}>${k}問</option>`).join('')}</select>
       </div>
-      ${nProblems ? '<button class="btn primary block" id="start">始める</button>' : ''}
-      ${learned ? `<button class="btn ghost block" id="extra" style="margin-top:10px">追加で解く（定着度の低い順）</button>` : ''}
-      <h2>演習モード</h2>
-      <div class="mode-grid">
-        <button class="mode" id="pick"><b>分野を選ぶ</b><span>科目・単元・難易度を指定</span></button>
-        <button class="mode" id="random"><b>ランダム</b><span>数I〜数Cの全範囲から${state.settings.size}問</span></button>
-      </div>
+      <button class="hero" id="random">
+        <b>全分野からランダム</b>
+        <span>数I・A・II・B・III・C から ${Math.min(pr.size, total.length)}問。単元を混ぜて出すので、どの解法を使うかを見抜く練習になります。</span>
+      </button>
+      ${due ? `<button class="btn block" id="review" style="margin-top:10px">復習：忘れかけた解法 ${due}つ</button>` : ''}
+      <h2>分野ごとに演習</h2>
+      ${SUBJECTS.map(sub => {
+        const us = UNITS.filter(u => u.subject === sub.id);
+        const all = us.flatMap(u => inPool(u.id));
+        return `<div class="subj-block">
+          <button class="subj-row" data-s="${sub.id}" ${all.length ? '' : 'disabled'}>
+            <b>${esc(sub.name)}</b><span>${doneCount(all)} / ${all.length}</span><i>まとめて ›</i>
+          </button>
+          ${us.map(u => {
+            const list = inPool(u.id), d = doneCount(list);
+            return `<button class="unit-row" data-u="${u.id}" ${list.length ? '' : 'disabled'}>
+              <span class="nm">${esc(u.name)}</span><span class="ct">${d} / ${list.length}</span>
+              <span class="bar"><div style="width:${list.length ? Math.round(d / list.length * 100) : 0}%"></div></span>
+            </button>`;
+          }).join('')}
+        </div>`;
+      }).join('')}
+      <button class="btn ghost block" id="pick" style="margin-top:14px">複数の単元を組み合わせて選ぶ</button>
       <h2>このアプリの学び方</h2>
       <div class="panel">
         <ol style="margin:0;padding-left:1.2em">
           <li><strong>先に解く。</strong>解説を読む前に思い出そうとする方が、記憶に残ります。</li>
           <li><strong>ヒントは3段階。</strong>答えは出しません。詰まったら一段ずつ。</li>
           <li><strong>答える前に自信度を選ぶ。</strong>「わかったつもり」とのズレを定着度ページで見られます。</li>
-          <li><strong>忘れかけた頃に再出題。</strong>解法ごとに忘れ方を推定して出題日を決めます。</li>
+          <li><strong>忘れかけた頃に復習。</strong>解法ごとに忘れ方を推定し、復習ボタンに出します。</li>
         </ol>
       </div>
     </div>`;
-  $('#start')?.addEventListener('click', () => startSession(steps));
+  const persist = () => { pr.levels = [...levels]; save(); renderToday(); };
+  $$('#lv .tog').forEach(b => b.addEventListener('click', () => {
+    const k = +b.dataset.l;
+    if (levels.has(k) && levels.size === 1) { toast('難易度は1つ以上選んでください'); return; }
+    levels.has(k) ? levels.delete(k) : levels.add(k); persist();
+  }));
+  $('#tsize').addEventListener('change', (e) => { pr.size = +e.target.value; save(); renderToday(); });
+  const go = (units) => {
+    const cfg = { units, levels: lv, size: pr.size };
+    const st = buildPractice(state, cfg);
+    if (st.length) startSession(st, true, cfg); else toast('この条件の問題はありません');
+  };
+  $('#random').addEventListener('click', () => go(null));
+  $$('.unit-row').forEach(b => b.addEventListener('click', () => go([b.dataset.u])));
+  $$('.subj-row').forEach(b => b.addEventListener('click', () => go(UNITS.filter(u => u.subject === b.dataset.s).map(u => u.id))));
   $('#pick').addEventListener('click', () => { location.hash = '#practice'; });
-  $('#random').addEventListener('click', () => {
-    const st = buildPractice(state, { size: state.settings.size });
-    if (st.length) startSession(st, true);
-  });
-  $('#extra')?.addEventListener('click', () => {
-    const st = buildExtra(state, { size: state.settings.size });
+  $('#review')?.addEventListener('click', () => {
+    const st = buildSession(state, { size: pr.size, newPerDay: 0 });
     if (st.length) startSession(st, true);
   });
 }
 
-function startSession(steps, extra = false) {
-  session = { steps, i: 0, results: [], extra };
+function startSession(steps, extra = false, cfg = null) {
+  session = { steps, i: 0, results: [], extra, cfg };
   location.hash = '#today';
   route();
 }
@@ -452,7 +477,7 @@ function renderProblem(step) {
     box.className = 'fade-in';
     const names = p.cards.map(id => `<span class="chip plain">${rich(cardById[id].name)}</span>`).join('');
     const key = cardById[p.cards[0]];
-    const canGraph = p.graph && !sketch;
+    const canGraph = (p.graph || p.graph3) && !sketch;
     box.innerHTML = `
       <div class="solution">
         <div class="title">解答</div>
@@ -469,7 +494,7 @@ function renderProblem(step) {
     math(box);
     $('#showg')?.addEventListener('click', (e) => {
       e.target.closest('.btn-row').remove();
-      mountGraph($('#pg'), p.graph, { view: p.view, sliders: $('#psl'), height: 280 });
+      mountGraph($('#pg'), p.graph3 || p.graph, { view: p.view, sliders: $('#psl'), height: 300, three: !!p.graph3 });
     });
     $('#next').addEventListener('click', () => {
       const t = $('#explain').value.trim();
@@ -502,16 +527,16 @@ function renderSummary() {
         <p class="muted" style="margin:8px 0 0">難しく感じた日の方が、あとで解ける力は伸びています。</p>
       </div>
       <div class="btn-row">
-        <button class="btn" id="more">もう少し解く</button>
+        <button class="btn" id="more">同じ条件でもう一度</button>
         <button class="btn primary" id="home">ホームへ</button>
       </div>
     </div>`;
   $('#home').addEventListener('click', () => { session = null; route(); });
   $('#more').addEventListener('click', () => {
-    const st = buildSession(state, state.settings);
-    const steps = st.length ? st : buildExtra(state, { size: state.settings.size });
+    const cfg = session.cfg;
+    const steps = cfg ? buildPractice(state, cfg) : buildExtra(state, { size: state.practice?.size || 8 });
     if (!steps.length) { toast('今は出題できる問題がありません'); return; }
-    startSession(steps, true);
+    startSession(steps, true, cfg);
   });
 }
 
@@ -531,32 +556,57 @@ const PRESETS = [
   { name: 'はさみうち', exprs: ['y=sin(x)/x', 'y=1/x', 'y=-1/x'] },
 ];
 
+const PRESETS3 = [
+  { name: '鞍点', exprs: ['z=x^2-y^2'] },
+  { name: '球と平面', exprs: ['x^2+y^2+z^2=4', 'x+y+z=k', 'k=1'] },
+  { name: '楕円面', exprs: ['x^2/4+y^2+z^2/2=1'] },
+  { name: 'らせん', exprs: ['(cos(t), sin(t), t/4) t:-10..10'] },
+  { name: '円柱と平面', exprs: ['(cos(u), sin(u), v) u:0..2pi v:-3..3', 'z=y+a', 'a=0'] },
+  { name: '回転体', exprs: ['(v, sin(v)cos(u), sin(v)sin(u)) u:0..2pi v:0..pi'] },
+  { name: '曲面と接平面', exprs: ['z=x^2+y^2', 'z=2a(x-a)+a^2', 'a=1'] },
+];
+
 function renderGraphPage() {
-  const exprs = state.graphExprs && state.graphExprs.length ? state.graphExprs : DEFAULT_EXPRS.map(src => ({ src }));
+  const mode = state.graphMode === '3d' ? '3d' : '2d';
+  const is3 = mode === '3d';
+  const key = is3 ? 'graph3Exprs' : 'graphExprs';
+  const presets = is3 ? PRESETS3 : PRESETS;
+  const defaults = is3 ? PRESETS3[1].exprs : DEFAULT_EXPRS;
+  const exprs = state[key] && state[key].length ? state[key] : defaults.map(src => ({ src }));
   view.innerHTML = `
     <div class="graph-page fade-in">
+      <div class="segment mode-switch" id="gmode">
+        <button data-m="2d" class="${is3 ? '' : 'on'}">平面 2D</button><button data-m="3d" class="${is3 ? 'on' : ''}">空間 3D</button>
+      </div>
       <div id="gp"></div>
       <div class="expr-list" id="el"></div>
       <div class="btn-row" style="margin-top:10px">
         <button class="btn" id="add">＋ 式を追加</button>
-        <button class="btn" id="sk">予想を描く</button>
+        ${is3 ? '' : '<button class="btn" id="sk">予想を描く</button>'}
       </div>
       <div class="sliders" id="gsl"></div>
       <h2>例</h2>
-      <div class="presets" id="pre">${PRESETS.map((p, i) => `<button data-i="${i}">${esc(p.name)}</button>`).join('')}</div>
+      <div class="presets" id="pre">${presets.map((p, i) => `<button data-i="${i}">${esc(p.name)}</button>`).join('')}</div>
       <h2>書き方</h2>
-      <div class="panel syntax">
+      <div class="panel syntax">${is3 ? `
+        <code>z=x^2-y^2</code> 曲面　<code>x+2y+3z=6</code> 平面　<code>x^2+y^2+z^2=4</code> 球（z について2次までの式）<br>
+        <code>(cos t, sin t, t/4) t:0..12</code> 空間曲線　<code>(cos u, sin u, v) u:0..2pi v:-2..2</code> 媒介変数曲面<br>
+        <code>(1,2,3)</code> 点　<code>a=2</code> などの文字はスライダー。1本指で回転、2本指・＋−で表示範囲を変更。` : `
         <code>y=x^2-2x</code> 関数　<code>x^2+y^2=4</code> 陰関数　<code>y&gt;=x^2</code> 領域<br>
         <code>x^2&lt;=y&lt;=x+2</code> 連立不等式　<code>(cos t, sin t)</code> 媒介変数　<code>r=1+cos θ</code> 極座標<br>
         <code>(1,2)</code> 点　<code>a=2</code> などの文字はスライダーになります。<code>(t, t^2) t:-1..2</code> で t の範囲。<br>
-        関数：sin cos tan log（自然対数）exp sqrt abs、定数 pi e。グラフをタップすると座標を表示。
+        関数：sin cos tan log（自然対数）exp sqrt abs、定数 pi e。グラフをタップすると座標を表示。`}
       </div>
     </div>`;
-  const g = mountGraph($('#gp'), [], {});
+  $$('#gmode button').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.m === mode) return;
+    state.graphMode = b.dataset.m; save(); clearGraphs(); renderGraphPage();
+  }));
+  const g = mountGraph($('#gp'), [], { three: is3 });
   let list = exprs.map(e => ({ src: e.src, hidden: !!e.hidden }));
   const apply = () => {
     const items = g.setExpressions(list.map((e, i) => ({ src: e.src, hidden: e.hidden, color: COLORS[i % COLORS.length] })));
-    state.graphExprs = list; save();
+    state[key] = list; save();
     $$('.expr', $('#el')).forEach((row, i) => {
       const err = row.nextElementSibling;
       if (err && err.classList.contains('expr-err')) err.textContent = items[i]?.error || '';
@@ -582,7 +632,7 @@ function renderGraphPage() {
     list.push({ src: '' }); renderList(); apply();
     $$('.expr input').at(-1).focus();
   });
-  $('#sk').addEventListener('click', (ev) => {
+  $('#sk')?.addEventListener('click', (ev) => {
     const on = !g.sketchMode;
     g.setSketchMode(on);
     ev.target.textContent = on ? '描き終わる' : '予想を描く';
@@ -592,7 +642,7 @@ function renderGraphPage() {
   });
   $('#pre').addEventListener('click', (ev) => {
     const b = ev.target.closest('button'); if (!b) return;
-    list = PRESETS[+b.dataset.i].exprs.map(src => ({ src }));
+    list = presets[+b.dataset.i].exprs.map(src => ({ src }));
     g.params = {};
     renderList(); apply(); g.resetView();
   });
@@ -692,8 +742,9 @@ function renderPractice() {
     $('#none').addEventListener('click', () => { units = new Set(); persist(); });
     $('#psize').addEventListener('change', (e) => { pr.size = +e.target.value; persist(); });
     $('#go').addEventListener('click', () => {
-      const st = buildPractice(state, { units: [...units], levels: [...levels], size: pr.size });
-      if (st.length) startSession(st, true);
+      const cfg = { units: [...units], levels: [...levels], size: pr.size };
+      const st = buildPractice(state, cfg);
+      if (st.length) startSession(st, true, cfg);
     });
   };
   draw();
