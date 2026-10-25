@@ -1,5 +1,5 @@
 // オフラインで動かすためのキャッシュ。内容を更新したら VERSION を上げる
-const VERSION = 'lemma-v0.3.0';
+const VERSION = 'lemma-v0.3.1';
 const FILES = [
   "./",
   "index.html",
@@ -51,7 +51,7 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
   e.respondWith(
-    fetch(e.request).then((res) => {
+    fetch(e.request, { cache: 'no-cache' }).then((res) => {
       const copy = res.clone();
       caches.open(VERSION).then((c) => c.put(e.request, copy));
       return res;

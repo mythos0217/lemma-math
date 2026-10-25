@@ -1,13 +1,19 @@
 import { parse, toTeX, relationToTeX, equivalent, sameNumberSet } from './parser.js';
 import { Graph, COLORS } from './graph.js';
 import { Graph3D } from './graph3d.js';
+// 版の確認用（古いファイルに FILE_VERSION が無くても読み込みが止まらないよう名前空間で取り込む）
+import * as M_G3 from './graph3d.js';
+import * as M_CONTENT from './content.js';
+import * as M_SCHED from './scheduler.js';
+import * as M_GRAPH from './graph.js';
+import * as M_PARSER from './parser.js';
 import { SUBJECTS, UNITS, LEVELS, CARDS, PROBLEMS, cardById, problemById, unitById, subjectById, unitOf } from './content.js';
 import {
   review, retrievability, cardStatus, isUnlocked, buildSession, buildExtra,
   dayKey, countDue, nextDueTime, buildPractice, poolSize,
 } from './scheduler.js';
 
-const VERSION = '0.3.0';
+const VERSION = '0.3.1';
 const KEY = 'lemma.v2';
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
@@ -69,7 +75,9 @@ function clearGraphs() { activeGraphs.forEach(g => g.destroy()); activeGraphs = 
 // グラフ部品（ツールボタンとスライダー付き）
 function mountGraph(host, exprs, { view: bounds, sliders, sketch = false, hidden = false, height, three = false } = {}) {
   if (height) host.style.height = height + 'px';
-  const g = three ? new Graph3D(host) : new Graph(host, {});
+  let g;
+  try { g = three ? new Graph3D(host) : new Graph(host, {}); }
+  catch (e) { host.innerHTML = `<p class="graph-error">グラフを表示できませんでした：${esc(e.message)}</p>`; throw e; }
   activeGraphs.push(g);
   g.setExpressions(exprs.map((src, i) => ({ src, color: COLORS[i % COLORS.length] })));
   if (bounds) g.setView(bounds);
@@ -807,6 +815,25 @@ function renderSettings() {
 
 // ---------- 起動 ----------
 route();
+// アップロード漏れの検出：各ファイルの版が app.js と一致するか
+function staleFiles() {
+  const cssV = getComputedStyle(document.documentElement).getPropertyValue('--lemma-version').replace(/['"\s]/g, '');
+  const list = { 'js/content.js': M_CONTENT.FILE_VERSION, 'js/scheduler.js': M_SCHED.FILE_VERSION, 'js/graph.js': M_GRAPH.FILE_VERSION, 'js/graph3d.js': M_G3.FILE_VERSION, 'js/parser.js': M_PARSER.FILE_VERSION, 'css/style.css': cssV };
+  return Object.entries(list).filter(([, v]) => v !== VERSION).map(([k]) => k);
+}
+function showBanner(html) {
+  let b = $('.banner');
+  if (!b) { b = document.createElement('div'); b.className = 'banner'; document.body.prepend(b); }
+  b.innerHTML = html;
+}
+setTimeout(() => {
+  const stale = staleFiles();
+  if (stale.length) showBanner(`<b>古いファイルが混ざっています（v${VERSION}）</b>${stale.map(esc).join('、')} が更新されていません。リポジトリにzipの中身をすべて上書きアップロードしてください。`);
+}, 400);
+// 予期しないエラーを画面に出す（報告用）
+window.addEventListener('error', (e) => showBanner(`<b>エラー</b>${esc(e.message || '')} <small>${esc((e.filename || '').split('/').pop())}:${e.lineno || ''}</small>`));
+window.addEventListener('unhandledrejection', (e) => showBanner(`<b>エラー</b>${esc(String(e.reason && e.reason.message || e.reason))}`));
+
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !/claude|claudeusercontent/.test(location.hostname)) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+  navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {});
 }
