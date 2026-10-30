@@ -7,13 +7,15 @@ import * as M_CONTENT from './content.js';
 import * as M_SCHED from './scheduler.js';
 import * as M_GRAPH from './graph.js';
 import * as M_PARSER from './parser.js';
-import { SUBJECTS, UNITS, LEVELS, CARDS, PROBLEMS, cardById, problemById, unitById, subjectById, unitOf } from './content.js';
+import * as M_CAT from './catalog.js';
+import { CARDS, cardById, problemById, unitById, subjectById } from './content.js';
+import { review, retrievability, dayKey } from './scheduler.js';
 import {
-  review, retrievability, cardStatus, isUnlocked, buildSession, buildExtra,
-  dayKey, countDue, nextDueTime, buildPractice, poolSize,
-} from './scheduler.js';
+  LEVELS, FIELDS, ENTRIES, META, fieldByKey, entryById, loadCatalog, ensureBodies, getBody,
+  subjectsWithFields, pool, pickPractice, pickReview, dueEntries, nextReviewTime,
+} from './catalog.js';
 
-const VERSION = '0.3.1';
+const VERSION = '0.4.0';
 const KEY = 'lemma.v2';
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
@@ -21,9 +23,10 @@ const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
 // ---------- 保存 ----------
 function freshState() {
   return {
-    cards: {}, problems: {}, log: [], explains: {},
+    cards: {}, problems: {}, pstat: {}, log: [], explains: {},
     settings: { size: 6, newPerDay: 3 },
-    practice: { units: null, levels: [2, 3, 4], size: 8 },
+    practice: { fields: null, levels: [1, 2, 3, 4, 5], size: 8 },
+    schema: 4,
     newIntroduced: null, streak: { last: null, count: 0 },
     graphExprs: null,
   };
@@ -32,7 +35,15 @@ let state = load();
 function load() {
   try {
     const raw = localStorage.getItem(KEY);
-    if (raw) return { ...freshState(), ...JSON.parse(raw) };
+    if (raw) {
+      const st = { ...freshState(), ...JSON.parse(raw) };
+      if (st.schema !== 4) { // v0.3 以前の記録：難易度の段階と分野が変わったので選択だけ初期化
+        st.practice = { fields: null, levels: [1, 2, 3, 4, 5], size: (st.practice && st.practice.size) || 8 };
+        st.pstat = st.pstat || {};
+        st.schema = 4;
+      }
+      return st;
+    }
   } catch (e) { /* 読めないときは新規 */ }
   return freshState();
 }
@@ -46,7 +57,10 @@ const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 function math(el) {
   if (!window.renderMathInElement) { setTimeout(() => math(el), 60); return; }
   window.renderMathInElement(el, {
-    delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }],
+    delimiters: [
+      { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true },
+      { left: '\\(', right: '\\)', display: false }, { left: '$', right: '$', display: false },
+    ],
     throwOnError: false,
   });
 }
@@ -125,7 +139,12 @@ function renderSliders(box, g) {
 // ---------- ルーティング ----------
 let session = null; // { steps, i, results: [], extra }
 
+let ready = false;
+let timer = null;
+function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
 function route() {
+  stopTimer();
+  if (!ready) { view.innerHTML = '<p class="muted" style="padding:40px 4px">問題データを読み込んでいます…</p>'; return; }
   const tab = (location.hash || '#today').slice(1);
   $$('.tabbar a').forEach(a => a.classList.toggle('on', a.dataset.tab === (tab === 'practice' ? 'today' : tab)));
   clearGraphs();
@@ -141,83 +160,91 @@ function route() {
 window.addEventListener('hashchange', route);
 
 // ---------- 今日 ----------
+function levelToolbar(pr, onChange) {
+  return {
+    html: `<div class="toolbar">
+        <div class="toggles" id="lv">${Object.entries(LEVELS).map(([k, v]) => `<button class="tog lv${k} ${pr.levels.includes(+k) ? 'on' : ''}" data-l="${k}">${v}</button>`).join('')}</div>
+        <select id="tsize" aria-label="問題数">${[4, 6, 8, 10, 15, 20].map(k => `<option value="${k}" ${k === pr.size ? 'selected' : ''}>${k}問</option>`).join('')}</select>
+      </div>`,
+    bind() {
+      $$('#lv .tog').forEach(b => b.addEventListener('click', () => {
+        const k = +b.dataset.l, set = new Set(pr.levels);
+        if (set.has(k) && set.size === 1) { toast('難易度は1つ以上選んでください'); return; }
+        set.has(k) ? set.delete(k) : set.add(k);
+        pr.levels = [...set].sort(); save(); onChange();
+      }));
+      $('#tsize').addEventListener('change', (e) => { pr.size = +e.target.value; save(); onChange(); });
+    },
+  };
+}
+
 function renderToday() {
-  const pr = state.practice || (state.practice = { units: null, levels: [2, 3, 4], size: 8 });
-  const levels = new Set(pr.levels && pr.levels.length ? pr.levels : [2, 3, 4]);
-  const lv = [...levels];
-  const due = countDue(state);
-  const inPool = (u) => PROBLEMS.filter(p => unitOf(p) === u && levels.has(p.level));
-  const doneCount = (list) => list.filter(p => state.problems[p.id]).length;
-  const total = PROBLEMS.filter(p => levels.has(p.level));
+  const pr = state.practice;
+  const solved = (list) => list.filter(e => state.problems[e.id]).length;
+  const all = pool({ levels: pr.levels });
+  const due = dueEntries(state).length;
   const doneToday = state.streak.last === dayKey();
+  const bar = levelToolbar(pr, renderToday);
   view.innerHTML = `
     <div class="fade-in">
       <div class="kicker">LEMMA · 受験数学</div>
       <h1>演習</h1>
-      <p class="sub">${state.streak.count ? `連続 ${state.streak.count}日${doneToday ? '（今日の分 ✓）' : ''}・` : ''}解いた問題 ${doneCount(total)} / ${total.length}</p>
-      <div class="toolbar">
-        <div class="toggles" id="lv">${Object.entries(LEVELS).map(([k, v]) => `<button class="tog lv${k} ${levels.has(+k) ? 'on' : ''}" data-l="${k}">${v}</button>`).join('')}</div>
-        <select id="tsize" aria-label="問題数">${[4, 6, 8, 10, 15, 20].map(k => `<option value="${k}" ${k === pr.size ? 'selected' : ''}>${k}問</option>`).join('')}</select>
-      </div>
+      <p class="sub">${state.streak.count ? `連続 ${state.streak.count}日${doneToday ? '（今日の分 ✓）' : ''}・` : ''}解いた問題 ${solved(all)} / ${all.length}</p>
+      ${bar.html}
       <button class="hero" id="random">
         <b>全分野からランダム</b>
-        <span>数I・A・II・B・III・C から ${Math.min(pr.size, total.length)}問。単元を混ぜて出すので、どの解法を使うかを見抜く練習になります。</span>
+        <span>数I〜数C・融合の全${FIELDS.length}分野から ${Math.min(pr.size, all.length)}問。分野を混ぜて出すので、どの解法を使うかを見抜く練習になります。</span>
       </button>
-      ${due ? `<button class="btn block" id="review" style="margin-top:10px">復習：忘れかけた解法 ${due}つ</button>` : ''}
+      ${due ? `<button class="btn block" id="review" style="margin-top:10px">復習：忘れかけた問題 ${due}問</button>` : ''}
       <h2>分野ごとに演習</h2>
-      ${SUBJECTS.map(sub => {
-        const us = UNITS.filter(u => u.subject === sub.id);
-        const all = us.flatMap(u => inPool(u.id));
+      ${subjectsWithFields().map(sub => {
+        const subAll = pool({ fields: sub.fields.map(f => f.key), levels: pr.levels });
         return `<div class="subj-block">
-          <button class="subj-row" data-s="${sub.id}" ${all.length ? '' : 'disabled'}>
-            <b>${esc(sub.name)}</b><span>${doneCount(all)} / ${all.length}</span><i>まとめて ›</i>
+          <button class="subj-row" data-s="${esc(sub.name)}" ${subAll.length ? '' : 'disabled'}>
+            <b>${esc(sub.name === '融合' ? '融合問題' : sub.name.replace('数', '数学'))}</b><span>${solved(subAll)} / ${subAll.length}</span><i>まとめて ›</i>
           </button>
-          ${us.map(u => {
-            const list = inPool(u.id), d = doneCount(list);
-            return `<button class="unit-row" data-u="${u.id}" ${list.length ? '' : 'disabled'}>
-              <span class="nm">${esc(u.name)}</span><span class="ct">${d} / ${list.length}</span>
+          ${sub.fields.map(f => {
+            const list = pool({ fields: [f.key], levels: pr.levels }), d = solved(list);
+            return `<button class="unit-row" data-f="${esc(f.key)}" ${list.length ? '' : 'disabled'}>
+              <span class="nm">${esc(f.name)}</span><span class="ct">${d} / ${list.length}</span>
               <span class="bar"><div style="width:${list.length ? Math.round(d / list.length * 100) : 0}%"></div></span>
             </button>`;
           }).join('')}
         </div>`;
       }).join('')}
-      <button class="btn ghost block" id="pick" style="margin-top:14px">複数の単元を組み合わせて選ぶ</button>
+      <button class="btn ghost block" id="pick" style="margin-top:14px">複数の分野を組み合わせて選ぶ</button>
       <h2>このアプリの学び方</h2>
       <div class="panel">
         <ol style="margin:0;padding-left:1.2em">
-          <li><strong>先に解く。</strong>解説を読む前に思い出そうとする方が、記憶に残ります。</li>
-          <li><strong>ヒントは3段階。</strong>答えは出しません。詰まったら一段ずつ。</li>
-          <li><strong>答える前に自信度を選ぶ。</strong>「わかったつもり」とのズレを定着度ページで見られます。</li>
-          <li><strong>忘れかけた頃に復習。</strong>解法ごとに忘れ方を推定し、復習ボタンに出します。</li>
+          <li><strong>紙に解いてから答え合わせ。</strong>解説を読む前に自力で考える方が、記憶に残ります。</li>
+          <li><strong>ヒントは答えを出さない。</strong>詰まったら「考え方」だけを見られます。</li>
+          <li><strong>答え合わせの前に自信度を選ぶ。</strong>「わかったつもり」とのズレを定着度ページで見られます。</li>
+          <li><strong>忘れかけた頃に復習。</strong>解けなかった問題ほど早く、解けた問題は間をあけて復習に出します。</li>
         </ol>
       </div>
     </div>`;
-  const persist = () => { pr.levels = [...levels]; save(); renderToday(); };
-  $$('#lv .tog').forEach(b => b.addEventListener('click', () => {
-    const k = +b.dataset.l;
-    if (levels.has(k) && levels.size === 1) { toast('難易度は1つ以上選んでください'); return; }
-    levels.has(k) ? levels.delete(k) : levels.add(k); persist();
-  }));
-  $('#tsize').addEventListener('change', (e) => { pr.size = +e.target.value; save(); renderToday(); });
-  const go = (units) => {
-    const cfg = { units, levels: lv, size: pr.size };
-    const st = buildPractice(state, cfg);
-    if (st.length) startSession(st, true, cfg); else toast('この条件の問題はありません');
+  bar.bind();
+  const go = (fields) => {
+    const cfg = { fields, levels: pr.levels.slice(), size: pr.size };
+    const st = pickPractice(state, cfg);
+    if (st.length) startSession(st, cfg); else toast('この条件の問題はありません');
   };
   $('#random').addEventListener('click', () => go(null));
-  $$('.unit-row').forEach(b => b.addEventListener('click', () => go([b.dataset.u])));
-  $$('.subj-row').forEach(b => b.addEventListener('click', () => go(UNITS.filter(u => u.subject === b.dataset.s).map(u => u.id))));
+  $$('.unit-row').forEach(b => b.addEventListener('click', () => go([b.dataset.f])));
+  $$('.subj-row').forEach(b => b.addEventListener('click', () => go(FIELDS.filter(f => f.subject === b.dataset.s).map(f => f.key))));
   $('#pick').addEventListener('click', () => { location.hash = '#practice'; });
   $('#review')?.addEventListener('click', () => {
-    const st = buildSession(state, { size: pr.size, newPerDay: 0 });
-    if (st.length) startSession(st, true);
+    const st = pickReview(state, { size: pr.size });
+    if (st.length) startSession(st, { review: true, size: pr.size });
   });
 }
 
-function startSession(steps, extra = false, cfg = null) {
-  session = { steps, i: 0, results: [], extra, cfg };
-  location.hash = '#today';
-  route();
+async function startSession(steps, cfg = null) {
+  view.innerHTML = '<p class="muted" style="padding:40px 4px">問題を読み込んでいます…</p>';
+  try { await ensureBodies(steps.map(s => s.pid).filter(Boolean)); }
+  catch (e) { showBanner(`<b>問題を読み込めませんでした</b>${esc(e.message)}`); route(); return; }
+  session = { steps, i: 0, results: [], cfg };
+  if (location.hash !== '#today') location.hash = '#today'; else route();
 }
 
 // ---------- セッション ----------
@@ -242,7 +269,7 @@ function bindQuit() {
     session = null; route();
   });
 }
-function nextStep() { session.i++; clearGraphs(); window.scrollTo(0, 0); renderStep(); }
+function nextStep() { stopTimer(); session.i++; clearGraphs(); window.scrollTo(0, 0); renderStep(); }
 
 function renderIntro(step) {
   const c = cardById[step.cid];
@@ -266,9 +293,35 @@ function renderIntro(step) {
 
 const CONF = [{ id: 'low', label: '自信なし' }, { id: 'mid', label: 'たぶん' }, { id: 'high', label: '確実' }];
 
+function metaChips(e) {
+  const f = fieldByKey[e.f];
+  return `<span class="chip">${esc(f.subject)}・${esc(f.name)}</span>
+        <span class="chip lv${e.lv}">${LEVELS[e.lv]}</span>
+        ${e.t ? `<span class="chip plain">目安 ${e.t}分</span>` : ''}`;
+}
+
+function recordResult(pid, grade, extra) {
+  const now = Date.now();
+  state.pstat[pid] = review(state.pstat[pid], grade, now);
+  state.problems[pid] = { last: now, n: ((state.problems[pid] || {}).n || 0) + 1 };
+  state.log.push({ p: pid, t: now, g: grade, ...extra });
+  if (state.log.length > 5000) state.log = state.log.slice(-5000);
+  const today = dayKey(now);
+  if (state.streak.last !== today) {
+    const y = dayKey(now - 86400000);
+    state.streak = { last: today, count: state.streak.last === y ? state.streak.count + 1 : 1 };
+  }
+  save();
+  session.results.push({ pid, grade });
+  return state.log[state.log.length - 1];
+}
+
 function renderProblem(step) {
+  const entry = entryById.get(step.pid);
+  if (!entry) { nextStep(); return; }
+  if (entry.kind === 'bank') return renderWritten(step, entry);
   const p = problemById[step.pid];
-  const unit = unitById[unitOf(p)];
+  const t0 = Date.now();
   const a = { hints: 0, conf: null, attempts: 0, choice: null, done: false, correct: false, firstCorrect: null, grade: null };
   const order = p.type === 'choice' ? shuffle(p.choices.map((_, i) => i)) : null;
 
@@ -276,8 +329,7 @@ function renderProblem(step) {
     <div class="fade-in">
       ${topBar()}
       <div class="meta">
-        <span class="chip">${esc(subjectById[unit.subject].name)}・${esc(unit.name)}</span>
-        <span class="chip lv${p.level}">${LEVELS[p.level]}</span>
+        ${metaChips(entry)}<span class="chip plain">自動判定</span>
         <span class="count">${session.i + 1} / ${session.steps.length}</span>
       </div>
       <div class="question">${rich(p.q)}</div>
@@ -451,29 +503,12 @@ function renderProblem(step) {
     a.done = true;
     a.grade = grade;
     const now = Date.now();
-    const target = step.card || p.cards[0];
-    for (const cid of new Set([target, ...p.cards])) {
-      // 出題の目的のカードは評価どおり。同じ問題で使った他の解法は、学習済みなら正解時だけ強化する
-      const g = cid === target ? grade : (grade >= 3 ? 3 : null);
-      if (g === null) continue;
-      if (cid !== target && !state.cards[cid]?.reps) continue;
+    for (const cid of p.cards) {
+      const g = cid === p.cards[0] ? grade : (grade >= 3 ? 3 : null);
+      if (g === null || (cid !== p.cards[0] && !state.cards[cid]?.reps)) continue;
       state.cards[cid] = review(state.cards[cid], g, now);
     }
-    if (step.fresh) {
-      const k = dayKey(now);
-      state.newIntroduced = state.newIntroduced && state.newIntroduced.date === k
-        ? { date: k, count: state.newIntroduced.count + 1 } : { date: k, count: 1 };
-    }
-    state.problems[p.id] = { last: now, n: ((state.problems[p.id] || {}).n || 0) + 1 };
-    state.log.push({ p: p.id, t: now, g: grade, h: a.hints, c: sketch ? null : a.conf, ok: sketch ? grade >= 3 : !!a.firstCorrect });
-    if (state.log.length > 2000) state.log = state.log.slice(-2000);
-    const today = dayKey(now);
-    if (state.streak.last !== today) {
-      const y = dayKey(now - 86400000);
-      state.streak = { last: today, count: state.streak.last === y ? state.streak.count + 1 : 1 };
-    }
-    save();
-    session.results.push({ pid: p.id, grade, hints: a.hints, ok: grade >= 2 });
+    a.log = recordResult(p.id, grade, { h: a.hints, c: sketch ? null : a.conf, ok: sketch ? grade >= 3 : !!a.firstCorrect, min: Math.max(1, Math.round((now - t0) / 60000)) });
     updateActions();
     $$('#conf button').forEach(x => x.disabled = true);
     if (input) input.readOnly = true;
@@ -506,7 +541,11 @@ function renderProblem(step) {
     });
     $('#next').addEventListener('click', () => {
       const t = $('#explain').value.trim();
-      if (t) { state.explains[p.id] = [...(state.explains[p.id] || []), { t: Date.now(), text: t }].slice(-5); save(); }
+      if (t) {
+        state.explains[p.id] = [...(state.explains[p.id] || []), { t: Date.now(), text: t }].slice(-5);
+        if (a.log) a.log.note = t;
+        save();
+      }
       nextStep();
     });
   }
@@ -515,23 +554,136 @@ function renderProblem(step) {
   if (input) setTimeout(() => input.focus({ preventScroll: true }), 50);
 }
 
+// 記述式（問題管理表の問題）：紙に解く → 自信度 → 答え合わせ → 自己採点
+const SELF = [
+  { id: 'full', label: '完答', mark: '○' },
+  { id: 'part', label: '一部正解', mark: '△' },
+  { id: 'none', label: 'できず', mark: '×' },
+];
+function renderWritten(step, e) {
+  const b = getBody(e.id);
+  if (!b) { showBanner('<b>問題本文がありません</b>' + esc(e.id)); nextStep(); return; }
+  const t0 = Date.now();
+  const a = { conf: null, hint: false, revealed: false, sg: null, feel: null, log: null, min: null };
+  view.innerHTML = `
+    <div class="fade-in written">
+      ${topBar()}
+      <div class="meta">
+        ${metaChips(e)}
+        <span class="chip plain timer" id="clock">0:00</span>
+        <span class="count">${session.i + 1} / ${session.steps.length}</span>
+      </div>
+      <div class="question qhtml">${b.q}</div>
+      <p class="muted pen">紙に解いてから答え合わせをしよう。</p>
+      <div id="conf"><div class="label">答え合わせの前に：どのくらい自信がある？</div>
+        <div class="segment">${CONF.map(c => `<button data-c="${c.id}">${c.label}</button>`).join('')}</div></div>
+      <div class="btn-row" id="actions"></div>
+      <div class="hint-list" id="hints"></div>
+      <div id="feedback"></div>
+      <div class="pid muted">${esc(e.id)}</div>
+    </div>`;
+  math($('.question'));
+  bindQuit();
+  const clock = $('#clock');
+  const tick = () => { const s = Math.floor((Date.now() - t0) / 1000); clock.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; if (e.t && s > e.t * 60) clock.classList.add('over'); };
+  timer = setInterval(tick, 1000);
+
+  $$('#conf button').forEach(btn => btn.addEventListener('click', () => {
+    if (a.revealed) return;
+    a.conf = btn.dataset.c;
+    $$('#conf button').forEach(x => x.classList.toggle('on', x === btn));
+    actions();
+  }));
+
+  function actions() {
+    const box = $('#actions');
+    if (a.revealed) { box.innerHTML = ''; return; }
+    box.innerHTML = `${b.k && !a.hint ? '<button class="btn ghost" id="hint">ヒント：考え方</button>' : ''}
+      <button class="btn primary" id="reveal" ${a.conf ? '' : 'disabled'}>答え合わせ</button>`;
+    $('#hint')?.addEventListener('click', () => {
+      a.hint = true;
+      const h = document.createElement('div');
+      h.className = 'hint fade-in';
+      h.innerHTML = `<b>考え方</b>${b.k}`;
+      $('#hints').appendChild(h);
+      math(h);
+      actions();
+    });
+    $('#reveal').addEventListener('click', reveal);
+  }
+
+  function reveal() {
+    a.revealed = true;
+    a.min = Math.max(1, Math.round((Date.now() - t0) / 60000));
+    stopTimer();
+    $$('#conf button').forEach(x => x.disabled = true);
+    actions();
+    const fb = $('#feedback');
+    fb.innerHTML = `
+      <div class="solution fade-in">
+        <div class="title">答</div>
+        <div class="ans qhtml">${b.a}</div>
+      </div>
+      <div class="label">自分の答案はどうだった？</div>
+      <div class="segment self" id="self">${SELF.map(x => `<button data-g="${x.id}"><b>${x.mark}</b> ${x.label}</button>`).join('')}</div>
+      <div id="after"></div>`;
+    math(fb);
+    $$('#self button').forEach(btn => btn.addEventListener('click', () => grade(btn.dataset.g)));
+  }
+
+  function grade(sg) {
+    if (a.sg) return;
+    a.sg = sg;
+    $$('#self button').forEach(x => { x.disabled = true; x.classList.toggle('on', x.dataset.g === sg); });
+    const g = sg === 'full' ? (a.hint ? 2 : a.conf === 'high' ? 4 : 3) : sg === 'part' ? 2 : 1;
+    a.log = recordResult(e.id, g, { h: a.hint ? 1 : 0, c: a.conf, ok: sg === 'full', sg, min: a.min });
+    const after = $('#after');
+    after.innerHTML = `
+      <div class="solution fade-in">
+        <div class="title">解答・解説</div>
+        <div class="qhtml">${b.s || '（解説なし）'}</div>
+        ${b.k ? `<div class="keypoint"><b>核となるアイデア</b>${b.k}</div>` : ''}
+        ${e.th || e.tg ? `<div class="methods">${e.th ? `<span class="chip plain">${e.th}</span>` : ''}${(e.tg || []).map(t => `<span class="chip plain">${esc(t)}</span>`).join('')}</div>` : ''}
+      </div>
+      <div class="label">手応え（任意）</div>
+      <div class="feel" id="feel">${[1, 2, 3, 4, 5].map(k => `<button data-k="${k}">${k}</button>`).join('')}</div>
+      <div class="label">${sg === 'full' ? 'この問題で最初に気づくべきことを1行で（任意）' : 'どこで詰まった？（任意）'}</div>
+      <textarea class="explain" id="explain" placeholder="${sg === 'full' ? '例：交点の x 座標を出して1/6公式' : '例：(2) の場合分けで a=1 を落とした'}"></textarea>
+      <button class="btn primary block" id="next" style="margin-top:14px">${session.i + 1 < session.steps.length ? '次へ' : '結果を見る'}</button>`;
+    math(after);
+    $$('#feel button').forEach(btn => btn.addEventListener('click', () => {
+      a.feel = +btn.dataset.k;
+      $$('#feel button').forEach(x => x.classList.toggle('on', x === btn));
+    }));
+    $('#next').addEventListener('click', () => {
+      const t = $('#explain').value.trim();
+      if (a.log) { if (t) a.log.note = t; if (a.feel) a.log.feel = a.feel; }
+      if (t) state.explains[e.id] = [...(state.explains[e.id] || []), { t: Date.now(), text: t }].slice(-5);
+      save();
+      nextStep();
+    });
+  }
+
+  actions();
+}
+
 function renderSummary() {
   const r = session.results;
   const solo = r.filter(x => x.grade >= 3).length;
   const withHint = r.filter(x => x.grade === 2).length;
   const missed = r.filter(x => x.grade === 1).length;
-  const next = nextDueTime(state);
+  const next = nextReviewTime(state);
   view.innerHTML = `
     <div class="fade-in">
       <div class="kicker">おつかれさま</div>
       <h1>${r.length}問 解きました</h1>
       <div class="stat-row">
-        <div class="stat"><b>${solo}</b><span>自力で正解</span></div>
-        <div class="stat"><b>${withHint}</b><span>ヒント・再挑戦</span></div>
+        <div class="stat"><b>${solo}</b><span>自力で完答</span></div>
+        <div class="stat"><b>${withHint}</b><span>一部・ヒントあり</span></div>
         <div class="stat"><b>${missed}</b><span>解けず</span></div>
       </div>
       <div class="panel">
-        <p style="margin:0">解けなかった解法は近いうちに、解けた解法は間をあけて出題します。${next ? `次の復習は <strong>${relTime(next)}</strong>。` : ''}</p>
+        <p style="margin:0">解けなかった問題は近いうちに、解けた問題は間をあけて復習に出します。${next ? `次の復習は <strong>${relTime(next)}</strong>。` : ''}</p>
         <p class="muted" style="margin:8px 0 0">難しく感じた日の方が、あとで解ける力は伸びています。</p>
       </div>
       <div class="btn-row">
@@ -541,10 +693,10 @@ function renderSummary() {
     </div>`;
   $('#home').addEventListener('click', () => { session = null; route(); });
   $('#more').addEventListener('click', () => {
-    const cfg = session.cfg;
-    const steps = cfg ? buildPractice(state, cfg) : buildExtra(state, { size: state.practice?.size || 8 });
+    const cfg = session.cfg || { size: 8 };
+    const steps = cfg.review ? pickReview(state, cfg) : pickPractice(state, cfg);
     if (!steps.length) { toast('今は出題できる問題がありません'); return; }
-    startSession(steps, true, cfg);
+    startSession(steps, cfg);
   });
 }
 
@@ -656,28 +808,25 @@ function renderGraphPage() {
   });
 }
 
-// ---------- 定着度マップ ----------
-const STATUS = { new: '未学習', due: '復習待ち', learning: '学習中', solid: '定着' };
-const STATUS_COLOR = { due: 'var(--warn)', learning: 'var(--accent)', solid: 'var(--good)' };
+// ---------- 定着度 ----------
+function fieldStats(keys) {
+  const set = new Set(keys);
+  const list = ENTRIES.filter(e => set.has(e.f));
+  const logs = state.log.filter(l => { const e = entryById.get(l.p); return e && set.has(e.f); });
+  // 各問題の最新の結果
+  const last = new Map();
+  for (const l of logs) last.set(l.p, l);
+  const latest = [...last.values()];
+  return {
+    total: list.length,
+    solved: list.filter(e => state.problems[e.id]).length,
+    full: latest.filter(l => l.g >= 3).length,
+    tried: latest.length,
+    due: dueEntries(state, { fields: keys }).length,
+  };
+}
 
 function renderMap() {
-  const now = Date.now();
-  const rows = UNITS.map(u => {
-    const cards = CARDS.filter(c => c.unit === u.id);
-    return `<div class="unit"><h2>${esc(subjectById[u.subject].name)}・${esc(u.name)}</h2>${cards.map(c => {
-      const st = state.cards[c.id];
-      const s = cardStatus(st, now);
-      const unlocked = isUnlocked(c, state.cards);
-      const R = retrievability(st, now);
-      const pre = !unlocked ? `前提：${c.pre.map(id => cardById[id].name).join('、')}` : st?.reps ? `思い出せる見込み ${Math.round(R * 100)}%` : 'タップで学習';
-      return `<button class="card-row ${unlocked ? '' : 'locked'}" data-c="${c.id}" ${unlocked ? '' : 'disabled'}>
-        <span><span class="nm">${rich(c.name)}</span><br><span class="muted">${esc(pre)}</span></span>
-        <span class="chip st-${s}">${STATUS[s]}</span>
-        <span class="bar"><div style="width:${st?.reps ? Math.round(R * 100) : 0}%;background:${STATUS_COLOR[s] || 'transparent'}"></div></span>
-      </button>`;
-    }).join('')}</div>`;
-  }).join('');
-
   const withConf = state.log.filter(l => l.c);
   const high = withConf.filter(l => l.c === 'high');
   const low = withConf.filter(l => l.c === 'low');
@@ -685,93 +834,130 @@ function renderMap() {
   const under = low.filter(l => l.ok).length;
   const total = state.log.length;
   const solo = state.log.filter(l => l.g >= 3).length;
-
+  const pct = (a, b) => b ? Math.round(a / b * 100) + '%' : '—';
   view.innerHTML = `
     <div class="fade-in">
-      <div class="kicker">解法カード ${CARDS.length}枚</div>
+      <div class="kicker">${FIELDS.length}分野・${ENTRIES.length}問</div>
       <h1>定着度</h1>
-      <p class="sub">解法ごとに「今これを思い出せる見込み」を推定しています。90%を下回ると復習に回ります。</p>
+      <p class="sub">分野ごとの進み具合と、最後に解いたときに完答できた割合です。</p>
       <h2>自信と結果のズレ</h2>
       <div class="calib">
-        <div class="stat"><b>${high.length ? Math.round(over / high.length * 100) + '%' : '—'}</b><span>「確実」で不正解（過信）</span></div>
-        <div class="stat"><b>${low.length ? Math.round(under / low.length * 100) + '%' : '—'}</b><span>「自信なし」で正解</span></div>
+        <div class="stat"><b>${pct(over, high.length)}</b><span>「確実」で完答できず（過信）</span></div>
+        <div class="stat"><b>${pct(under, low.length)}</b><span>「自信なし」で完答</span></div>
       </div>
-      <p class="muted" style="margin:8px 2px 0">${total ? `これまで ${total}問、うち自力で正解 ${solo}問。` : 'まだ記録がありません。'}過信が多いときは、解き終えたら検算する習慣を。</p>
-      ${rows}
+      <p class="muted" style="margin:8px 2px 0">${total ? `これまで ${total}回解答、うち自力で完答 ${solo}回。` : 'まだ記録がありません。'}過信が多いときは、解き終えたら検算する習慣を。</p>
+      ${subjectsWithFields().map(sub => `
+        <h2>${esc(sub.name === '融合' ? '融合問題' : sub.name.replace('数', '数学'))}</h2>
+        ${sub.fields.map(f => {
+          const st = fieldStats([f.key]);
+          const rate = st.tried ? st.full / st.tried : 0;
+          return `<button class="card-row" data-f="${esc(f.key)}">
+            <span><span class="nm">${esc(f.name)}</span><br>
+              <span class="muted">解いた ${st.solved} / ${st.total}問・完答率 ${pct(st.full, st.tried)}${st.due ? `・復習待ち ${st.due}問` : ''}</span></span>
+            <span class="chip ${st.due ? 'st-due' : st.tried ? 'st-learning' : 'st-new'}">${st.due ? '復習' : st.tried ? '学習中' : '未着手'}</span>
+            <span class="bar"><div style="width:${Math.round(st.solved / Math.max(1, st.total) * 100)}%;background:${rate >= 0.7 ? 'var(--good)' : 'var(--accent)'}"></div></span>
+          </button>`;
+        }).join('')}`).join('')}
     </div>`;
-  math(view);
-  $$('.card-row:not(.locked)').forEach(b => b.addEventListener('click', () => {
-    const cid = b.dataset.c;
-    const learned = state.cards[cid]?.reps > 0;
-    const steps = learned
-      ? buildSession(state, { focusCard: cid })
-      : (() => { const p = PROBLEMS.filter(x => x.cards[0] === cid || x.cards.includes(cid)).sort((a, c) => a.level - c.level)[0]; return p ? [{ kind: 'intro', cid }, { kind: 'problem', pid: p.id, card: cid, fresh: cid }] : []; })();
-    if (steps.length) startSession(steps, true);
+  $$('.card-row').forEach(b => b.addEventListener('click', () => {
+    const f = b.dataset.f;
+    const rev = pickReview(state, { fields: [f], size: state.practice.size });
+    if (rev.length) { startSession(rev, { review: true, fields: [f], size: state.practice.size }); return; }
+    const cfg = { fields: [f], levels: state.practice.levels.slice(), size: state.practice.size };
+    const st = pickPractice(state, cfg);
+    if (st.length) startSession(st, cfg); else toast('この条件の問題はありません');
   }));
 }
 
 // ---------- 分野を選ぶ ----------
 function renderPractice() {
-  const pr = state.practice || (state.practice = { units: null, levels: [2, 3, 4], size: 8 });
-  let units = new Set(pr.units || UNITS.map(u => u.id));
-  let levels = new Set(pr.levels || [2, 3, 4]);
+  const pr = state.practice;
+  let fields = new Set(pr.fields && pr.fields.length ? pr.fields : FIELDS.map(f => f.key));
   const draw = () => {
-    const n = poolSize({ units: [...units], levels: [...levels] });
+    const n = pool({ fields: [...fields], levels: pr.levels }).length;
+    const bar = levelToolbar(pr, draw);
     view.innerHTML = `
       <div class="fade-in">
         <div class="kicker">演習モード</div>
         <h1>分野を選ぶ</h1>
-        <p class="sub">選んだ範囲から、まだ解いていない問題・久しぶりの問題を優先して、単元を混ぜて出します。</p>
-        <h2>難易度</h2>
-        <div class="toggles" id="lv">${Object.entries(LEVELS).map(([k, v]) => `<button class="tog lv${k} ${levels.has(+k) ? 'on' : ''}" data-l="${k}">${v}</button>`).join('')}</div>
-        <div class="btn-row" style="margin-top:20px"><button class="btn ghost" id="all">すべて選択</button><button class="btn ghost" id="none">すべて解除</button></div>
-        ${SUBJECTS.map(sub => {
-          const us = UNITS.filter(u => u.subject === sub.id);
-          const allOn = us.every(u => units.has(u.id));
+        <p class="sub">選んだ範囲から、まだ解いていない問題・久しぶりの問題を優先して、分野を混ぜて出します。</p>
+        ${bar.html}
+        <div class="btn-row" style="margin-top:4px"><button class="btn ghost" id="all">すべて選択</button><button class="btn ghost" id="none">すべて解除</button></div>
+        ${subjectsWithFields().map(sub => {
+          const allOn = sub.fields.every(f => fields.has(f.key));
           return `<div class="subject">
-            <button class="subj ${allOn ? 'on' : ''}" data-s="${sub.id}">${esc(sub.name)}</button>
-            <div class="toggles">${us.map(u => `<button class="tog ${units.has(u.id) ? 'on' : ''}" data-u="${u.id}">${esc(u.name)}<small>${poolSize({ units: [u.id], levels: [...levels] })}</small></button>`).join('')}</div>
+            <button class="subj ${allOn ? 'on' : ''}" data-s="${esc(sub.name)}">${esc(sub.name === '融合' ? '融合問題' : sub.name.replace('数', '数学'))}</button>
+            <div class="toggles">${sub.fields.map(f => `<button class="tog ${fields.has(f.key) ? 'on' : ''}" data-f="${esc(f.key)}">${esc(f.name)}<small>${pool({ fields: [f.key], levels: pr.levels }).length}</small></button>`).join('')}</div>
           </div>`;
         }).join('')}
-        <div class="setting" style="margin-top:12px"><span>問題数</span>
-          <select id="psize">${[4, 6, 8, 10, 15, 20].map(k => `<option ${k === pr.size ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
-        <button class="btn primary block" id="go" style="margin-top:16px" ${n ? '' : 'disabled'}>${n ? `始める（該当 ${n}問から ${Math.min(n, pr.size)}問）` : '該当する問題がありません'}</button>
+        <button class="btn primary block" id="go" style="margin-top:20px" ${n ? '' : 'disabled'}>${n ? `始める（該当 ${n}問から ${Math.min(n, pr.size)}問）` : '該当する問題がありません'}</button>
       </div>`;
-    const persist = () => { pr.units = [...units]; pr.levels = [...levels]; save(); draw(); };
-    $$('#lv .tog').forEach(b => b.addEventListener('click', () => { const k = +b.dataset.l; levels.has(k) ? levels.delete(k) : levels.add(k); persist(); }));
-    $$('.tog[data-u]').forEach(b => b.addEventListener('click', () => { const u = b.dataset.u; units.has(u) ? units.delete(u) : units.add(u); persist(); }));
+    bar.bind();
+    const persist = () => { pr.fields = [...fields]; save(); draw(); };
+    $$('.tog[data-f]').forEach(b => b.addEventListener('click', () => { const k = b.dataset.f; fields.has(k) ? fields.delete(k) : fields.add(k); persist(); }));
     $$('.subj').forEach(b => b.addEventListener('click', () => {
-      const us = UNITS.filter(u => u.subject === b.dataset.s).map(u => u.id);
-      const allOn = us.every(u => units.has(u));
-      us.forEach(u => allOn ? units.delete(u) : units.add(u));
+      const ks = FIELDS.filter(f => f.subject === b.dataset.s).map(f => f.key);
+      const allOn = ks.every(k => fields.has(k));
+      ks.forEach(k => allOn ? fields.delete(k) : fields.add(k));
       persist();
     }));
-    $('#all').addEventListener('click', () => { units = new Set(UNITS.map(u => u.id)); persist(); });
-    $('#none').addEventListener('click', () => { units = new Set(); persist(); });
-    $('#psize').addEventListener('change', (e) => { pr.size = +e.target.value; persist(); });
+    $('#all').addEventListener('click', () => { fields = new Set(FIELDS.map(f => f.key)); persist(); });
+    $('#none').addEventListener('click', () => { fields = new Set(); persist(); });
     $('#go').addEventListener('click', () => {
-      const cfg = { units: [...units], levels: [...levels], size: pr.size };
-      const st = buildPractice(state, cfg);
-      if (st.length) startSession(st, true, cfg);
+      const cfg = { fields: [...fields], levels: pr.levels.slice(), size: pr.size };
+      const st = pickPractice(state, cfg);
+      if (st.length) startSession(st, cfg);
     });
   };
   draw();
 }
 
 // ---------- 設定 ----------
+// 問題管理表の「弟テスト記録」シートと同じ列で書き出す
+function testLogCSV(since = 0) {
+  const head = ['日付', '問題ID', '科目', '分野', '難易度', '正誤', '所要時間(分)', '手応え(1-5)', 'どこで詰まったか', '感想・改善点'];
+  const q = (v) => { const t = v == null ? '' : String(v); return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t; };
+  const mark = (l) => l.sg ? { full: '○', part: '△', none: '×' }[l.sg] : (l.g >= 3 ? '○' : l.g === 2 ? '△' : '×');
+  const rows = state.log.filter(l => l.t > since).map(l => {
+    const e = entryById.get(l.p), f = e && fieldByKey[e.f];
+    const d = new Date(l.t);
+    const date = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+    return [date, l.p, f ? f.subject : '', f ? f.name : '', e ? e.lv : '', mark(l), l.min || '', l.feel || '', l.sg === 'full' ? '' : (l.note || ''), l.sg === 'full' ? (l.note || '') : ''].map(q).join(',');
+  });
+  return '﻿' + [head.join(','), ...rows].join('\r\n');
+}
+function download(name, text, type) {
+  const blob = new Blob([text], { type });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
 function renderSettings() {
-  const s = state.settings;
+  const since = state.csvExportedAt || 0;
+  const newCount = state.log.filter(l => l.t > since).length;
+  const gen = META.generated ? new Date(META.generated) : null;
   view.innerHTML = `
     <div class="fade-in">
       <div class="kicker">v${VERSION}</div>
       <h1>設定</h1>
+      <h2>問題データ</h2>
       <div class="panel">
-        <div class="setting"><span>1セットの問題数</span>
-          <select id="size">${[4, 6, 8, 10].map(n => `<option ${n === s.size ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
-        <div class="setting"><span>1日に学ぶ新しい解法</span>
-          <select id="npd">${[1, 2, 3].map(n => `<option ${n === s.newPerDay ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+        ${META.ok
+          ? `<p style="margin:0">問題管理表の問題 <strong>${META.count}問</strong>＋自動判定つきの内蔵問題 ${ENTRIES.filter(e => e.kind === 'builtin').length}問</p>
+             <p class="muted" style="margin:4px 0 0">${gen ? `${gen.getFullYear()}/${gen.getMonth() + 1}/${gen.getDate()} に` : ''}${esc(META.source || '')} から取り込み</p>`
+          : `<p style="margin:0;color:var(--bad)">問題データを読み込めませんでした（${esc(META.error || '')}）。data フォルダがアップロードされているか確認してください。</p>`}
       </div>
-      <h2>データ</h2>
+      <h2>テスト記録の書き出し</h2>
+      <div class="panel">
+        <p class="muted" style="margin:0 0 10px">問題管理表の「弟テスト記録」シートと同じ列のCSVです。Excelで開いて、そのまま貼り付けられます。</p>
+        <div class="btn-row" style="margin-top:0">
+          <button class="btn primary" id="csvnew" ${newCount ? '' : 'disabled'}>新しい${newCount}件</button>
+          <button class="btn" id="csvall" ${state.log.length ? '' : 'disabled'}>すべて（${state.log.length}件）</button>
+        </div>
+        ${since ? `<p class="muted" style="margin:8px 0 0">前回の書き出し：${new Date(since).toLocaleString('ja-JP')}</p>` : ''}
+      </div>
+      <h2>学習記録のバックアップ</h2>
       <div class="panel">
         <p class="muted" style="margin:0 0 10px">学習記録はこの端末のブラウザ内だけに保存されます。機種変更の前に書き出してください。</p>
         <div class="btn-row" style="margin-top:0">
@@ -791,20 +977,19 @@ function renderSettings() {
         <p class="muted" style="margin:10px 0 0">復習間隔は FSRS の考え方を簡略化したモデルで推定しています。難関・最難関レベルでの効果は未検証です。</p>
       </div>
     </div>`;
-  $('#size').addEventListener('change', e => { s.size = +e.target.value; save(); toast('保存しました'); });
-  $('#npd').addEventListener('change', e => { s.newPerDay = +e.target.value; save(); toast('保存しました'); });
-  $('#exp').addEventListener('click', () => {
-    const blob = new Blob([JSON.stringify(state, null, 1)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = `lemma-${dayKey()}.json`; a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  });
+  const csv = (from) => {
+    download(`lemma-テスト記録-${dayKey()}.csv`, testLogCSV(from), 'text/csv');
+    state.csvExportedAt = Date.now(); save(); renderSettings();
+  };
+  $('#csvnew').addEventListener('click', () => csv(since));
+  $('#csvall').addEventListener('click', () => csv(0));
+  $('#exp').addEventListener('click', () => download(`lemma-${dayKey()}.json`, JSON.stringify(state, null, 1), 'application/json'));
   $('#imp').addEventListener('change', async (e) => {
     const f = e.target.files[0]; if (!f) return;
     try {
       const data = JSON.parse(await f.text());
-      if (!data.cards || !data.settings) throw new Error();
-      state = { ...freshState(), ...data }; save(); toast('読み込みました'); route();
+      if (!data.problems || !data.log) throw new Error();
+      state = { ...freshState(), ...data, pstat: data.pstat || {}, schema: 4 }; save(); toast('読み込みました'); route();
     } catch { toast('読み込めないファイルです'); }
   });
   $('#reset').addEventListener('click', () => {
@@ -815,10 +1000,15 @@ function renderSettings() {
 
 // ---------- 起動 ----------
 route();
+loadCatalog().then((meta) => {
+  ready = true;
+  route();
+  if (!meta.ok) showBanner(`<b>問題データを読み込めませんでした</b>${esc(meta.error || '')}。リポジトリに data フォルダがアップロードされているか確認してください。内蔵の${ENTRIES.length}問だけで動いています。`);
+});
 // アップロード漏れの検出：各ファイルの版が app.js と一致するか
 function staleFiles() {
   const cssV = getComputedStyle(document.documentElement).getPropertyValue('--lemma-version').replace(/['"\s]/g, '');
-  const list = { 'js/content.js': M_CONTENT.FILE_VERSION, 'js/scheduler.js': M_SCHED.FILE_VERSION, 'js/graph.js': M_GRAPH.FILE_VERSION, 'js/graph3d.js': M_G3.FILE_VERSION, 'js/parser.js': M_PARSER.FILE_VERSION, 'css/style.css': cssV };
+  const list = { 'js/catalog.js': M_CAT.FILE_VERSION, 'js/content.js': M_CONTENT.FILE_VERSION, 'js/scheduler.js': M_SCHED.FILE_VERSION, 'js/graph.js': M_GRAPH.FILE_VERSION, 'js/graph3d.js': M_G3.FILE_VERSION, 'js/parser.js': M_PARSER.FILE_VERSION, 'css/style.css': cssV };
   return Object.entries(list).filter(([, v]) => v !== VERSION).map(([k]) => k);
 }
 function showBanner(html) {

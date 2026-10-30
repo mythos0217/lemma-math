@@ -6,7 +6,7 @@
 import { parse, compile, splitRelation, freeVars } from './parser.js';
 import { COLORS } from './graph.js';
 
-export const FILE_VERSION = '0.3.1';
+export const FILE_VERSION = '0.4.0';
 const RESERVED = new Set(['x', 'y', 'z', 't', 'u', 'v']);
 const TAU = Math.PI * 2;
 const paramsOf = (...asts) => {

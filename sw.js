@@ -1,5 +1,5 @@
 // オフラインで動かすためのキャッシュ。内容を更新したら VERSION を上げる
-const VERSION = 'lemma-v0.3.1';
+const VERSION = 'lemma-v0.4.0';
 const FILES = [
   "./",
   "index.html",
@@ -11,6 +11,8 @@ const FILES = [
   "js/content.js",
   "js/scheduler.js",
   "js/graph3d.js",
+  "js/catalog.js",
+  "data/index.json",
   "vendor/katex.min.js",
   "vendor/katex.min.css",
   "vendor/auto-render.min.js",

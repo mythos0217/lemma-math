@@ -1,5 +1,5 @@
 :root {
-  --lemma-version: '0.3.1';
+  --lemma-version: '0.4.0';
   --paper: #f6f4ee;
   --card: #ffffff;
   --ink: #1c1d21;
@@ -297,3 +297,47 @@ textarea.explain:focus { outline: none; border-color: var(--accent); }
 .banner b { display: block; font-size: 14px; }
 .banner small { color: var(--ink-3); }
 .graph-error { padding: 16px; color: var(--bad); font-size: 14px; }
+
+/* ---------- written problems (問題管理表) ---------- */
+.qhtml { line-height: 1.95; overflow-wrap: anywhere; }
+.qhtml ol, .qhtml ul { margin: 8px 0 4px; padding-left: 0; list-style: none; }
+.qhtml ul { padding-left: 1.2em; list-style: disc; }
+.qhtml ol > li { position: relative; padding-left: 2.4em; margin: 6px 0; }
+.qhtml ol > li > .lb { position: absolute; left: 0; top: 0; font-weight: 600; color: var(--ink-2); }
+.qhtml li.lab { padding-left: 3.2em; }
+.qhtml ul > li { margin: 4px 0; }
+.qhtml .dm { margin: 6px 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+.qhtml .katex-display { margin: 4px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
+.qhtml .center { text-align: center; margin: 8px 0; }
+.qhtml .quote { margin: 8px 0; padding: 8px 12px; border-left: 3px solid var(--line); background: color-mix(in srgb, var(--card) 70%, var(--paper)); border-radius: 0 8px 8px 0; }
+.qhtml .tbl { overflow-x: auto; margin: 8px 0; }
+.qhtml table { border-collapse: collapse; margin: 0 auto; font-variant-numeric: tabular-nums; }
+.qhtml td { border: 1px solid var(--line); padding: 4px 10px; text-align: center; white-space: nowrap; }
+.qhtml .fbox { display: inline-block; border: 1px solid var(--ink-2); padding: 0 6px; text-align: left; }
+.qhtml .fbox.blank { width: 3.2em; height: 1.4em; vertical-align: middle; padding: 0; }
+.qhtml .center > .fbox { max-width: 100%; }
+.qhtml .parbox { display: block; padding: 6px 4px; }
+.qhtml .phantom { visibility: hidden; }
+.qhtml .hfill { display: inline-block; width: 1em; }
+.qhtml br.p { display: block; content: ''; margin-top: 8px; }
+.written .question { font-size: 16.5px; }
+.pen { margin: 4px 2px 0; }
+.timer { font-variant-numeric: tabular-nums; }
+.timer.over { color: var(--warn); border-color: var(--warn); }
+.ans { font-size: 16px; }
+.segment.self button { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.segment.self button b { font-size: 17px; }
+.feel { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.feel button { min-height: 40px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--card); font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.feel button.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.pid { margin-top: 18px; font-size: 11px; font-family: ui-monospace, "SF Mono", Menlo, monospace; text-align: right; }
+.toggles .tog.lv1.on { border-color: var(--good); background: var(--good-soft); color: var(--good); }
+.toggles .tog.lv5.on { border-color: var(--bad); background: var(--bad-soft); color: var(--bad); }
+.chip.lv1 { background: var(--good-soft); color: var(--good); }
+.chip.lv2 { background: var(--accent-soft); color: var(--accent); }
+.chip.lv3 { background: var(--warn-soft); color: var(--warn); }
+.chip.lv4, .chip.lv5 { background: var(--bad-soft); color: var(--bad); }
+.chip.lv5 { font-weight: 800; }
+.toolbar .toggles { gap: 6px; }
+.toolbar .tog { padding: 5px 11px; font-size: 13px; }
