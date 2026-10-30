@@ -2,7 +2,7 @@
 // 対応：+ - * / ^、暗黙の積（2x, x(x+1), xe^x）、sin x のような括弧なし引数、
 //       sin^2 x、|x|、√、π、θ、{ } を括弧として扱う
 
-export const FILE_VERSION = '0.4.0';
+export const FILE_VERSION = '0.5.0';
 const FUNC_NAMES = ['arcsin', 'arccos', 'arctan', 'asin', 'acos', 'atan', 'sinh', 'cosh', 'tanh',
   'sin', 'cos', 'tan', 'exp', 'log', 'ln', 'sqrt', 'abs', 'floor', 'ceil', 'sign'];
 const CONST_NAMES = ['pi', 'e'];
@@ -49,6 +49,7 @@ function tokenize(src) {
     }
     if (c === 'π') { out.push({ k: 'const', v: 'pi' }); i++; continue; }
     if (c === 'θ') { out.push({ k: 'var', v: 'θ' }); i++; continue; }
+    if (/[αβγδεζηλμνξρστφχψωΓΔΘΛΣΦΨΩ]/.test(c)) { out.push({ k: 'var', v: c }); i++; continue; }
     if (c === '√') { out.push({ k: 'func', v: 'sqrt' }); i++; continue; }
     if (/[a-zA-Z]/.test(c)) {
       let j = i;
@@ -278,6 +279,57 @@ export function toTeX(ast) {
       }
       const rb = wrap(toTeX(b), op === '-' && prec(b) <= 1 || b.t === 'neg');
       return `${toTeX(a)}${op}${rb}`;
+    }
+  }
+  return '';
+}
+
+// AST → 入力書式の文字列（括弧を最小限に。例：7π/18、3·2^(n-1)）
+export function toPlain(ast) {
+  const atom = (a) => a.t === 'num' && a.v >= 0 || a.t === 'var' || a.t === 'const' || a.t === 'call';
+  const P = (a) => toPlain(a);
+  const wrap = (s, c) => c ? `(${s})` : s;
+  const isAdd = (a) => a.t === 'bin' && (a.op === '+' || a.op === '-');
+  switch (ast.t) {
+    case 'num': return String(+ast.v.toPrecision(15));
+    case 'const': return ast.n === 'pi' ? 'π' : 'e';
+    case 'var': return ast.n;
+    case 'neg': return '-' + wrap(P(ast.a), isAdd(ast.a));
+    case 'tuple': return `(${ast.items.map(P).join(', ')})`;
+    case 'call':
+      if (ast.f === 'abs') return `|${P(ast.a)}|`;
+      return `${ast.f === 'ln' ? 'log' : ast.f}(${P(ast.a)})`;
+    case 'bin': {
+      const { op, a, b } = ast;
+      if (op === '+' || op === '-') {
+        let r = P(b);
+        if (b.t === 'neg') return `${P(a)}${op === '+' ? '-' : '+'}${wrap(P(b.a), op === '+' && isAdd(b.a))}`;
+        return `${P(a)}${op}${wrap(r, op === '-' && isAdd(b))}`;
+      }
+      if (op === '*') {
+        const l = wrap(P(a), isAdd(a) || (a.t === 'bin' && a.op === '/'));
+        const r = wrap(P(b), isAdd(b) || b.t === 'neg');
+        // 数×数・数のあとの数 は * を残す。それ以外は並べて書く
+        if (/[0-9.]$/.test(l) && /^[0-9.]/.test(r)) return `${l}*${r}`;
+        if (/[a-zA-Zα-ωπ)]$/.test(l) && /^[0-9]/.test(r)) return `${l}*${r}`;   // n2^n ではなく n*2^n
+        if (/^(sin|cos|tan|log|exp|sqrt|arc|abs|floor|ceil|sign|asin|acos|atan|ln)/.test(r) && /[a-zA-Zα-ωπ0-9)]$/.test(l) && !/^[0-9.]+$/.test(l)) return `${l} ${r}`;   // a sin(x)、sqrt(3)^n cos(…)
+        // 並べて書いても同じ字句になるときだけ * を省く（p と i で π になる、などを防ぐ）
+        try {
+          const same = JSON.stringify(tokenize(l + r)) === JSON.stringify([...tokenize(l), ...tokenize(r)]);
+          return same ? `${l}${r}` : `${l}*${r}`;
+        } catch { return `${l}*${r}`; }
+      }
+      if (op === '/') {
+        if (a.t === 'neg') return `-${toPlain({ t: 'bin', op: '/', a: a.a, b })}`;
+        const l = wrap(P(a), isAdd(a));
+        const r = wrap(P(b), !atom(b) && !(b.t === 'bin' && b.op === '^'));
+        return `${l}/${r}`;
+      }
+      if (op === '^') {
+        const base = wrap(P(a), !atom(a));
+        const ex = P(b);
+        return `${base}^${/^[0-9a-zA-Zπα-ω]+$/.test(ex) && (b.t === 'num' || b.t === 'var' || b.t === 'const') ? ex : `(${ex})`}`;
+      }
     }
   }
   return '';

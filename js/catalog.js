@@ -2,10 +2,10 @@
 import { PROBLEMS as BUILTIN, cardById, unitOf as builtinUnit } from './content.js';
 import { retrievability, dueAt, TARGET_R } from './scheduler.js';
 
-export const FILE_VERSION = '0.4.0';
+export const FILE_VERSION = '0.5.0';
 
 // 難易度（問題管理表と同じ5段階）
-export const LEVELS = { 1: '1対1級', 2: '2次基礎', 3: '国立2次', 4: '難関', 5: '最難関' };
+export const LEVELS = { 1: '標準', 2: '2次基礎', 3: '国立2次', 4: '難関', 5: '最難関' };
 export const SUBJECT_ORDER = ['数I', '数A', '数II', '数B', '数III', '数C', '融合'];
 
 // 内蔵問題の単元 → 問題管理表の分野

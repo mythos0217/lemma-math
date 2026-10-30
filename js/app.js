@@ -8,6 +8,12 @@ import * as M_SCHED from './scheduler.js';
 import * as M_GRAPH from './graph.js';
 import * as M_PARSER from './parser.js';
 import * as M_CAT from './catalog.js';
+import * as M_ANS from './answer.js';
+import * as M_UI from './ui.js';
+import * as M_DRILL from './drill.js';
+import { parseSpec, checkField, fieldHint, fieldUnit, fieldTeX, condTeX, exprTeX } from './answer.js';
+import { ICON, play, setSound, applyTheme, BIRD_SVG, BIRD_NAME, birdMessage } from './ui.js';
+import { renderDrillHome } from './drill.js';
 import { CARDS, cardById, problemById, unitById, subjectById } from './content.js';
 import { review, retrievability, dayKey } from './scheduler.js';
 import {
@@ -15,7 +21,7 @@ import {
   subjectsWithFields, pool, pickPractice, pickReview, dueEntries, nextReviewTime,
 } from './catalog.js';
 
-const VERSION = '0.4.0';
+const VERSION = '0.5.0';
 const KEY = 'lemma.v2';
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
@@ -140,6 +146,7 @@ function renderSliders(box, g) {
 let session = null; // { steps, i, results: [], extra }
 
 let ready = false;
+let greeted = false;
 let timer = null;
 function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
 function route() {
@@ -147,13 +154,18 @@ function route() {
   if (!ready) { view.innerHTML = '<p class="muted" style="padding:40px 4px">問題データを読み込んでいます…</p>'; return; }
   const tab = (location.hash || '#today').slice(1);
   $$('.tabbar a').forEach(a => a.classList.toggle('on', a.dataset.tab === (tab === 'practice' ? 'today' : tab)));
+  document.body.dataset.tab = tab;
   clearGraphs();
   document.body.classList.remove('immersive');
   window.scrollTo(0, 0);
+  $('#bird')?.classList.remove('talk'); // 画面を移ったら吹き出しは閉じる
   if (tab === 'graph') return renderGraphPage();
   if (tab === 'map') return renderMap();
   if (tab === 'settings') return renderSettings();
   if (tab === 'practice') return renderPractice();
+  if (tab === 'drill') return renderDrillHome(view, drillCtx);
+  // 結果画面を見たあとに「今日」へ戻ったら、ホームを出す
+  if (session && session.shown && !session.steps[session.i]) session = null;
   if (session) return renderStep();
   return renderToday();
 }
@@ -224,6 +236,7 @@ function renderToday() {
       </div>
     </div>`;
   bar.bind();
+  if (!greeted) { greeted = true; setTimeout(() => birdSay(birdMessage('greet'), { sound: false }), 700); }
   const go = (fields) => {
     const cfg = { fields, levels: pr.levels.slice(), size: pr.size };
     const st = pickPractice(state, cfg);
@@ -244,6 +257,10 @@ async function startSession(steps, cfg = null) {
   try { await ensureBodies(steps.map(s => s.pid).filter(Boolean)); }
   catch (e) { showBanner(`<b>問題を読み込めませんでした</b>${esc(e.message)}`); route(); return; }
   session = { steps, i: 0, results: [], cfg };
+  if (!studyStart || Date.now() - lastActivity > 15 * 60000) { studyStart = Date.now(); breakNotified = 0; }
+  lastActivity = Date.now();
+  const hr = new Date().getHours();
+  if (hr >= 0 && hr < 4) setTimeout(() => birdSay(birdMessage('late')), 800);
   if (location.hash !== '#today') location.hash = '#today'; else route();
 }
 
@@ -251,7 +268,7 @@ async function startSession(steps, cfg = null) {
 function renderStep() {
   document.body.classList.add('immersive');
   const step = session.steps[session.i];
-  if (!step) return renderSummary();
+  if (!step) { session.shown = true; return renderSummary(); }
   if (step.kind === 'intro') return renderIntro(step);
   return renderProblem(step);
 }
@@ -269,7 +286,7 @@ function bindQuit() {
     session = null; route();
   });
 }
-function nextStep() { stopTimer(); session.i++; clearGraphs(); window.scrollTo(0, 0); renderStep(); }
+function nextStep() { lastActivity = Date.now(); stopTimer(); session.i++; clearGraphs(); window.scrollTo(0, 0); renderStep(); }
 
 function renderIntro(step) {
   const c = cardById[step.cid];
@@ -292,12 +309,84 @@ function renderIntro(step) {
 }
 
 const CONF = [{ id: 'low', label: '自信なし' }, { id: 'mid', label: 'たぶん' }, { id: 'high', label: '確実' }];
+const FEEL = [
+  { k: 1, label: '手が出ない' }, { k: 2, label: '苦戦' }, { k: 3, label: 'ふつう' }, { k: 4, label: 'ほぼ解けた' }, { k: 5, label: '余裕' },
+];
+
+// 解説を読みやすく：文の終わりで改行し、∫・Σ・lim を大きく表示する
+function bigOps(html) {
+  return html.replace(/\$([^$]+)\$/g, (m, body) => /\\(int|iint|sum|prod|lim)\b/.test(body) && !/\\displaystyle/.test(body) ? `$\\displaystyle ${body}$` : m);
+}
+function formatSolution(html) {
+  if (!html) return '';
+  const keep = [];
+  // 数式とタグを退避してから、文末の「．」「。」の後で改行
+  let t = html.replace(/\$[^$]*\$|\\\[[\s\S]*?\\\]|<[^>]+>/g, (m) => { keep.push(m); return `\u0000${keep.length - 1}\u0000`; });
+  t = t.replace(/([．。])(?=\s*[^\s<\u0000)）」』．。,，、]|\s*\u0000\d+\u0000\s*[^<\s])/g, '$1<br>');
+  t = t.replace(/\u0000(\d+)\u0000/g, (_, k) => keep[+k]);
+  // 数式の直後の句読点だけが次の行に送られないようにする
+  t = t.replace(/\$([^$]+)\$([．。，、])/g, (m, body, p) => `$${body}\\text{${p}}$`);
+  t = t.replace(/(<br>\s*){2,}/g, '<br>').replace(/<br>\s*(<\/?(div|ol|ul|li|table)\b)/g, '$1').replace(/<br>\s*$/, '');
+  return bigOps(t);
+}
+
+// 大学で習う用語が出てきたら、高校の言葉で説明を添える
+const GLOSSARY = [
+  ['有界', 'ある定数 $M$ があって，すべてについて $|\\text{値}|\\leqq M$ となること（ある範囲からはみ出さないこと）。「上に有界」は ある定数以下、「下に有界」は ある定数以上 に収まること。'],
+  ['上限', '（大学の用語として）値の全体以上になる数のうち最小のもの。最大値がなくても決まる。例：$0<x<1$ の上限は $1$。'],
+  ['下限', '（大学の用語として）値の全体以下になる数のうち最大のもの。例：$x>0$ の下限は $0$。'],
+  ['単射', '異なるものには異なる値が対応すること（$x\\neq x\'\\Rightarrow f(x)\\neq f(x\')$）。'],
+  ['全単射', '「異なるものには異なる値」かつ「どの値も必ず現れる」こと。1対1の対応。'],
+  ['全射', '行き先のどの値も、どれかの値として必ず現れること。'],
+  ['写像', '集合の各要素に、別の集合の要素を1つずつ対応させる規則（関数を一般にしたもの）。'],
+  ['一様', '場所（$x$ など）によらず，同じ定数で評価できること。'],
+  ['稠密', 'どんなに短い区間をとっても，その中に必ず含まれること（例：有理数は実数の中で稠密）。'],
+  ['凸関数', 'グラフが下に凸な関数。'],
+];
+function glossaryHTML(text) {
+  const found = GLOSSARY.filter(([w]) => text.includes(w)).filter(([w], i, arr) => !(w === '全射' && arr.some(([v]) => v === '全単射')));
+  if (!found.length) return '';
+  return `<div class="glossary"><b>用語</b>${found.map(([w, d]) => `<p><strong>${w}</strong>：${d}</p>`).join('')}</div>`;
+}
+
+// ---------- 鳥「ルート」
+let birdTimer = null;
+function birdSay(msg, { sound = true, ms = 9000 } = {}) {
+  let el = $('#bird');
+  if (!el) return;
+  const bub = $('#bird .bubble');
+  bub.innerHTML = `<b>${BIRD_NAME}</b>${esc(msg).replace(/\n/g, '<br>')}`;
+  el.classList.add('talk');
+  if (sound && state.settings.sound !== false) play('bird');
+  clearTimeout(birdTimer);
+  birdTimer = setTimeout(() => el.classList.remove('talk'), ms);
+}
+function mountBird() {
+  if ($('#bird') || state.settings.bird === false) return;
+  const el = document.createElement('div');
+  el.id = 'bird';
+  el.innerHTML = `<div class="bubble" role="status"></div><button class="bird-btn" aria-label="${BIRD_NAME}に話しかける">${BIRD_SVG}</button>`;
+  document.body.appendChild(el);
+  $('.bird-btn', el).addEventListener('click', () => {
+    if (el.classList.contains('talk')) { el.classList.remove('talk'); return; }
+    birdSay(birdMessage('random'));
+  });
+  $('.bubble', el).addEventListener('click', () => el.classList.remove('talk'));
+}
+let studyStart = null, breakNotified = 0, lastActivity = 0;
+function birdCheckBreak() {
+  if (!studyStart) return;
+  const min = Math.floor((Date.now() - studyStart) / 60000);
+  const step = min >= 50 ? 2 : min >= 25 ? 1 : 0;
+  if (step > breakNotified) { breakNotified = step; birdSay(birdMessage('break', { min }), { ms: 12000 }); }
+}
 
 function metaChips(e) {
   const f = fieldByKey[e.f];
   return `<span class="chip">${esc(f.subject)}・${esc(f.name)}</span>
         <span class="chip lv${e.lv}">${LEVELS[e.lv]}</span>
-        ${e.t ? `<span class="chip plain">目安 ${e.t}分</span>` : ''}`;
+        ${e.t ? `<span class="chip plain">目安 ${e.t}分</span>` : ''}
+        ${e.kind === 'bank' ? `<span class="chip plain">${e.in ? '入力して採点' : '自己採点'}</span>` : ''}`;
 }
 
 function recordResult(pid, grade, extra) {
@@ -396,7 +485,7 @@ function renderProblem(step) {
   // 自信度（スケッチ以外）
   if (p.type !== 'sketch') {
     $('#conf').innerHTML = `<div class="label">答える前に：どのくらい自信がある？</div>
-      <div class="segment">${CONF.map(c => `<button data-c="${c.id}">${c.label}</button>`).join('')}</div>`;
+      <div class="segment conf">${CONF.map(c => `<button data-c="${c.id}">${ICON[c.id]}<span>${c.label}</span></button>`).join('')}</div>`;
     $$('#conf button').forEach(b => b.addEventListener('click', () => {
       if (a.done) return;
       a.conf = b.dataset.c;
@@ -454,16 +543,18 @@ function renderProblem(step) {
       a.correct = true;
       const grade = a.attempts > 1 || a.hints > 0 ? 2 : (a.conf === 'high' ? 4 : 3);
       finish(grade);
-      fb.innerHTML = `<div class="result ok fade-in"><span class="mark">○</span><div>正解${a.hints ? `<small>ヒント${a.hints}つで到達</small>` : a.attempts > 1 ? '<small>2回目以降で正解</small>' : ''}</div></div>`;
+      play('correct');
+      fb.innerHTML = `<div class="result ok fade-in"><span class="mark">${ICON.ok}</span><div>正解${a.hints ? `<small>ヒント${a.hints}つで到達</small>` : a.attempts > 1 ? '<small>2回目以降で正解</small>' : ''}</div></div>`;
       if (p.type === 'choice') markChoices();
       showSolution();
     } else {
-      fb.innerHTML = `<div class="result ng fade-in"><span class="mark">×</span><div>違うようです<small>どこで考え違いをしたか、もう一度確かめてみよう。</small></div></div>
+      play('wrong');
+      fb.innerHTML = `<div class="result ng fade-in"><span class="mark">${ICON.ng}</span><div>違うようです<small>どこで考え違いをしたか、もう一度確かめてみよう。</small></div></div>
         <div class="btn-row"><button class="btn" id="retry">もう一度考える</button><button class="btn" id="giveup">解答を見る</button></div>`;
       $('#retry').addEventListener('click', () => { fb.innerHTML = ''; if (input) { input.focus(); input.select(); } });
       $('#giveup').addEventListener('click', () => {
         finish(1);
-        fb.innerHTML = `<div class="result ng"><span class="mark">×</span><div>今回は解けず<small>近いうちにもう一度出題します。</small></div></div>`;
+        fb.innerHTML = `<div class="result ng"><span class="mark">${ICON.ng}</span><div>今回は解けず<small>近いうちにもう一度出題します。</small></div></div>`;
         if (p.type === 'choice') markChoices();
         showSolution(true);
       });
@@ -554,17 +645,34 @@ function renderProblem(step) {
   if (input) setTimeout(() => input.focus({ preventScroll: true }), 50);
 }
 
-// 記述式（問題管理表の問題）：紙に解く → 自信度 → 答え合わせ → 自己採点
+// 問題管理表の問題：入力用の答えがあれば入力して自動採点、なければ紙に解いて自己採点
 const SELF = [
-  { id: 'full', label: '完答', mark: '○' },
-  { id: 'part', label: '一部正解', mark: '△' },
-  { id: 'none', label: 'できず', mark: '×' },
+  { id: 'full', label: '完答', icon: 'full' },
+  { id: 'part', label: '一部正解', icon: 'part' },
+  { id: 'none', label: '不正解', icon: 'none' },
 ];
+const CONF_ICON = { low: 'low', mid: 'mid', high: 'high' };
+const KEYS = ['^', '(', ')', '/', '√', 'π', 'e', 'sin', 'cos', 'log', ',', '<', '>', '≦', '≧', '±', '|'];
+
+function labelHTML(label) {
+  if (!label) return '';
+  return esc(label);
+}
+
 function renderWritten(step, e) {
   const b = getBody(e.id);
   if (!b) { showBanner('<b>問題本文がありません</b>' + esc(e.id)); nextStep(); return; }
+  let spec = null;
+  try { spec = b.in ? parseSpec(b.in) : null; } catch (err) { spec = null; }
   const t0 = Date.now();
-  const a = { conf: null, hint: false, revealed: false, sg: null, feel: null, log: null, min: null };
+  const a = { conf: null, hint: false, revealed: false, sg: null, feel: null, log: null, min: null, attempts: 0, results: null, firstAllOk: null, disputes: [] };
+  // 入力欄の状態：fields[k] = { f, part, mode: 'plain'|'cases', text, rows }
+  const fields = [];
+  if (spec) spec.parts.forEach((p, pi) => p.fields.forEach(f => fields.push({ f, part: p.n, pi, mode: 'plain', text: '', rows: [{ cond: '', val: '' }, { cond: '', val: '' }] })));
+  const autoFields = fields.filter(x => x.f.kind !== 'self');
+  const selfParts = spec ? [...new Set(fields.filter(x => x.f.kind === 'self').map(x => x.part))] : [];
+  let focused = null;
+
   view.innerHTML = `
     <div class="fade-in written">
       ${topBar()}
@@ -573,10 +681,10 @@ function renderWritten(step, e) {
         <span class="chip plain timer" id="clock">0:00</span>
         <span class="count">${session.i + 1} / ${session.steps.length}</span>
       </div>
-      <div class="question qhtml">${b.q}</div>
-      <p class="muted pen">紙に解いてから答え合わせをしよう。</p>
-      <div id="conf"><div class="label">答え合わせの前に：どのくらい自信がある？</div>
-        <div class="segment">${CONF.map(c => `<button data-c="${c.id}">${c.label}</button>`).join('')}</div></div>
+      <div class="question qhtml">${bigOps(b.q)}</div>
+      ${spec ? '<div id="inputs" class="inputs"></div>' : '<p class="muted pen">この問題は紙に解いてから、答え合わせで自己採点します。</p>'}
+      <div id="conf"><div class="label">${spec ? '判定の前に' : '答え合わせの前に'}：どのくらい自信がある？</div>
+        <div class="segment conf">${CONF.map(c => `<button data-c="${c.id}">${ICON[CONF_ICON[c.id]]}<span>${c.label}</span></button>`).join('')}</div></div>
       <div class="btn-row" id="actions"></div>
       <div class="hint-list" id="hints"></div>
       <div id="feedback"></div>
@@ -585,21 +693,141 @@ function renderWritten(step, e) {
   math($('.question'));
   bindQuit();
   const clock = $('#clock');
-  const tick = () => { const s = Math.floor((Date.now() - t0) / 1000); clock.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; if (e.t && s > e.t * 60) clock.classList.add('over'); };
+  const tick = () => {
+    const sec = Math.floor((Date.now() - t0) / 1000);
+    clock.textContent = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+    if (e.t && sec > e.t * 60) clock.classList.add('over');
+    birdCheckBreak();
+  };
   timer = setInterval(tick, 1000);
 
+  // ---------- 入力欄
+  function drawInputs() {
+    if (!spec) return;
+    const box = $('#inputs');
+    const byPart = {};
+    fields.forEach((x, k) => { (byPart[x.part] = byPart[x.part] || []).push(k); });
+    box.innerHTML = Object.entries(byPart).map(([n, ks]) => `
+      <div class="part">
+        ${n ? `<div class="pn">(${esc(n)})</div>` : ''}
+        <div class="pf">${ks.map(k => fieldHTML(k)).join('')}</div>
+      </div>`).join('') + `<div class="keypad sticky" id="kp">${KEYS.map(k => `<button type="button" data-k="${esc(k)}">${esc(k)}</button>`).join('')}${extraKeys()}</div>`;
+    math(box);
+    bindInputs();
+  }
+  function extraKeys() {
+    const letters = new Set();
+    for (const x of autoFields) for (const ch of (x.f.src || '').match(/[α-ω]/g) || []) letters.add(ch);
+    return [...letters].map(k => `<button type="button" data-k="${k}">${k}</button>`).join('') + '<button type="button" data-k="または" class="wide">または</button>';
+  }
+  function fieldHTML(k) {
+    const x = fields[k], f = x.f;
+    const res = a.results && a.results[k];
+    const mark = res ? (res.ok === true ? `<span class="fmark ok">${ICON.ok}</span>` : res.ok === false ? `<span class="fmark ng">${ICON.ng}</span>` : '') : '';
+    const lab = f.label ? `<span class="flabel">${labelHTML(f.label)}</span>` : '';
+    if (f.kind === 'self') {
+      return `<div class="field self">${lab}<span class="selfnote">${ICON.self} ${esc(f.sub === '証明' ? '証明' : f.sub === '図示' ? '図示' : '記述')}：紙に書いて、答え合わせで自己採点</span></div>`;
+    }
+    const canCases = f.kind === 'expr' || f.kind === 'cases';
+    const unit = fieldUnit(f);
+    const locked = a.revealed || (res && res.ok === true);
+    if (x.mode === 'cases') {
+      return `<div class="field cases ${res ? (res.ok ? 'is-ok' : 'is-ng') : ''}" data-k="${k}">
+        <div class="frow">${lab}<span class="muted">場合分け</span>${mark}${canCases && !locked ? `<button class="mini" data-act="plain" data-k="${k}">場合分けをやめる</button>` : ''}</div>
+        ${x.rows.map((r, i) => `<div class="caserow">
+          <input class="answer-input cond" data-k="${k}" data-row="${i}" data-part="cond" value="${esc(r.cond)}" placeholder="条件　例：a<0" ${locked ? 'readonly' : ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+          <span class="arrow">→</span>
+          <input class="answer-input val" data-k="${k}" data-row="${i}" data-part="val" value="${esc(r.val)}" placeholder="値" ${locked ? 'readonly' : ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+          ${!locked && x.rows.length > 1 ? `<button class="mini del" data-act="delrow" data-k="${k}" data-row="${i}" aria-label="この場合を消す">×</button>` : ''}
+        </div>`).join('')}
+        ${!locked ? `<button class="mini add" data-act="addrow" data-k="${k}">＋ 場合を追加</button>` : ''}
+        ${res && res.error ? `<div class="inline-err">${esc(res.error)}</div>` : ''}
+      </div>`;
+    }
+    return `<div class="field ${res ? (res.ok ? 'is-ok' : 'is-ng') : ''}" data-k="${k}">
+      <div class="answer-row">
+        ${lab}
+        <input class="answer-input" data-k="${k}" value="${esc(x.text)}" placeholder="${esc(fieldHint(f) || (f.kind === 'expr' ? '答えを入力' : ''))}" ${locked ? 'readonly' : ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
+        ${unit ? `<span class="unit">${esc(unit)}</span>` : ''}
+        ${mark}
+      </div>
+      <div class="preview" data-pv="${k}"></div>
+      ${canCases && !locked ? `<button class="mini" data-act="cases" data-k="${k}">${ICON.cases} 場合分けする</button>` : ''}
+      ${res && res.error ? `<div class="inline-err">${esc(res.error)}</div>` : ''}
+    </div>`;
+  }
+  function preview(k) {
+    const x = fields[k], pv = $(`[data-pv="${k}"]`);
+    if (!pv) return;
+    const v = x.text.trim();
+    if (!v || /^-?\d+(\.\d+)?$/.test(v)) { pv.textContent = ''; return; }
+    try {
+      const t = x.f.kind === 'range' ? condTeX(v) : x.f.kind === 'set' ? v.split(/[,，、]/).map(s => exprTeX(s.trim()) ?? s).join(',\\ ') : (exprTeX(v.replace(/^[^=<>]*=(?!=)/, '')) ?? null);
+      if (t == null) throw new Error();
+      tex(pv, t); pv.className = 'preview';
+    } catch { pv.textContent = '…'; pv.className = 'preview err'; }
+  }
+  function bindInputs() {
+    $$('#inputs input').forEach(inp => {
+      const k = +inp.dataset.k, x = fields[k];
+      inp.addEventListener('focus', () => { focused = inp; });
+      inp.addEventListener('input', () => {
+        if (inp.dataset.row != null) x.rows[+inp.dataset.row][inp.dataset.part] = inp.value;
+        else { x.text = inp.value; preview(k); }
+        if (a.results && a.results[k]) { a.results[k] = null; }
+        actions();
+      });
+      inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); $('#judge')?.click(); } });
+      if (inp.dataset.row == null) preview(k);
+    });
+    $$('#inputs [data-act]').forEach(btn => btn.addEventListener('click', () => {
+      const k = +btn.dataset.k, x = fields[k];
+      if (btn.dataset.act === 'cases') { x.mode = 'cases'; if (x.text) x.rows[0].val = x.text; }
+      if (btn.dataset.act === 'plain') x.mode = 'plain';
+      if (btn.dataset.act === 'addrow') x.rows.push({ cond: '', val: '' });
+      if (btn.dataset.act === 'delrow') x.rows.splice(+btn.dataset.row, 1);
+      if (a.results) a.results[k] = null;
+      drawInputs(); actions();
+      const target = $(`#inputs [data-k="${k}"] input:not([readonly])`); target && target.focus();
+    }));
+    $$('#kp button').forEach(btn => btn.addEventListener('mousedown', (ev) => ev.preventDefault()));
+    $$('#kp button').forEach(btn => btn.addEventListener('click', () => {
+      const inp = focused && document.body.contains(focused) ? focused : $('#inputs input:not([readonly])');
+      if (!inp || inp.readOnly) return;
+      const key = btn.dataset.k;
+      const ins = { 'sin': 'sin(', 'cos': 'cos(', 'log': 'log(', '√': 'sqrt(', '≦': '<=', '≧': '>=', 'または': ' または ' }[key] ?? key;
+      const st = inp.selectionStart ?? inp.value.length, en = inp.selectionEnd ?? st;
+      inp.value = inp.value.slice(0, st) + ins + inp.value.slice(en);
+      inp.focus(); inp.setSelectionRange(st + ins.length, st + ins.length);
+      inp.dispatchEvent(new Event('input'));
+    }));
+  }
+
   $$('#conf button').forEach(btn => btn.addEventListener('click', () => {
-    if (a.revealed) return;
+    if (a.revealed || a.attempts) return;
     a.conf = btn.dataset.c;
     $$('#conf button').forEach(x => x.classList.toggle('on', x === btn));
+    play('tap');
     actions();
   }));
 
+  function filled() {
+    return autoFields.every(x => x.mode === 'cases' ? x.rows.some(r => r.cond.trim() && r.val.trim()) : x.text.trim());
+  }
   function actions() {
     const box = $('#actions');
     if (a.revealed) { box.innerHTML = ''; return; }
-    box.innerHTML = `${b.k && !a.hint ? '<button class="btn ghost" id="hint">ヒント：考え方</button>' : ''}
-      <button class="btn primary" id="reveal" ${a.conf ? '' : 'disabled'}>答え合わせ</button>`;
+    const hintBtn = b.k && !a.hint ? `<button class="btn ghost" id="hint">${ICON.hint} ヒント：考え方</button>` : '';
+    if (!spec) {
+      box.innerHTML = `${hintBtn}<button class="btn primary" id="reveal" ${a.conf ? '' : 'disabled'}>答え合わせ</button>`;
+      $('#reveal').addEventListener('click', () => reveal());
+    } else {
+      const ready = a.conf && filled();
+      box.innerHTML = `${hintBtn}<button class="btn primary" id="judge" ${ready ? '' : 'disabled'}>${a.attempts ? 'もう一度判定' : '判定'}</button>
+        ${a.attempts ? '<button class="btn" id="giveup">答えを見る</button>' : ''}`;
+      $('#judge').addEventListener('click', judge);
+      $('#giveup')?.addEventListener('click', () => reveal());
+    }
     $('#hint')?.addEventListener('click', () => {
       a.hint = true;
       const h = document.createElement('div');
@@ -609,7 +837,29 @@ function renderWritten(step, e) {
       math(h);
       actions();
     });
-    $('#reveal').addEventListener('click', reveal);
+  }
+
+  function judge() {
+    const res = fields.map(x => x.f.kind === 'self' ? { ok: null }
+      : checkField(x.f, x.mode === 'cases' ? { mode: 'cases', rows: x.rows } : { mode: 'plain', text: x.text }));
+    // 書き方の誤りだけなら、試行に数えずに知らせる
+    if (res.some(r => r.syntax)) {
+      a.results = res.map(r => r.syntax ? r : null);
+      drawInputs(); actions(); play('wrong');
+      return;
+    }
+    a.attempts++;
+    a.results = res;
+    const auto = res.filter(r => r.ok !== null);
+    const allOk = auto.every(r => r.ok);
+    if (a.firstAllOk === null) a.firstAllOk = allOk;
+    drawInputs();
+    if (allOk) { play('correct'); reveal(); return; }
+    play('wrong');
+    const fb = $('#feedback');
+    const nOk = auto.filter(r => r.ok).length;
+    fb.innerHTML = `<div class="result ng fade-in"><span class="mark">${ICON.ng}</span><div>${nOk ? `${auto.length}つのうち${nOk}つ正解` : '違うようです'}<small>×の欄を見直して、もう一度判定できます。</small></div></div>`;
+    actions();
   }
 
   function reveal() {
@@ -617,36 +867,126 @@ function renderWritten(step, e) {
     a.min = Math.max(1, Math.round((Date.now() - t0) / 60000));
     stopTimer();
     $$('#conf button').forEach(x => x.disabled = true);
+    if (spec) {
+      // 判定していない欄は、いま判定する（答えを見る前の最終状態）
+      a.results = fields.map((x, k) => (a.results && a.results[k]) || (x.f.kind === 'self' ? { ok: null }
+        : checkField(x.f, x.mode === 'cases' ? { mode: 'cases', rows: x.rows } : { mode: 'plain', text: x.text })));
+      drawInputs();
+    }
     actions();
     const fb = $('#feedback');
+    const autoRes = spec ? a.results.filter(r => r.ok !== null) : [];
+    const autoAll = autoRes.length && autoRes.every(r => r.ok);
+    const answerKey = spec ? specAnswerHTML() : `<div class="ans qhtml">${b.a}</div>`;
     fb.innerHTML = `
+      ${spec && autoRes.length ? `<div id="autores">${autoBanner()}</div>` : ''}
       <div class="solution fade-in">
         <div class="title">答</div>
-        <div class="ans qhtml">${b.a}</div>
+        ${answerKey}
+        ${spec ? `<details class="orig"><summary>問題管理表の答えの表記</summary><div class="qhtml">${b.a}</div></details>` : ''}
       </div>
-      <div class="label">自分の答案はどうだった？</div>
-      <div class="segment self" id="self">${SELF.map(x => `<button data-g="${x.id}"><b>${x.mark}</b> ${x.label}</button>`).join('')}</div>
+      ${spec && autoRes.some(r => !r.ok) ? '<p class="muted dispute-note">自分の答えも正しいはずなのに×のときは、欄の横の「判定がおかしい？」を押してください。記録に残り、テスト記録のCSVにも出ます。</p>' : ''}
+      ${!spec || selfParts.length ? `<div class="label">${spec ? `自己採点の小問（${selfParts.map(n => n ? `(${n})` : '').join('')}）はどうだった？` : '自分の答案はどうだった？'}</div>
+        <div class="segment self" id="self">${SELF.map(x => `<button data-g="${x.id}">${ICON[x.icon]}<span>${x.label}</span></button>`).join('')}</div>` : ''}
       <div id="after"></div>`;
     math(fb);
+    addDisputeButtons();
     $$('#self button').forEach(btn => btn.addEventListener('click', () => grade(btn.dataset.g)));
+    if (spec && !selfParts.length) grade(null);
   }
 
-  function grade(sg) {
-    if (a.sg) return;
+  function specAnswerHTML() {
+    return `<div class="anskey">${spec.parts.map(p => `<div class="akrow">${p.n ? `<span class="pn">(${esc(p.n)})</span>` : ''}<span>${p.fields.map(f => {
+      if (f.kind === 'self') return `<span class="muted">${esc(f.sub)}${f.text ? '：' + esc(f.text) : '（解説を参照）'}</span>`;
+      const lab = f.label ? `${labelHTML(f.label)} ＝ ` : '';
+      return `<span class="akf">${lab}$\\displaystyle ${esc(fieldTeX(f))}$</span>`;
+    }).join('')}</span></div>`).join('')}</div>`;
+  }
+
+  function addDisputeButtons() {
+    if (!spec || !a.results) return;
+    fields.forEach((x, k) => {
+      const r = a.results[k];
+      if (!r || r.ok !== false) return;
+      const el = $(`#inputs .field[data-k="${k}"]`);
+      if (!el || el.querySelector('.dispute')) return;
+      const btn = document.createElement('button');
+      btn.className = 'mini dispute';
+      btn.textContent = '判定がおかしい？';
+      btn.addEventListener('click', () => {
+        a.results[k] = { ok: true, disputed: true };
+        a.disputes.push(`(${x.part || '-'})${x.f.label ? ' ' + x.f.label : ''}：${x.mode === 'cases' ? x.rows.map(r2 => `${r2.cond}→${r2.val}`).join(' | ') : x.text}`);
+        btn.replaceWith(Object.assign(document.createElement('span'), { className: 'muted small', textContent: '正解として記録しました' }));
+        if (a.log) { a.log.disp = a.disputes.slice(); save(); }
+        el.classList.remove('is-ng'); el.classList.add('is-ok');
+        const m = el.querySelector('.fmark'); if (m) { m.className = 'fmark ok'; m.innerHTML = ICON.ok; }
+        if (a.sg) regrade();
+      });
+      el.appendChild(btn);
+    });
+  }
+
+  function autoScore() {
+    const auto = (a.results || []).filter(r => r && r.ok !== null);
+    return { n: auto.length, ok: auto.filter(r => r.ok).length };
+  }
+  function combine(selfSg) {
+    const { n, ok } = autoScore();
+    if (!spec) return selfSg;
+    const autoSg = !n ? null : ok === n ? 'full' : ok === 0 ? 'none' : 'part';
+    if (!selfSg) return autoSg;
+    if (!autoSg) return selfSg;
+    if (autoSg === selfSg) return autoSg;
+    return (autoSg === 'none' && selfSg === 'none') ? 'none' : 'part';
+  }
+  let selfChoice = null;
+  function autoBanner() {
+    const autoRes = (a.results || []).filter(r => r && r.ok !== null);
+    const autoAll = autoRes.every(r => r.ok);
+    return `<div class="result ${autoAll ? 'ok' : 'ng'} fade-in"><span class="mark">${autoAll ? ICON.ok : ICON.ng}</span><div>${autoAll ? (a.attempts > 1 ? '正解（2回目以降）' : '正解') : `入力した答え：${autoRes.filter(r => r.ok).length} / ${autoRes.length} 正解`}${a.hint ? '<small>ヒントあり</small>' : ''}</div></div>`;
+  }
+  // 「判定がおかしい？」で採点が変わったとき：記録と表示を直す（復習の予定は、この回の前の状態から計算し直す）
+  function regrade() {
+    const sg = combine(selfChoice);
+    const ar = $('#autores'); if (ar) ar.innerHTML = autoBanner();
+    if (sg === a.sg) return;
     a.sg = sg;
-    $$('#self button').forEach(x => { x.disabled = true; x.classList.toggle('on', x.dataset.g === sg); });
-    const g = sg === 'full' ? (a.hint ? 2 : a.conf === 'high' ? 4 : 3) : sg === 'part' ? 2 : 1;
-    a.log = recordResult(e.id, g, { h: a.hint ? 1 : 0, c: a.conf, ok: sg === 'full', sg, min: a.min });
+    const v = $('.verdict');
+    if (v) { v.className = `verdict v-${sg}`; v.innerHTML = `${ICON[sg]}<b>${SELF.find(x => x.id === sg).label}</b>`; }
+    if (a.log) {
+      a.log.sg = sg; a.log.ok = sg === 'full';
+      a.log.g = gradeOf(sg);
+      state.pstat[e.id] = review(a.prevStat, a.log.g, a.log.t);
+      const r = [...session.results].reverse().find(x => x.pid === e.id);
+      if (r) r.grade = a.log.g;
+      save();
+    }
+  }
+  function gradeOf(sg) {
+    return sg === 'full' ? (a.hint || a.attempts > 1 ? 2 : a.conf === 'high' ? 4 : 3) : sg === 'part' ? 2 : 1;
+  }
+
+  function grade(selfSg) {
+    if (a.sg) return;
+    selfChoice = selfSg;
+    const sg = combine(selfSg);
+    a.sg = sg;
+    a.prevStat = state.pstat[e.id];
+    $$('#self button').forEach(x => { x.disabled = true; x.classList.toggle('on', x.dataset.g === selfSg); });
+    play(sg === 'full' ? 'full' : sg === 'part' ? 'part' : 'wrong');
+    a.log = recordResult(e.id, gradeOf(sg), { h: a.hint ? 1 : 0, c: a.conf, ok: sg === 'full', sg, min: a.min, in: spec ? 1 : 0, disp: a.disputes.length ? a.disputes.slice() : undefined });
     const after = $('#after');
     after.innerHTML = `
+      <div class="verdict v-${sg} fade-in">${ICON[sg]}<b>${SELF.find(x => x.id === sg).label}</b></div>
       <div class="solution fade-in">
         <div class="title">解答・解説</div>
-        <div class="qhtml">${b.s || '（解説なし）'}</div>
+        <div class="qhtml sol">${formatSolution(b.s) || '（解説なし）'}</div>
         ${b.k ? `<div class="keypoint"><b>核となるアイデア</b>${b.k}</div>` : ''}
         ${e.th || e.tg ? `<div class="methods">${e.th ? `<span class="chip plain">${e.th}</span>` : ''}${(e.tg || []).map(t => `<span class="chip plain">${esc(t)}</span>`).join('')}</div>` : ''}
+        ${glossaryHTML(b.q + b.s + b.k)}
       </div>
       <div class="label">手応え（任意）</div>
-      <div class="feel" id="feel">${[1, 2, 3, 4, 5].map(k => `<button data-k="${k}">${k}</button>`).join('')}</div>
+      <div class="feel" id="feel">${FEEL.map(f => `<button data-k="${f.k}"><b>${f.k}</b><span>${f.label}</span></button>`).join('')}</div>
       <div class="label">${sg === 'full' ? 'この問題で最初に気づくべきことを1行で（任意）' : 'どこで詰まった？（任意）'}</div>
       <textarea class="explain" id="explain" placeholder="${sg === 'full' ? '例：交点の x 座標を出して1/6公式' : '例：(2) の場合分けで a=1 を落とした'}"></textarea>
       <button class="btn primary block" id="next" style="margin-top:14px">${session.i + 1 < session.steps.length ? '次へ' : '結果を見る'}</button>`;
@@ -657,13 +997,14 @@ function renderWritten(step, e) {
     }));
     $('#next').addEventListener('click', () => {
       const t = $('#explain').value.trim();
-      if (a.log) { if (t) a.log.note = t; if (a.feel) a.log.feel = a.feel; }
+      if (a.log) { if (t) a.log.note = t; if (a.feel) a.log.feel = a.feel; if (a.disputes.length) a.log.disp = a.disputes.slice(); }
       if (t) state.explains[e.id] = [...(state.explains[e.id] || []), { t: Date.now(), text: t }].slice(-5);
       save();
       nextStep();
     });
   }
 
+  drawInputs();
   actions();
 }
 
@@ -691,6 +1032,8 @@ function renderSummary() {
         <button class="btn primary" id="home">ホームへ</button>
       </div>
     </div>`;
+  play('finish');
+  setTimeout(() => birdSay(birdMessage('summary', { solo, missed, n: r.length }), { sound: false }), 600);
   $('#home').addEventListener('click', () => { session = null; route(); });
   $('#more').addEventListener('click', () => {
     const cfg = session.cfg || { size: 8 };
@@ -922,7 +1265,9 @@ function testLogCSV(since = 0) {
     const e = entryById.get(l.p), f = e && fieldByKey[e.f];
     const d = new Date(l.t);
     const date = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
-    return [date, l.p, f ? f.subject : '', f ? f.name : '', e ? e.lv : '', mark(l), l.min || '', l.feel || '', l.sg === 'full' ? '' : (l.note || ''), l.sg === 'full' ? (l.note || '') : ''].map(q).join(',');
+    const disp = l.disp && l.disp.length ? `判定に異議：${l.disp.join(' / ')}` : '';
+    const comment = [l.sg === 'full' ? (l.note || '') : '', disp].filter(Boolean).join('　');
+    return [date, l.p, f ? f.subject : '', f ? f.name : '', e ? e.lv : '', mark(l), l.min || '', l.feel || '', l.sg === 'full' ? '' : (l.note || ''), comment].map(q).join(',');
   });
   return '﻿' + [head.join(','), ...rows].join('\r\n');
 }
@@ -948,9 +1293,15 @@ function renderSettings() {
              <p class="muted" style="margin:4px 0 0">${gen ? `${gen.getFullYear()}/${gen.getMonth() + 1}/${gen.getDate()} に` : ''}${esc(META.source || '')} から取り込み</p>`
           : `<p style="margin:0;color:var(--bad)">問題データを読み込めませんでした（${esc(META.error || '')}）。data フォルダがアップロードされているか確認してください。</p>`}
       </div>
+      <h2>表示と音</h2>
+      <div class="panel">
+        <div class="setting"><span>画面のテーマ</span>
+          <div class="segment theme" id="theme">${[['auto', '自動'], ['light', 'ライト'], ['dark', 'ダーク']].map(([k, v]) => `<button data-t="${k}" class="${(state.settings.theme || 'auto') === k ? 'on' : ''}">${v}</button>`).join('')}</div></div>
+        <div class="setting"><span>効果音</span><button class="switch ${state.settings.sound !== false ? 'on' : ''}" id="snd" role="switch" aria-checked="${state.settings.sound !== false}"><i></i></button></div>
+        <div class="setting"><span>${BIRD_NAME}（鳥）の声かけ</span><button class="switch ${state.settings.bird !== false ? 'on' : ''}" id="brd" role="switch" aria-checked="${state.settings.bird !== false}"><i></i></button></div>
+      </div>
       <h2>テスト記録の書き出し</h2>
       <div class="panel">
-        <p class="muted" style="margin:0 0 10px">問題管理表の「弟テスト記録」シートと同じ列のCSVです。Excelで開いて、そのまま貼り付けられます。</p>
         <div class="btn-row" style="margin-top:0">
           <button class="btn primary" id="csvnew" ${newCount ? '' : 'disabled'}>新しい${newCount}件</button>
           <button class="btn" id="csvall" ${state.log.length ? '' : 'disabled'}>すべて（${state.log.length}件）</button>
@@ -977,6 +1328,17 @@ function renderSettings() {
         <p class="muted" style="margin:10px 0 0">復習間隔は FSRS の考え方を簡略化したモデルで推定しています。難関・最難関レベルでの効果は未検証です。</p>
       </div>
     </div>`;
+  $$('#theme button').forEach(b => b.addEventListener('click', () => {
+    state.settings.theme = b.dataset.t; save(); applyTheme(b.dataset.t); renderSettings();
+  }));
+  $('#snd').addEventListener('click', () => {
+    state.settings.sound = state.settings.sound === false; save(); setSound(state.settings.sound); if (state.settings.sound) play('correct'); renderSettings();
+  });
+  $('#brd').addEventListener('click', () => {
+    state.settings.bird = state.settings.bird === false; save();
+    if (state.settings.bird) { mountBird(); birdSay('よろしくね。'); } else $('#bird')?.remove();
+    renderSettings();
+  });
   const csv = (from) => {
     download(`lemma-テスト記録-${dayKey()}.csv`, testLogCSV(from), 'text/csv');
     state.csvExportedAt = Date.now(); save(); renderSettings();
@@ -998,7 +1360,15 @@ function renderSettings() {
   });
 }
 
+// テスト・確認用：指定した問題IDでセットを始める（例：__lemma.open(['I-EXP-001'])）
+window.__lemma = { open: (ids) => startSession(ids.map(pid => ({ kind: 'problem', pid })), { size: ids.length }) };
+
 // ---------- 起動 ----------
+applyTheme(state.settings.theme || 'auto');
+setSound(state.settings.sound !== false);
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => applyTheme(state.settings.theme || 'auto'));
+mountBird();
+const drillCtx = { state, save, math, tex, esc, toast, play, ICON, birdSay, setImmersive: (on) => document.body.classList.toggle('immersive', on), go: (h) => { location.hash = h; } };
 route();
 loadCatalog().then((meta) => {
   ready = true;
@@ -1008,7 +1378,7 @@ loadCatalog().then((meta) => {
 // アップロード漏れの検出：各ファイルの版が app.js と一致するか
 function staleFiles() {
   const cssV = getComputedStyle(document.documentElement).getPropertyValue('--lemma-version').replace(/['"\s]/g, '');
-  const list = { 'js/catalog.js': M_CAT.FILE_VERSION, 'js/content.js': M_CONTENT.FILE_VERSION, 'js/scheduler.js': M_SCHED.FILE_VERSION, 'js/graph.js': M_GRAPH.FILE_VERSION, 'js/graph3d.js': M_G3.FILE_VERSION, 'js/parser.js': M_PARSER.FILE_VERSION, 'css/style.css': cssV };
+  const list = { 'js/answer.js': M_ANS.FILE_VERSION, 'js/ui.js': M_UI.FILE_VERSION, 'js/drill.js': M_DRILL.FILE_VERSION, 'js/catalog.js': M_CAT.FILE_VERSION, 'js/content.js': M_CONTENT.FILE_VERSION, 'js/scheduler.js': M_SCHED.FILE_VERSION, 'js/graph.js': M_GRAPH.FILE_VERSION, 'js/graph3d.js': M_G3.FILE_VERSION, 'js/parser.js': M_PARSER.FILE_VERSION, 'css/style.css': cssV };
   return Object.entries(list).filter(([, v]) => v !== VERSION).map(([k]) => k);
 }
 function showBanner(html) {

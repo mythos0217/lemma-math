@@ -25,8 +25,12 @@ except ImportError:
     sys.exit('openpyxl が必要です： pip3 install openpyxl')
 
 SUBJECT_KEY = {'数I': 'I', '数A': 'A', '数II': 'II', '数B': 'B', '数III': 'III', '数C': 'C', '融合': 'X'}
-COLS = ['id', 'date', 'subject', 'field', 'theme', 'level', 'minutes', 'q', 'answer', 'solution',
-        'idea', 'source', 'method', 'v1', 'v2', 'v3', 'verified', 'tags', 'memo']
+# 見出しの名前 → 内部の名前（列の順番が変わっても読めるように、見出しで探す）
+HEADERS = {'ID': 'id', '作成日': 'date', '科目': 'subject', '分野': 'field', '単元・テーマ': 'theme', '難易度': 'level',
+           '想定時間(分)': 'minutes', '問題文（LaTeX）': 'q', '答え': 'answer', '解答・解説': 'solution',
+           '核となるアイデア': 'idea', '参考元（非公開）': 'source', '作成方法': 'method', '検証:二重解答': 'v1',
+           '検証:SymPy等': 'v2', '検証:人間確認': 'v3', '検証済み': 'verified', 'タグ': 'tags', 'メモ': 'memo',
+           '入力用の答え': 'input'}
 
 WARN = []
 
@@ -406,6 +410,10 @@ def main():
     out = Path(sys.argv[2]) if len(sys.argv) > 2 else Path(__file__).resolve().parent.parent / 'data'
     wb = openpyxl.load_workbook(src, read_only=True, data_only=True)
     ws = wb['問題一覧']
+    head = [str(c or '').strip() for c in next(ws.iter_rows(min_row=1, max_row=1, values_only=True))]
+    cols = [HEADERS.get(h) for h in head]
+    if 'id' not in cols or 'q' not in cols:
+        sys.exit('問題一覧シートの見出しに「ID」「問題文（LaTeX）」が見つかりません')
     rows = list(ws.iter_rows(min_row=2, values_only=True))
 
     # 分野の並び順は「分野一覧」シートに従う
@@ -418,11 +426,12 @@ def main():
     for sf in order:
         field_key(*sf, keys)
 
-    index, bodies, seen, unknown = [], {}, set(), set()
+    index, bodies, seen, unknown, hidden = [], {}, set(), set(), 0
     for r in rows:
         if not r or not r[0]:
             continue
-        rec = dict(zip(COLS, list(r) + [None] * (len(COLS) - len(r))))
+        rec = {k: None for k in HEADERS.values()}
+        rec.update({k: v for k, v in zip(cols, r) if k})
         pid = str(rec['id']).strip()
         if pid in seen:
             WARN.append(f'{pid}: ID が重複しています（2件目以降は無視）')
@@ -434,6 +443,10 @@ def main():
             continue
         if not rec['q'] or not rec['answer']:
             WARN.append(f'{pid}: 問題文か答えが空なので飛ばします')
+            continue
+        tags_raw = str(rec['tags'] or '')
+        if '非表示' in tags_raw:
+            hidden += 1
             continue
         fk = field_key(subject, field, keys)
         ctx = {'id': pid, 'unknown': unknown}
@@ -447,7 +460,7 @@ def main():
             mins = int(rec['minutes']) if rec['minutes'] else None
         except (TypeError, ValueError):
             mins = None
-        tags = [t.strip() for t in re.split(r'[,、，]', str(rec['tags'] or '')) if t.strip()]
+        tags = [t.strip() for t in re.split(r'[,、，]', tags_raw) if t.strip()]
         entry = {'id': pid, 'f': fk, 'lv': lv}
         if mins:
             entry['t'] = mins
@@ -464,6 +477,9 @@ def main():
             's': render(rec['solution'] or '', ctx),
             'k': render(rec['idea'] or '', ctx),
         }
+        if rec['input'] and str(rec['input']).strip():
+            bodies[fk][pid]['in'] = str(rec['input']).strip().replace('\r\n', '\n')
+            entry['in'] = 1
 
     out.mkdir(parents=True, exist_ok=True)
     for old in out.glob('f-*.json'):
@@ -476,7 +492,8 @@ def main():
     for fk, b in bodies.items():
         (out / f'f-{fk}.json').write_text(json.dumps(b, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 
-    print(f'{len(index)}問を書き出しました（{len(fields)}分野） → {out}')
+    print(f'{len(index)}問を書き出しました（{len(fields)}分野、入力して採点できる問題 {sum(1 for e in index if e.get("in"))}問、非表示 {hidden}問） → {out}')
+    print('入力用の答えの検査： node tools/check_answers.mjs data')
     if unknown:
         print('文章中の未対応命令（名前だけ表示）:', ', '.join(sorted(unknown)))
     if WARN:
