@@ -21,7 +21,7 @@ import {
   subjectsWithFields, pool, pickPractice, pickReview, dueEntries, nextReviewTime,
 } from './catalog.js';
 
-const VERSION = '0.5.0';
+const VERSION = '0.6.0';
 const KEY = 'lemma.v2';
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
@@ -31,7 +31,7 @@ function freshState() {
   return {
     cards: {}, problems: {}, pstat: {}, log: [], explains: {},
     settings: { size: 6, newPerDay: 3 },
-    practice: { fields: null, levels: [1, 2, 3, 4, 5], size: 8 },
+    practice: { fields: null, levels: [0, 1, 2, 3, 4, 5], size: 8 }, lv0: 1,
     schema: 4,
     newIntroduced: null, streak: { last: null, count: 0 },
     graphExprs: null,
@@ -44,9 +44,14 @@ function load() {
     if (raw) {
       const st = { ...freshState(), ...JSON.parse(raw) };
       if (st.schema !== 4) { // v0.3 以前の記録：難易度の段階と分野が変わったので選択だけ初期化
-        st.practice = { fields: null, levels: [1, 2, 3, 4, 5], size: (st.practice && st.practice.size) || 8 };
+        st.practice = { fields: null, levels: [0, 1, 2, 3, 4, 5], size: (st.practice && st.practice.size) || 8 };
         st.pstat = st.pstat || {};
         st.schema = 4;
+      }
+      // v0.6 で「基礎」(0) を追加：全段階を選んでいた人は基礎も含める
+      if (!JSON.parse(raw).lv0 && st.practice && Array.isArray(st.practice.levels)) {
+        if ([1, 2, 3, 4, 5].every(k => st.practice.levels.includes(k)) && !st.practice.levels.includes(0)) st.practice.levels.unshift(0);
+        st.lv0 = 1;
       }
       return st;
     }
@@ -183,7 +188,7 @@ function levelToolbar(pr, onChange) {
         const k = +b.dataset.l, set = new Set(pr.levels);
         if (set.has(k) && set.size === 1) { toast('難易度は1つ以上選んでください'); return; }
         set.has(k) ? set.delete(k) : set.add(k);
-        pr.levels = [...set].sort(); save(); onChange();
+        pr.levels = [...set].sort((x, y) => x - y); save(); onChange();
       }));
       $('#tsize').addEventListener('change', (e) => { pr.size = +e.target.value; save(); onChange(); });
     },

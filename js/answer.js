@@ -15,7 +15,7 @@
 
 import { parse, compile, freeVars, toTeX, toPlain } from './parser.js';
 
-export const FILE_VERSION = '0.5.0';
+export const FILE_VERSION = '0.6.0';
 
 const SELF_WORDS = /^(証明|図示|記述|略|解答参照)/;
 const UNIT_RE = /(°|個|通り|桁|本|人|回|枚|組|点|色|日|番目|倍|秒|分|円|度|段|列|行|面|辺|頂点|種類)$/;
@@ -214,7 +214,7 @@ function sameValue(u, e) {
 }
 
 function cleanUser(text, label) {
-  let t = String(text || '').trim().replace(/[，、]/g, ',').replace(/[　]/g, ' ');
+  let t = String(text || '').trim().replace(/[，、]/g, ',').replace(/[　]/g, ' ').replace(/°/g, '');
   // 「a = 3」「y=…」の左辺を外す（ラベルと同じ、または1文字の変数のとき）
   const m = t.match(/^([A-Za-zθα-ω][A-Za-z0-9_]*|\([^)]*\))\s*=(?!=)\s*/);
   if (m && !/[<>]/.test(t)) t = t.slice(m[0].length);
@@ -283,7 +283,7 @@ function samplePoints(vars, conds, { avoidBoundary }) {
 
 function checkRange(userText, cond) {
   let u;
-  try { u = parseCond(String(userText).trim().replace(/[，、]/g, ',')); }
+  try { u = parseCond(String(userText).trim().replace(/[，、]/g, ',').replace(/°/g, '')); }
   catch (e) { return { ok: false, error: e.message, syntax: true }; }
   const extra = [...u.vars].filter(v => !cond.vars.has(v));
   if (extra.length && cond.vars.size) return { ok: false, error: `この答えでは使わない文字「${extra.join('，')}」が入っています` };
@@ -326,7 +326,7 @@ export function checkField(field, input) {
     if (input.mode === 'cases') {
       const rows = input.rows.filter(r => r.cond.trim() || r.val.trim());
       if (!rows.length) return { ok: false, error: '答えが空です', syntax: true };
-      const user = rows.map(r => ({ cond: parseCond(r.cond), val: parseUserValue(r.val, field.label) }));
+      const user = rows.map(r => ({ cond: parseCond(String(r.cond).replace(/°/g, '')), val: parseUserValue(r.val, field.label) }));
       if (field.kind === 'cases') return checkCases(user, field.cases);
       if (field.kind === 'expr') return checkCases(user, [{ cond: ALL, val: field.value }]);
       return { ok: false, error: 'この答えは場合分けせずに書きます' };

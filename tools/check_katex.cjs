@@ -1,10 +1,10 @@
 // data/*.json のすべての数式を KaTeX で描画できるか確かめる
-//   node tools/check_katex.cjs
+//   node tools/check_katex.cjs [フォルダ（省略時は data）]
 const fs = require('fs');
 const path = require('path');
 const katex = require(path.join(__dirname, '..', 'vendor', 'katex.min.js'));
 
-const dir = path.join(__dirname, '..', 'data');
+const dir = process.argv[2] ? path.resolve(process.argv[2]) : path.join(__dirname, '..', 'data');
 const unesc = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
 let total = 0, bad = [];
 for (const f of fs.readdirSync(dir).filter((f) => f.startsWith('f-'))) {

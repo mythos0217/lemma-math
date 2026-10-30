@@ -1,5 +1,5 @@
 // オフラインで動かすためのキャッシュ。内容を更新したら VERSION を上げる
-const VERSION = 'lemma-v0.5.0';
+const VERSION = 'lemma-v0.6.0';
 const FILES = [
   "./",
   "index.html",
