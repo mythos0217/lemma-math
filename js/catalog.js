@@ -1,8 +1,8 @@
 // 問題カタログ：問題管理表から書き出した data/*.json と、アプリ内蔵の自動判定問題をまとめて扱う
-import { PROBLEMS as BUILTIN, cardById, unitOf as builtinUnit } from './content.js';
+import { PROBLEMS as BUILTIN, cardById, problemById as builtinById, unitOf as builtinUnit } from './content.js';
 import { retrievability, dueAt, TARGET_R } from './scheduler.js';
 
-export const FILE_VERSION = '0.6.0';
+export const FILE_VERSION = '0.7.0';
 
 // 難易度（問題管理表と同じ6段階。0=基礎 は v0.6 で追加）
 export const LEVELS = { 0: '基礎', 1: '標準', 2: '2次基礎', 3: '国立2次', 4: '難関', 5: '最難関' };
@@ -24,7 +24,9 @@ export let FIELDS = [];        // { key, subject, name }
 export let ENTRIES = [];       // { id, f, lv, t?, th?, tg?, kind: 'bank' | 'builtin' }
 export const fieldByKey = {};
 export const entryById = new Map();
-export let META = { count: 0, generated: null, source: null, ok: false, error: null };
+export let META = { count: 0, generated: null, source: null, ok: false, error: null, format: null, dataVersion: null, warnings: [] };
+// このアプリが読めるデータ形式（index.json の format）。無い＝v0.6 までの形式（同じ中身）
+export const DATA_FORMATS = ['lemma.data/1'];
 
 export async function loadCatalog() {
   let meta = null;
@@ -32,9 +34,13 @@ export async function loadCatalog() {
     const res = await fetch('data/index.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(`data/index.json を読めません（${res.status}）`);
     meta = await res.json();
-    META = { count: meta.count, generated: meta.generated, source: meta.source, ok: true, error: null };
+    META = { count: meta.count, generated: meta.generated, source: meta.source, ok: true, error: null,
+      format: meta.format || null, dataVersion: meta.dataVersion || null, warnings: [] };
+    if (meta.format && !DATA_FORMATS.includes(meta.format)) {
+      META.warnings.push(`問題データの形式 ${meta.format} はこの版のアプリでは想定していません（アプリの更新が必要かもしれません）`);
+    }
   } catch (e) {
-    META = { count: 0, generated: null, source: null, ok: false, error: e.message };
+    META = { count: 0, generated: null, source: null, ok: false, error: e.message, format: null, dataVersion: null, warnings: [] };
   }
   FIELDS = meta ? meta.fields.slice() : [];
   const keyOf = (subject, name) => {
@@ -43,9 +49,12 @@ export async function loadCatalog() {
     return f.key;
   };
   ENTRIES = meta ? meta.problems.map(e => ({ ...e, kind: 'bank' })) : [];
+  // 内蔵問題の単元 → 分野ID：データ側（taxonomy.json 由来の builtinUnits）を優先し、無ければ従来の対応表
+  const units = (meta && meta.builtinUnits) || {};
   for (const p of BUILTIN) {
-    const [s, n] = BUILTIN_FIELD[builtinUnit(p)];
-    ENTRIES.push({ id: p.id, f: keyOf(s, n), lv: BUILTIN_LEVEL[p.level] || 3, kind: 'builtin', th: cardById[p.cards[0]].name });
+    const u = builtinUnit(p);
+    const k = units[u] && FIELDS.some(f => f.key === units[u]) ? units[u] : keyOf(...BUILTIN_FIELD[u]);
+    ENTRIES.push({ id: p.id, f: k, lv: BUILTIN_LEVEL[p.level] || 3, kind: 'builtin', th: cardById[p.cards[0]].name });
   }
   FIELDS.sort((a, b) => SUBJECT_ORDER.indexOf(a.subject) - SUBJECT_ORDER.indexOf(b.subject));
   for (const f of FIELDS) fieldByKey[f.key] = f;
@@ -68,13 +77,42 @@ export async function ensureBodies(ids) {
       loaded.set(f, fetch(`data/f-${f}.json`).then(r => {
         if (!r.ok) throw new Error(`data/f-${f}.json を読めません（${r.status}）`);
         return r.json();
-      }).then(d => { for (const [id, b] of Object.entries(d)) bodies.set(id, b); })
+      }).then(d => {
+        // 本文ファイルの版が一覧（index.json）と違う＝一部のファイルだけ古い
+        const v = d._meta && d._meta.dataVersion;
+        if (META.dataVersion && v !== META.dataVersion) staleData.add(`data/f-${f}.json`);
+        for (const [id, b] of Object.entries(d)) if (id !== '_meta') bodies.set(id, b);
+      })
         .catch(e => { loaded.delete(f); throw e; }));
     }
     return loaded.get(f);
   }));
 }
 export const getBody = (id) => bodies.get(id);
+
+// 一覧と版が合わなかった本文ファイル（ensureBodies のあとに見る）
+const staleData = new Set();
+export const staleDataFiles = () => [...staleData];
+
+// 共通の問題ビュー：管理表の問題と内蔵問題を同じ形で返す（本文が未読み込みなら html は null）
+//   { id, kind: 'written'|'interactive', field, subject, fieldName, level, levelName, minutes, theme, tags,
+//     verified, html: {q, a, s, k} | null, grading: {format, spec | type}, hints, methods }
+export function getProblem(id) {
+  const e = entryById.get(id);
+  if (!e) return undefined;
+  const f = fieldByKey[e.f] || {};
+  const base = { id, field: e.f, subject: f.subject, fieldName: f.name, level: e.lv, levelName: LEVELS[e.lv],
+    minutes: e.t || null, theme: e.th || null, tags: e.tg || [], verified: !!e.ok };
+  if (e.kind === 'builtin') {
+    const p = builtinById[id];
+    return { ...base, kind: 'interactive', html: { q: p.q, a: null, s: p.sol || '', k: null },
+      grading: { format: 'builtin/1', type: p.type }, hints: p.hints || [], methods: p.cards.slice() };
+  }
+  const b = bodies.get(id);
+  return { ...base, kind: 'written', html: b ? { q: b.q, a: b.a, s: b.s, k: b.k } : null,
+    grading: e.in ? { format: 'lemma-input/1', spec: b ? b.in : null } : null,
+    hints: b && b.k ? [b.k] : [], methods: [] };
+}
 
 export const subjectsWithFields = () =>
   SUBJECT_ORDER.map(s => ({ name: s, fields: FIELDS.filter(f => f.subject === s) })).filter(x => x.fields.length);

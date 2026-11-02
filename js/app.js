@@ -21,7 +21,7 @@ import {
   subjectsWithFields, pool, pickPractice, pickReview, dueEntries, nextReviewTime,
 } from './catalog.js';
 
-const VERSION = '0.6.0';
+const VERSION = '0.7.0';
 const KEY = 'lemma.v2';
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
@@ -259,7 +259,7 @@ function renderToday() {
 
 async function startSession(steps, cfg = null) {
   view.innerHTML = '<p class="muted" style="padding:40px 4px">問題を読み込んでいます…</p>';
-  try { await ensureBodies(steps.map(s => s.pid).filter(Boolean)); }
+  try { await ensureBodies(steps.map(s => s.pid).filter(Boolean)); dataWarn(); }
   catch (e) { showBanner(`<b>問題を読み込めませんでした</b>${esc(e.message)}`); route(); return; }
   session = { steps, i: 0, results: [], cfg };
   if (!studyStart || Date.now() - lastActivity > 15 * 60000) { studyStart = Date.now(); breakNotified = 0; }
@@ -386,12 +386,19 @@ function birdCheckBreak() {
   if (step > breakNotified) { breakNotified = step; birdSay(birdMessage('break', { min }), { ms: 12000 }); }
 }
 
+// 共通の問題ビュー（catalog.js が古いときは一覧の項目から作る：一部だけ更新された場合でも動くように）
+function problemView(e) {
+  if (M_CAT.getProblem) return M_CAT.getProblem(e.id);
+  const f = fieldByKey[e.f] || {};
+  return { id: e.id, kind: e.kind === 'bank' ? 'written' : 'interactive', subject: f.subject, fieldName: f.name,
+    level: e.lv, levelName: LEVELS[e.lv], minutes: e.t || null, grading: e.in ? {} : null };
+}
 function metaChips(e) {
-  const f = fieldByKey[e.f];
-  return `<span class="chip">${esc(f.subject)}・${esc(f.name)}</span>
-        <span class="chip lv${e.lv}">${LEVELS[e.lv]}</span>
-        ${e.t ? `<span class="chip plain">目安 ${e.t}分</span>` : ''}
-        ${e.kind === 'bank' ? `<span class="chip plain">${e.in ? '入力して採点' : '自己採点'}</span>` : ''}`;
+  const p = problemView(e);
+  return `<span class="chip">${esc(p.subject)}・${esc(p.fieldName)}</span>
+        <span class="chip lv${p.level}">${p.levelName}</span>
+        ${p.minutes ? `<span class="chip plain">目安 ${p.minutes}分</span>` : ''}
+        ${p.kind === 'written' ? `<span class="chip plain">${p.grading ? '入力して採点' : '自己採点'}</span>` : ''}`;
 }
 
 function recordResult(pid, grade, extra) {
@@ -1378,6 +1385,7 @@ route();
 loadCatalog().then((meta) => {
   ready = true;
   route();
+  if (meta.ok) dataWarn();
   if (!meta.ok) showBanner(`<b>問題データを読み込めませんでした</b>${esc(meta.error || '')}。リポジトリに data フォルダがアップロードされているか確認してください。内蔵の${ENTRIES.length}問だけで動いています。`);
 });
 // アップロード漏れの検出：各ファイルの版が app.js と一致するか
@@ -1390,6 +1398,13 @@ function showBanner(html) {
   let b = $('.banner');
   if (!b) { b = document.createElement('div'); b.className = 'banner'; document.body.prepend(b); }
   b.innerHTML = html;
+}
+// 問題データの版の食い違い（一部の data/ ファイルだけ古い、形式が新しすぎる）
+function dataWarn() {
+  const files = M_CAT.staleDataFiles ? M_CAT.staleDataFiles() : [];
+  const msgs = [...(META.warnings || [])];
+  if (files.length) msgs.push(`${files.map(esc).join('、')} が data/index.json と違う版です。data フォルダをすべて上書きアップロードしてください。`);
+  if (msgs.length) showBanner(`<b>問題データの版が揃っていません</b>${msgs.join('<br>')}`);
 }
 setTimeout(() => {
   const stale = staleFiles();
