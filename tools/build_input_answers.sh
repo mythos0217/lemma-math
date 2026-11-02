@@ -5,7 +5,7 @@ set -e
 ROWS=$1; W=$2
 D=$(dirname "$0")
 python3 -I $D/make_input_answers.py $ROWS $W/specs.json
-node $D/check_answers.mjs $W/specs.json $W/bad1.json > /dev/null
+node $D/check_answers.mjs $W/specs.json $W/bad1.json > /dev/null || true
 python3 -I $D/make_input_answers.py $ROWS $W/specs.json $W/bad1.json
 node $D/pretty_specs.mjs $W/specs.json
 python3 $D/crosscheck_answers.py $ROWS $W/specs.json $W/bad2.json
@@ -16,5 +16,5 @@ for k,v in b.items(): a[k]=sorted(set(a.get(k,[]))|set(v))
 json.dump(a,open('$W/bad.json','w'))"
 python3 -I $D/make_input_answers.py $ROWS $W/specs.json $W/bad.json
 node $D/pretty_specs.mjs $W/specs.json
-node $D/check_answers.mjs $W/specs.json $W/bad3.json
+node $D/check_answers.mjs $W/specs.json $W/bad3.json || true
 python3 $D/crosscheck_answers.py $ROWS $W/specs.json $W/bad4.json

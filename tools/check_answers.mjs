@@ -50,3 +50,4 @@ console.log(`問題 ${Object.keys(specs).length}・答え ${fields}（自動採�
 console.log(`読めない・整合しない小問 ${Object.values(bad).flat().length}（${Object.keys(bad).length}問）`);
 for (const [k, m] of Object.entries(reasons).slice(0, 30)) console.log(' ', k, m);
 if (process.argv[3]) fs.writeFileSync(process.argv[3], JSON.stringify(bad, null, 1));
+process.exitCode = Object.keys(bad).length ? 1 : 0;

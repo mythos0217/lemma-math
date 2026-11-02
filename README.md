@@ -1,6 +1,6 @@
 # Lemma 受験数学
 
-答えを見せるのではなく、自力で解ける頭をつくる大学受験数学アプリ（試作版 v0.6）。
+答えを見せるのではなく、自力で解ける頭をつくる大学受験数学アプリ（試作版 v0.7）。
 iPhone・iPad のブラウザで動き、ホーム画面に追加するとアプリとして使えます（PWA）。
 
 ## できること
@@ -25,20 +25,27 @@ iPhone・iPad のブラウザで動き、ホーム画面に追加するとアプ
 
 ## 問題管理表から問題を取り込む
 
-問題は `Lemma問題管理表.xlsx`（問題一覧シート）で管理し、スクリプトでアプリ用のデータに変換します。
+問題は `Lemma問題管理表.xlsx`（問題一覧シート）で管理し、スクリプトで「正規データ `content/`」と「アプリ用データ `data/`」に変換します（形式の詳細は [docs/data-spec.md](docs/data-spec.md)）。
 
 ```sh
-pip3 install openpyxl
-python3 tools/import_xlsx.py Lemma問題管理表.xlsx
+pip3 install openpyxl jsonschema
+python3 tools/import_xlsx.py Lemma問題管理表.xlsx          # content/ と data/ を作り直す
+node tests/run.mjs                                       # 検査（全部 ✓ になればOK）
 ```
 
-`data/index.json` と `data/f-*.json`（分野ごと）が作り直されます。そのあと `data` フォルダごとリポジトリにアップロードしてください。
+更新するときの手順：
 
-- 「参考元」「作成方法」「メモ」はアプリに出しません（出力に含めない）
-- 数式は `$...$` と `\[...\]`、文章の `enumerate`・`itemize`・`tabular`・`\textbf`・`\fbox` などは自動で変換します
-- `node tools/check_katex.cjs` で、全部の数式がアプリで表示できるか確かめられます
-- 分野の並びは「分野一覧」シートの順。難易度は 0=基礎 〜 5=最難関
-- タグに `非表示` を付けた問題はアプリに出しません
+1. いまのリポジトリの zip と管理表を、日付を付けて保存しておく（戻すとき用）
+2. 上の2行を実行。`--check` を付けると、書き出さずに「今のファイルと違うか」だけ確かめられる
+3. `content`・`data`・`tests` フォルダごとリポジトリにアップロード（一部だけだと「問題データの版が揃っていません」と表示されます）
+4. GitHub の「Actions」タブで ✓ になっているか確認
+
+- **管理表（xlsx）はリポジトリに入れない**（参考元を含むため）。「参考元」「メモ」は content/・data/ に出しません。`python3 tools/audit_data.py --xlsx Lemma問題管理表.xlsx` で漏れがないか確かめられます
+- 分野ID（`I-01` など）は `content/taxonomy.json` で固定されていて、「分野一覧」シートの並びを変えても変わりません。新しい分野を足すときは `--new-fields` を付けて取り込みます
+- 問題ID は変えない・消さない。消えると `tests/golden/ids.txt` との照合で検査が失敗します。出さない問題はタグに `非表示`（`content/` には残る）
+- 問題を追加して検査が「問題ID の台帳」で止まることはありません（増えるのは自由）。台帳を最新にするには `python3 tools/audit_data.py --write-golden`
+- 数式は `$...$` と `\[...\]`、文章の `enumerate`・`itemize`・`tabular`・`\textbf`・`\fbox` などは自動で変換します。難易度は 0=基礎 〜 5=最難関
+- 前の方法（Excel → data/ を直接）に戻すとき：`python3 tools/import_xlsx.py Lemma問題管理表.xlsx data --legacy`
 
 ### 入力用の答え（T列）
 
@@ -125,8 +132,11 @@ js/catalog.js         問題データの読み込み・出題の組み立て
 js/answer.js          入力用の答えの読み取りと採点（範囲・集合・場合分け）
 js/drill.js           計算トレーニング（問題の自動生成）
 js/ui.js              アイコン・効果音・テーマ・鳥のルート
-data/                 問題管理表から変換した問題（tools/import_xlsx.py で生成）
-tools/                取り込み・検査スクリプト
+content/              正規データ（LaTeX のまま。taxonomy.json＝分野ID、problems/＝問題、methods.json＝解法）
+data/                 アプリ用データ（content/ から tools/build_app_data.py で生成）
+docs/data-spec.md     データ仕様
+tools/                取り込み・変換・検査スクリプト（import_xlsx.py が入口）、schema/＝JSON Schema
+tests/                検査（run.mjs がまとめ役、e2e.mjs＝ブラウザでの通し操作、golden/＝問題ID の台帳）
 js/scheduler.js       復習間隔の推定（FSRSを簡略化）と出題の組み立て
 js/content.js         単元・解法カード・問題
 sw.js                 オフライン用キャッシュ
