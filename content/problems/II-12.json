@@ -10982,5 +10982,1448 @@
    },
    "verified": false
   }
+ },
+ {
+  "id": "II-CAL-237",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "$|f|\\leqq1$ をみたす2次関数の導関数",
+  "topic": "$|f|\\leqq1$ をみたす2次関数の導関数",
+  "statement": {
+   "tex": "$a,b,c$ を実数とし，$f(x)=ax^2+bx+c$ とする．$-1\\leqq x\\leqq1$ を満たすすべての $x$ に対し $|f(x)|\\leqq1$ が成り立つとする．\n\\begin{enumerate}\n  \\item 積分 $\\displaystyle I=\\int_{-1}^1\\{f'(x)\\}^2\\,dx$ の最大値を求めよ．また，最大値をとるときの $f(x)$ をすべて求めよ．\n  \\item 積分 $\\displaystyle J=\\int_{-1}^1|f'(x)|\\,dx$ の最大値を求めよ．また，最大値をとるときの $f(x)$ をすべて求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 最大値 $\\dfrac{32}3$，$f(x)=2x^2-1,\\ -2x^2+1$　(2) 最大値 $4$，$f(x)=2x^2-1,\\ -2x^2+1$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$f(1)=a+b+c$，$f(0)=c$，$f(-1)=a-b+c$ より\n\\[s=a+b=f(1)-f(0),\\qquad d=a-b=f(-1)-f(0)\\]\nで，$|f|\\leqq1$ より $|s|\\leqq2$，$|d|\\leqq2$．\n\n(1) $I=\\int_{-1}^1(2ax+b)^2dx=\\frac83a^2+2b^2$．$a=\\frac{s+d}2$，$b=\\frac{s-d}2$ を代入して\n\\[I=\\frac23(s+d)^2+\\frac12(s-d)^2=\\frac76(s^2+d^2)+\\frac13sd\\leqq\\frac76\\cdot8+\\frac13\\cdot4=\\frac{32}3.\\]\n等号は $s^2=d^2=4$ かつ $sd=4$，すなわち $s=d=\\pm2$ のとき．このとき $b=0$，$a=\\pm2$ で，$f(1)-f(0)=\\pm2$ と $|f(1)|,|f(0)|\\leqq1$ から $f(0)=\\mp1$，$c=\\mp1$．$f(x)=\\pm(2x^2-1)$ は実際に $|f|\\leqq1$ を満たし $I=\\frac{32}3$．よって最大値 $\\boldsymbol{\\dfrac{32}3}$，$\\boldsymbol{f(x)=2x^2-1,\\ -2x^2+1}$．\n\n(2) $a\\neq0$ で軸 $x_0=-\\frac b{2a}$ が $-1<x_0<1$ にあるとき，$f'$ は $x_0$ の前後で符号が変わるので\n\\[J=|f(x_0)-f(-1)|+|f(1)-f(x_0)|\\leqq2+2=4.\\]\nそれ以外（$a=0$ または $|x_0|\\geqq1$）のとき，$f'$ は $-1<x<1$ で符号が変わらず $J=|f(1)-f(-1)|\\leqq2$．\n\n$J=4$ となるのは前者で $|f(x_0)-f(-1)|=|f(1)-f(x_0)|=2$，すなわち $f(-1)=f(1)=\\pm1$，$f(x_0)=\\mp1$ のとき．$f(-1)=f(1)$ より $b=0$，$x_0=0$，$c=\\mp1$，$a+c=\\pm1$ より $a=\\pm2$．$f(x)=\\pm(2x^2-1)$ は条件を満たし $J=4$．よって最大値 $\\boldsymbol{4}$，$\\boldsymbol{f(x)=2x^2-1,\\ -2x^2+1}$．"
+   }
+  ],
+  "idea": {
+   "tex": "係数を $f(1),f(0),f(-1)$ で表すと $a+b=f(1)-f(0)$，$a-b=f(-1)-f(0)$ なので $|a+b|\\leqq2$，$|a-b|\\leqq2$．$\\int_{-1}^1(f')^2dx$ を $s=a+b$，$d=a-b$ の式に直して評価する．$\\int|f'|dx$ は頂点の前後での $f$ の変化量の和．"
+  },
+  "methods": [],
+  "tags": [
+   "係数を関数値で表す",
+   "2次式の最大",
+   "チェビシェフ"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-238",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "区間での最大値と最小値の差を最小にする3次関数",
+  "topic": "区間での最大値と最小値の差を最小にする3次関数",
+  "statement": {
+   "tex": "$a,b$ を実数とし，$f(x)=x^3+ax^2+bx$ とする．$-1\\leqq x\\leqq1$ における $f(x)$ の最大値と最小値の差を $D(a,b)$ とする．$D(a,b)$ の最小値と，最小値を与える $(a,b)$ をすべて求めよ．"
+  },
+  "answer": {
+   "tex": "最小値 $\\dfrac12$，$(a,b)=\\left(0,-\\dfrac34\\right)$ のみ"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$-1\\leqq x\\leqq1$ での最大値を $M$，最小値を $m$ とし，$D=M-m$．\n\\[f(1)=1+a+b,\\quad f(-1)=-1+a-b,\\quad f\\Bigl(\\frac12\\Bigr)=\\frac18+\\frac a4+\\frac b2,\\quad f\\Bigl(-\\frac12\\Bigr)=-\\frac18+\\frac a4-\\frac b2\\]\nより\n\\[\\{f(1)-f(-1)\\}+2\\Bigl\\{f\\Bigl(-\\frac12\\Bigr)-f\\Bigl(\\frac12\\Bigr)\\Bigr\\}=(2+2b)+2\\Bigl(-\\frac14-b\\Bigr)=\\frac32.\\]\n左辺の各中かっこは $D$ 以下なので $\\frac32\\leqq3D$，すなわち $D\\geqq\\frac12$．\n\n$(a,b)=\\bigl(0,-\\frac34\\bigr)$ のとき $f(x)=x^3-\\frac34x$，$f'(x)=3\\bigl(x-\\frac12\\bigr)\\bigl(x+\\frac12\\bigr)$．$f(-1)=-\\frac14$，$f(-\\frac12)=\\frac14$，$f(\\frac12)=-\\frac14$，$f(1)=\\frac14$ と増減から $M=\\frac14$，$m=-\\frac14$，$D=\\frac12$．\n\n逆に $D=\\frac12$ なら上の不等式で等号が成り立ち，$f(1)-f(-1)=D$ かつ $f(-\\frac12)-f(\\frac12)=D$．よって $f(1)=f(-\\frac12)=M$，$f(-1)=f(\\frac12)=m$．\n$f(1)=f(-\\frac12)$ より $\\frac98+\\frac34a+\\frac32b=0$，$f(\\frac12)=f(-1)$ より $\\frac98-\\frac34a+\\frac32b=0$．辺々引いて $a=0$，$b=-\\frac34$．\n\n以上より最小値 $\\boldsymbol{\\dfrac12}$，そのときの $\\boldsymbol{(a,b)=\\left(0,-\\dfrac34\\right)}$ のみ．"
+   }
+  ],
+  "idea": {
+   "tex": "$x^2$，$x$，定数の項を消す関数値の組合せ $f(1)-2f\\bigl(\\frac12\\bigr)+2f\\bigl(-\\frac12\\bigr)-f(-1)$ は $a,b$ によらず $\\frac32$．これを「最大値$-$最小値」の3倍以下と評価して下限を得る．等号条件から $(a,b)$ が一意に決まる．"
+  },
+  "methods": [],
+  "tags": [
+   "関数値の1次結合",
+   "チェビシェフ",
+   "等号条件"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-239",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 35,
+  "theme": "3次曲線と放物線の共通接線の本数",
+  "topic": "3次曲線と放物線の共通接線の本数",
+  "statement": {
+   "tex": "$a$ を実数とする．曲線 $C:y=x^3-x$ と放物線 $D:y=x^2+a$ の両方に接する直線の本数を $N(a)$ とする．\n\\begin{enumerate}\n  \\item $N(a)$ を $a$ の値によって分類して求めよ．\n  \\item $N(a)=4$ のとき，4本の直線の傾きの和は $a$ によらない一定の値であることを示し，その値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a<-1$ で $0$ 本，$a=-1$ で $1$ 本，$-1<a<\\dfrac5{27}$ で $2$ 本，$a=\\dfrac5{27}$ で $3$ 本，$\\dfrac5{27}<a<\\dfrac14$ で $4$ 本，$a=\\dfrac14$ で $3$ 本，$a>\\dfrac14$ で $2$ 本　(2) $\\dfrac{64}{27}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$C$ の $x=t$ における接線は $y=(3t^2-1)x-2t^3$．直線 $y=mx+k$ が $D$ に接する $\\iff$ $x^2-mx+a-k=0$ が重解をもつ $\\iff$ $m^2=4(a-k)$．よって $C$ の $x=t$ での接線が $D$ にも接する条件は\n\\[a=g(t),\\qquad g(t)=\\frac{(3t^2-1)^2}4-2t^3.\\]\n$C$ の異なる2点 $t\\neq t'$ での接線は一致しない（一致すれば $x^3-x-(\\text{その1次式})$ が $(x-t)^2(x-t')^2$ で割り切れ，3次式であることに反する）．また両方に接する直線は $C$ のある点での接線である．よって $N(a)$ は方程式 $g(t)=a$ の実数解 $t$ の個数．\n\n(1) $g'(t)=3t(3t^2-1)-6t^2=3t(3t^2-2t-1)=3t(3t+1)(t-1)$．増減は $t<-\\frac13$ で減少，$-\\frac13<t<0$ で増加，$0<t<1$ で減少，$t>1$ で増加．\n\\[g\\Bigl(-\\frac13\\Bigr)=\\frac19+\\frac2{27}=\\frac5{27},\\qquad g(0)=\\frac14,\\qquad g(1)=-1,\\]\n$t\\to\\pm\\infty$ で $g(t)\\to\\infty$．$-1<\\frac5{27}<\\frac14$ に注意してグラフと直線 $y=a$ の共有点を数えると\n\\[\\boldsymbol{N(a)=\\begin{cases}0&(a<-1)\\\\1&(a=-1)\\\\2&(-1<a<\\frac5{27})\\\\3&(a=\\frac5{27})\\\\4&(\\frac5{27}<a<\\frac14)\\\\3&(a=\\frac14)\\\\2&(a>\\frac14)\\end{cases}}\\]\n\n(2) $4g(t)-4a=9t^4-8t^3-6t^2+1-4a$．$N(a)=4$ のとき異なる4実数解 $t_1,\\dots,t_4$ をもち，$9t^4-8t^3-6t^2+1-4a=9(t-t_1)(t-t_2)(t-t_3)(t-t_4)$．係数を比べて\n\\[\\sum t_i=\\frac89,\\qquad\\sum_{i<j}t_it_j=-\\frac23,\\qquad\\sum t_i^2=\\frac{64}{81}+\\frac43=\\frac{172}{81}.\\]\n傾きの和は $\\sum(3t_i^2-1)=\\frac{172}{27}-4=\\boldsymbol{\\dfrac{64}{27}}$ で，$a$ によらない．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$y=x^3-x$ の $x=t$ における接線が放物線 $y=x^2+a$ に接する条件は $a=\\frac{(3t^2-1)^2}4-2t^3$．3次曲線の異なる2点での接線は一致しないので，共通接線の本数はこの4次方程式の実数解 $t$ の個数．傾きの和は4次方程式の係数で表せる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 64/27"
+  },
+  "methods": [],
+  "tags": [
+   "共通接線",
+   "4次関数の増減",
+   "解と係数の関係"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-240",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 5,
+  "minutes": 35,
+  "theme": "指数関数の部分和がつくる多項式の実数解",
+  "topic": "指数関数の部分和がつくる多項式の実数解",
+  "statement": {
+   "tex": "0以上の整数 $n$ に対し，多項式 $e_n(x)$ を\n\\[e_n(x)=\\sum_{k=0}^{n}\\frac{x^k}{k!}=1+x+\\frac{x^2}{2!}+\\cdots+\\frac{x^n}{n!}\\]\nで定める（$e_0(x)=1$）．\n\\begin{enumerate}\n  \\item 0以上のすべての整数 $m$ に対し，すべての実数 $x$ で $e_{2m}(x)>0$ であること，および方程式 $e_{2m+1}(x)=0$ がただひとつの実数解をもつことを示せ．以下，この実数解を $\\alpha_m$ とする．\n  \\item 1以上のすべての整数 $m$ に対し，$-(2m+1)<\\alpha_m<\\alpha_{m-1}$ が成り立つことを示せ．\n  \\item $\\alpha_2$ を超えない最大の整数を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) 証明　(3) $-3$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$k\\geqq1$ で $\\left(\\frac{x^k}{k!}\\right)'=\\frac{x^{k-1}}{(k-1)!}$ なので，$n\\geqq1$ で $e_n'(x)=e_{n-1}(x)$．また $e_n(0)=1$．\n\n\\textbf{命題 $Q(m)$}：すべての $x$ で $e_{2m}(x)>0$；$e_{2m+1}$ は単調増加で，$e_{2m+1}(x)=0$ はただ1つの実数解 $\\alpha_m$ をもち $\\alpha_m<0$；さらに $m\\geqq1$ なら $-(2m+1)<\\alpha_m<\\alpha_{m-1}$．\nこれを $m$ についての帰納法で示せば(1)(2)が示される．\n\n$m=0$：$e_0=1>0$，$e_1=1+x$ は単調増加で解 $\\alpha_0=-1<0$．\n\n$Q(m)$ を仮定する．$e_{2m+2}'=e_{2m+1}$ は $x<\\alpha_m$ で負，$x>\\alpha_m$ で正なので，$e_{2m+2}$ は $x=\\alpha_m$ で最小となり，\n\\[e_{2m+2}(\\alpha_m)=e_{2m+1}(\\alpha_m)+\\frac{\\alpha_m^{2m+2}}{(2m+2)!}=\\frac{\\alpha_m^{2m+2}}{(2m+2)!}>0\\quad(\\alpha_m\\neq0).\\]\nよって $e_{2m+2}(x)>0$ がすべての $x$ で成り立ち，$e_{2m+3}'=e_{2m+2}>0$ から $e_{2m+3}$ は単調増加．\n\nここで $e_{2m+3}(x)=e_{2m+1}(x)+\\dfrac{x^{2m+2}}{(2m+2)!}\\Bigl(1+\\dfrac{x}{2m+3}\\Bigr)$ に注意する．\n\\begin{itemize}\n  \\item $x=-(2m+3)$ とすると，第2項は0．$Q(m)$ より $\\alpha_m\\geqq-(2m+1)$（$m=0$ では $\\alpha_0=-1$）なので $-(2m+3)<\\alpha_m$ であり，$e_{2m+1}$ は単調増加だから $e_{2m+1}(-(2m+3))<0$．よって $e_{2m+3}(-(2m+3))<0$．\n  \\item $x=\\alpha_m$ とすると，$\\alpha_m\\geqq-(2m+1)>-(2m+3)$，$\\alpha_m\\neq0$ より $e_{2m+3}(\\alpha_m)=\\dfrac{\\alpha_m^{2m+2}}{(2m+2)!}\\Bigl(1+\\dfrac{\\alpha_m}{2m+3}\\Bigr)>0$．\n\\end{itemize}\n$e_{2m+3}$ は連続で単調増加だから，中間値の定理により $e_{2m+3}(x)=0$ はただ1つの実数解 $\\alpha_{m+1}$ をもち，$-(2m+3)<\\alpha_{m+1}<\\alpha_m<0$．これで $Q(m+1)$ が示された．\\hfill$\\square$\n\n(3) $e_5(-2)=1-2+2-\\frac43+\\frac23-\\frac4{15}=\\frac1{15}>0$，\n$e_5(-3)=1-3+\\frac92-\\frac92+\\frac{27}8-\\frac{81}{40}=-\\frac{13}{20}<0$．\n$e_5$ は単調増加なので $-3<\\alpha_2<-2$．よって $\\alpha_2$ を超えない最大の整数は $\\boldsymbol{-3}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$e_n(x)=\\sum_{k=0}^n\\frac{x^k}{k!}$ は $e_n'(x)=e_{n-1}(x)$ を満たす．$e_{2m+1}$ が単調増加で解 $\\alpha_m$ をただ1つもてば，$e_{2m+2}$ の最小値は $e_{2m+2}(\\alpha_m)=\\frac{\\alpha_m^{2m+2}}{(2m+2)!}>0$．最後の2項 $\\frac{x^{2m}}{(2m)!}\\bigl(1+\\frac{x}{2m+1}\\bigr)$ の符号で解の位置を比べる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 証明\n(2) 証明\n(3) -3"
+  },
+  "methods": [],
+  "tags": [
+   "導関数が1つ前の多項式",
+   "数学的帰納法",
+   "中間値の定理",
+   "解の評価"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-241",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "区間 $[0,1]$ での $x^n$ の1次式による近似",
+  "topic": "区間 $[0,1]$ での $x^n$ の1次式による近似",
+  "statement": {
+   "tex": "$n$ を正の整数とし，実数 $p,q$ に対して\n\\[I(p,q)=\\int_0^1\\left(x^n-px-q\\right)^2dx\\]\nとおく．\n\\begin{enumerate}\n  \\item $I(p,q)$ を最小にするような $(p,q)$ がただ1組存在することを示し，そのような $(p,q)$ と $I(p,q)$ の最小値 $m_n$ を求めよ．\n  \\item $m_n$ を最大にする $n$ と，$m_n$ の最大値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $(p,q)=\\left(\\dfrac{6n}{(n+1)(n+2)},\\ -\\dfrac{2(n-1)}{(n+1)(n+2)}\\right)$，$m_n=\\dfrac{n^2(n-1)^2}{(n+1)^2(n+2)^2(2n+1)}$　(2) $n=8$，最大値 $\\dfrac{784}{34425}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) 展開して積分すると\n\\[I(p,q)=\\frac1{2n+1}-\\frac{2p}{n+2}-\\frac{2q}{n+1}+\\frac{p^2}3+pq+q^2.\\]\n$c=\\dfrac{n}{(n+1)(n+2)}$ とおくと $\\frac2{n+2}-\\frac1{n+1}=c$ であり，\n\\[I(p,q)=\\Bigl(q+\\frac p2-\\frac1{n+1}\\Bigr)^2+\\frac1{12}(p-6c)^2+m_n,\\qquad m_n=\\frac1{2n+1}-\\frac1{(n+1)^2}-3c^2\\]\nと変形できる（右辺を展開すると左辺に一致する）．よって $I$ を最小にするのは $p=6c$，$q=\\frac1{n+1}-3c$ のときに限り，その1組だけである：\n\\[\\boldsymbol{p=\\frac{6n}{(n+1)(n+2)},\\qquad q=-\\frac{2(n-1)}{(n+1)(n+2)}}.\\]\n最小値は，分母を $(2n+1)(n+1)^2(n+2)^2$ にそろえると分子が\n\\[(n+1)^2(n+2)^2-(2n+1)(n+2)^2-3n^2(2n+1)=n^2(n+2)^2-3n^2(2n+1)=n^2(n-1)^2\\]\nなので\n\\[\\boldsymbol{m_n=\\frac{n^2(n-1)^2}{(n+1)^2(n+2)^2(2n+1)}}.\\]\n\n(2) $m_1=0$，$n\\geqq2$ で $m_n>0$．$n\\geqq2$ のとき，$(n+3)(n-1)=(n+1)^2-4$ を用いて\n\\[\\frac{m_{n+1}}{m_n}=\\frac{(n+1)^4(2n+1)}{(n+3)^2(n-1)^2(2n+3)}=\\frac{u^2(2n+1)}{(u-4)^2(2n+3)}\\qquad(u=(n+1)^2).\\]\n\\[u^2(2n+1)-(u-4)^2(2n+3)=-2u^2+(8u-16)(2n+3)=-2\\Bigl\\{(n+1)^2(n^2-6n-11)+16n+24\\Bigr\\}\\]\n（$u-4(2n+3)=n^2-6n-11$ を用いた）．中かっこ内を $K_n$ とおくと，\n\\[K_2=-115,\\ K_3=-248,\\ K_4=-387,\\ K_5=-472,\\ K_6=-419,\\ K_7=-120\\]\nはすべて負なので $2\\leqq n\\leqq7$ で $m_{n+1}>m_n$．$n\\geqq8$ では $n^2-6n-11=n(n-6)-11\\geqq5>0$ より $K_n>0$ で $m_{n+1}<m_n$．\nよって $m_1<m_2<\\cdots<m_8>m_9>m_{10}>\\cdots$ で，$m_n$ を最大にするのは $\\boldsymbol{n=8}$，最大値は\n\\[m_8=\\frac{64\\cdot49}{81\\cdot100\\cdot17}=\\boldsymbol{\\frac{784}{34425}}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "$I(p,q)=\\int_0^1(x^n-px-q)^2dx$ は $p,q$ の2次式なので，$q$ について，次に $p$ について平方完成すると最小値と最小を与える $(p,q)$ が一意に決まる．最小値 $m_n$ の増減は $\\frac{m_{n+1}}{m_n}$ と1の大小で調べ，$(n+3)(n-1)=(n+1)^2-4$ を使って整理する．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $(p,q)$：(6n/((n+1)(n+2)), -2(n-1)/((n+1)(n+2))) ; $m_n$：n^2(n-1)^2/((n+1)^2(n+2)^2(2n+1))\n(2) $n$：8 ; 最大値：784/34425"
+  },
+  "methods": [],
+  "tags": [
+   "平方完成",
+   "2変数の2次式の最小",
+   "数列の増減"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-242",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "動く2つの放物線の共有点を結ぶ線分の通過領域",
+  "topic": "動く2つの放物線の共有点を結ぶ線分の通過領域",
+  "statement": {
+   "tex": "$u$ を実数とする．座標平面上の2つの放物線\n\\[C_1:\\ y=-x^2+1,\\qquad C_2:\\ y=(x-u)^2+u\\]\nを考える．$C_1$ と $C_2$ が共有点をもつような $u$ の値の範囲は，ある実数 $a$，$b$ により $a\\leqq u\\leqq b$ と表される．\n\\begin{enumerate}\n  \\item $a$，$b$ の値を求めよ．\n  \\item $a<u<b$ のとき，$C_1$ と $C_2$ の2つの共有点を $\\mathrm P_1$，$\\mathrm P_2$ とする．直線 $\\mathrm P_1\\mathrm P_2$ の方程式を $u$ を用いて表せ．\n  \\item $u$ が $a\\leqq u\\leqq b$ の範囲を動くとき，線分 $\\mathrm P_1\\mathrm P_2$（共有点が1点のときはその1点）が通過する領域の面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a=-1-\\sqrt3$，$b=-1+\\sqrt3$　(2) $y=-ux+\\dfrac{u^2+u+1}2$　(3) $\\dfrac{\\sqrt6}2$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $-x^2+1=(x-u)^2+u$ を整理すると\n\\[2x^2-2ux+u^2+u-1=0.\\qquad\\cdots(*)\\]\n実数解をもつ条件は（判別式）$/4=u^2-2(u^2+u-1)=-u^2-2u+2\\geqq0$，すなわち $u^2+2u-2\\leqq0$．よって $\\boldsymbol{a=-1-\\sqrt3}$，$\\boldsymbol{b=-1+\\sqrt3}$．\n\n(2) $(*)$ の2解を $x_1,x_2$ とすると $x_1+x_2=u$，$x_1x_2=\\frac{u^2+u-1}2$．2点 $(x_i,1-x_i^2)$ を通る直線は，傾き $\\frac{(1-x_2^2)-(1-x_1^2)}{x_2-x_1}=-(x_1+x_2)$ で\n\\[y=-(x_1+x_2)x+x_1x_2+1\\]\n（$x=x_1$ を代入すると $-x_1^2-x_1x_2+x_1x_2+1=1-x_1^2$ で確かに通る．$x_2$ も同様）．よって $\\boldsymbol{y=-ux+\\dfrac{u^2+u+1}2}$．\n\n(3) 共有点が1点のとき（$u=a,b$）も，その点は $x_1=x_2$ として上の直線上にある．したがって点 $(X,Y)$ が通過領域に属する条件は，ある実数 $u$ が存在して\n\\[\\text{(i)}\\ Y=\\frac{u^2+(1-2X)u+1}2,\\qquad\\text{(ii)}\\ X\\text{ が }(*)\\text{ の2解（重解を含む）の間にある}\\]\nことである．$(*)$ の左辺は $x$ の2次式で $x^2$ の係数が正なので，(ii) は $2X^2-2uX+u^2+u-1\\leqq0$，すなわち\n\\[h(u):=u^2+(1-2X)u+2X^2-1\\leqq0\\]\nと同値である（このとき $(*)$ は実数解をもつので自動的に $a\\leqq u\\leqq b$）．$h(u)\\leqq0$ をみたす $u$ が存在する条件は\n\\[(1-2X)^2-4(2X^2-1)=5-4X-4X^2\\geqq0.\\]\nこれを $E(X)=5-4X-4X^2\\geqq0$ とし，$h(u)=0$ の2解を $u_-\\leqq u_+$ とする（中点は $X-\\frac12$）．(i) は $Y=\\frac12\\{h(u)+2-2X^2\\}$ と書けるので，$u_-\\leqq u\\leqq u_+$ における $Y$ は\n\\begin{itemize}\n  \\item 端点 $u=u_\\pm$ で最大値 $1-X^2$，\n  \\item $u=X-\\frac12$ で最小値 $\\frac12\\left(-\\frac{E(X)}4+2-2X^2\\right)=1-X^2-\\frac{E(X)}8$\n\\end{itemize}\nをとり，連続的に変化するのでその間のすべての値をとる．よって通過領域は\n\\[E(X)\\geqq0,\\qquad1-X^2-\\frac{E(X)}8\\leqq Y\\leqq1-X^2.\\]\n$E(X)=0$ の2解を $\\alpha<\\beta$ とすると $\\beta-\\alpha=\\frac{\\sqrt{16+80}}4=\\sqrt6$．面積は\n\\[\\int_\\alpha^\\beta\\frac{E(X)}8dX=\\frac48\\int_\\alpha^\\beta(X-\\alpha)(\\beta-X)\\,dX=\\frac12\\cdot\\frac{(\\beta-\\alpha)^3}6=\\frac{6\\sqrt6}{12}=\\boldsymbol{\\frac{\\sqrt6}2}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "共有点の $x$ 座標の和と積から，弦 $\\mathrm P_1\\mathrm P_2$ の直線は $u$ の2次式で表される．点 $(X,Y)$ を固定し，$u$ の条件「$X$ が2つの共有点の $x$ 座標の間」を $u$ の2次不等式に直す．その $u$ の区間で $Y$ を $u$ の2次関数とみて値域を求める．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $a$：-1-sqrt(3) ; $b$：-1+sqrt(3)\n(2) $y$：-ux+(u^2+u+1)/2\n(3) sqrt(6)/2"
+  },
+  "methods": [],
+  "tags": [
+   "通過領域",
+   "包絡線",
+   "2次関数",
+   "面積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-243",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "パラメータの範囲を制限した放物線族の通過領域",
+  "topic": "パラメータの範囲を制限した放物線族の通過領域",
+  "statement": {
+   "tex": "$a$ が $0<a\\leqq1$ の範囲を動くとき，放物線 $C_a:\\ y=ax^2-\\dfrac{a^3}3$ が通過する領域を $E$ とする．\n\\begin{enumerate}\n  \\item $E$ を不等式で表せ（境界を含むかどうかも明らかにせよ）．\n  \\item $E$ のうち $-1\\leqq x\\leqq1$ の部分の面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $x=0$ では $-\\dfrac13\\leqq y<0$；$0<|x|\\leqq\\dfrac1{\\sqrt3}$ では $x^2-\\dfrac13\\leqq y\\leqq\\dfrac23|x|^3$；$\\dfrac1{\\sqrt3}<|x|\\leqq1$ では $0<y\\leqq\\dfrac23|x|^3$；$|x|>1$ では $0<y\\leqq x^2-\\dfrac13$　(2) $\\dfrac13+\\dfrac{4\\sqrt3}{27}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $x$ を固定し $g(a)=ax^2-\\dfrac{a^3}3$（$0<a\\leqq1$）の値域を求める．$(x,y)\\in E\\iff y$ がこの値域に属する．$g'(a)=x^2-a^2$．\n\\begin{itemize}\n  \\item $x=0$：$g(a)=-\\frac{a^3}3$ は減少で，$a\\to+0$ で $0$ に近づくが $0$ にならない．値域 $-\\frac13\\leqq y<0$．\n  \\item $0<|x|\\leqq1$：$g$ は $(0,|x|]$ で増加，$[|x|,1]$ で減少，$g(|x|)=\\frac23|x|^3$，$g(1)=x^2-\\frac13$．$(0,|x|]$ での値域は $\\left(0,\\frac23|x|^3\\right]$（$a\\to+0$ で $0$ に近づく），$[|x|,1]$ での値域は $\\left[x^2-\\frac13,\\frac23|x|^3\\right]$．和集合は，$x^2-\\frac13\\leqq0$ なら $\\left[x^2-\\frac13,\\frac23|x|^3\\right]$，$x^2-\\frac13>0$ なら $\\left(0,\\frac23|x|^3\\right]$．\n  \\item $|x|>1$：$g'>0$ で増加，値域 $\\left(0,x^2-\\frac13\\right]$．\n\\end{itemize}\n答：\n\\[E:\\ \\begin{cases}-\\frac13\\leqq y<0&(x=0)\\\\[2pt] x^2-\\frac13\\leqq y\\leqq\\frac23|x|^3&\\left(0<|x|\\leqq\\frac1{\\sqrt3}\\right)\\\\[2pt] 0<y\\leqq\\frac23|x|^3&\\left(\\frac1{\\sqrt3}<|x|\\leqq1\\right)\\\\[2pt] 0<y\\leqq x^2-\\frac13&(|x|>1)\\end{cases}\\]\n（$y$ 軸上の点 $(0,0)$ と，$|x|>\\frac1{\\sqrt3}$ の $x$ 軸上の点は含まない．）\n\n(2) $y$ 軸に関して対称なので\n\\[2\\left\\{\\int_0^{\\frac1{\\sqrt3}}\\left(\\frac23x^3-x^2+\\frac13\\right)dx+\\int_{\\frac1{\\sqrt3}}^1\\frac23x^3\\,dx\\right\\}=2\\left\\{\\int_0^1\\frac23x^3\\,dx+\\int_0^{\\frac1{\\sqrt3}}\\left(\\frac13-x^2\\right)dx\\right\\}\\]\n\\[=2\\left\\{\\frac16+\\frac1{3\\sqrt3}-\\frac1{9\\sqrt3}\\right\\}=\\boldsymbol{\\frac13+\\frac{4\\sqrt3}{27}}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "$x$ を固定して $a$ の関数 $g(a)=ax^2-\\frac{a^3}3$（$0<a\\leqq1$）の値域を求める．極大の位置 $a=|x|$ が範囲内か，$g(1)$ の符号，$a\\to+0$ での値0が「とらない値」になることの3点で場合が分かれる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 1/3+4sqrt(3)/27"
+  },
+  "methods": [],
+  "tags": [
+   "通過領域",
+   "3次関数",
+   "端点の扱い",
+   "面積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-244",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 5,
+  "minutes": 40,
+  "theme": "3次曲線の弦の内分点の存在範囲",
+  "topic": "3次曲線の弦の内分点の存在範囲",
+  "statement": {
+   "tex": "座標平面上の2点 P，Q が曲線 $y=x^3$ $(-1\\leqq x\\leqq1)$ 上を自由に動くとき，線分 PQ を $1:2$ に内分する点 R が動く範囲を $D$ とする．ただし P$=$Q のときは R$=$P とする．\n\\begin{enumerate}\n  \\item $a$ を $-1\\leqq a\\leqq1$ をみたす実数とするとき，点 $(a,b)$ が $D$ に属するための $b$ の条件を $a$ を用いて表せ．\n  \\item $D$ の面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $E_1=\\dfrac{9a^3-9a^2+3a+1}4$，$E_2=\\dfrac{9a^3+9a^2+3a-1}4$，$E_3=9a^3-18a^2+12a-2$，$E_4=9a^3+18a^2+12a+2$ として，$-1\\leqq a\\leqq-\\dfrac13$：$E_4\\leqq b\\leqq a^3$；$-\\dfrac13\\leqq a\\leqq-\\dfrac15$：$E_2\\leqq b\\leqq a^3$；$-\\dfrac15\\leqq a\\leqq\\dfrac15$：$E_2\\leqq b\\leqq E_1$；$\\dfrac15\\leqq a\\leqq\\dfrac13$：$a^3\\leqq b\\leqq E_1$；$\\dfrac13\\leqq a\\leqq1$：$a^3\\leqq b\\leqq E_3$　(2) $\\dfrac{736}{1125}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "P$(p,p^3)$，Q$(q,q^3)$ とすると R$=\\left(\\frac{2p+q}3,\\frac{2p^3+q^3}3\\right)$．$a=\\frac{2p+q}3$ を固定すると $q=3a-2p$ で，条件 $-1\\leqq p\\leqq1$，$-1\\leqq3a-2p\\leqq1$ は\n\\[p\\in I_a=\\left[\\max\\left(-1,\\tfrac{3a-1}2\\right),\\ \\min\\left(1,\\tfrac{3a+1}2\\right)\\right]\\]\n（$-1\\leqq a\\leqq1$ で空でない）．$b=F(p)=\\dfrac{2p^3+(3a-2p)^3}3$ の $I_a$ 上の値域が求める範囲で，連続なので $[\\min F,\\max F]$．\n\\[F'(p)=2\\bigl(p^2-(3a-2p)^2\\bigr)=2(3p-3a)(3a-p)=6(p-a)(3a-p).\\]\nまた (P,Q) を $(-\\mathrm P,-\\mathrm Q)$ にかえると曲線上の点のままで R は $-$R になるので，$D$ は原点対称．$0\\leqq a\\leqq1$ で調べる．次の値を用いる．\n\\[F(a)=a^3,\\quad F(3a)=9a^3,\\quad E_1=F\\left(\\tfrac{3a-1}2\\right)=\\tfrac{9a^3-9a^2+3a+1}4\\ (q=1),\\]\n\\[E_2=F\\left(\\tfrac{3a+1}2\\right)=\\tfrac{9a^3+9a^2+3a-1}4\\ (q=-1),\\quad E_3=F(1)=9a^3-18a^2+12a-2.\\]\n次の因数分解が成り立つ（展開して確かめられる）：\n\\[E_1-9a^3=\\tfrac{(1-3a)(1+3a)^2}4,\\quad E_2-a^3=\\tfrac{(a+1)^2(5a-1)}4,\\quad E_3-E_1=\\tfrac94(a-1)^2(3a-1).\\]\n\n\\textbf{$0\\leqq a\\leqq\\frac13$ のとき．}$I_a=\\left[\\frac{3a-1}2,\\frac{3a+1}2\\right]$ で，$a$，$3a$ はこの区間に入る．$a>0$ なら $F$ は $\\left[\\frac{3a-1}2,a\\right]$ で減少，$[a,3a]$ で増加，$\\left[3a,\\frac{3a+1}2\\right]$ で減少（$a=0$ なら全体で減少）．よって\n\\[\\max F=\\max(E_1,9a^3)=E_1,\\qquad\\min F=\\min(a^3,E_2)=\\begin{cases}E_2&(a\\leqq\\frac15)\\\\ a^3&(a\\geqq\\frac15)\\end{cases}\\]\n\n\\textbf{$\\frac13\\leqq a\\leqq1$ のとき．}$I_a=\\left[\\frac{3a-1}2,1\\right]$ で，$p\\leqq1\\leqq3a$ より $F'$ の符号は $p-a$ の符号．$F$ は $\\left[\\frac{3a-1}2,a\\right]$ で減少，$[a,1]$ で増加．\n\\[\\min F=a^3,\\qquad\\max F=\\max(E_1,E_3)=E_3.\\]\n\n原点対称性から，$a<0$ では範囲は $[-\\max F(-a),-\\min F(-a)]$ で，$-E_1(-a)=E_2(a)$，$-E_2(-a)=E_1(a)$，$-E_3(-a)=9a^3+18a^2+12a+2=:E_4(a)$．\n\n(1) 答（$E_1,\\dots,E_4$ は上の $a$ の式）：\n\\[\\begin{array}{ll}\n-1\\leqq a\\leqq-\\frac13: & E_4\\leqq b\\leqq a^3\\\\[2pt]\n-\\frac13\\leqq a\\leqq-\\frac15: & E_2\\leqq b\\leqq a^3\\\\[2pt]\n-\\frac15\\leqq a\\leqq\\frac15: & E_2\\leqq b\\leqq E_1\\\\[2pt]\n\\frac15\\leqq a\\leqq\\frac13: & a^3\\leqq b\\leqq E_1\\\\[2pt]\n\\frac13\\leqq a\\leqq1: & a^3\\leqq b\\leqq E_3\n\\end{array}\\]\n\n(2) 原点対称なので面積は $2(I_1+I_2+I_3)$．\n\\begin{align*}\nI_1&=\\int_0^{\\frac15}(E_1-E_2)\\,da=\\int_0^{\\frac15}\\frac{1-9a^2}2\\,da=\\frac1{10}-\\frac3{250}=\\frac{11}{125},\\\\\nI_2&=\\int_{\\frac15}^{\\frac13}\\frac{5a^3-9a^2+3a+1}4\\,da=\\Bigl[\\tfrac{5a^4}{16}-\\tfrac{3a^3}4+\\tfrac{3a^2}8+\\tfrac a4\\Bigr]_{\\frac15}^{\\frac13}=\\frac{131}{1296}-\\frac{119}{2000}=\\frac{421}{10125},\\\\\nI_3&=\\int_{\\frac13}^1(8a^3-18a^2+12a-2)\\,da=\\Bigl[2a^4-6a^3+6a^2-2a\\Bigr]_{\\frac13}^1=0-\\left(-\\frac{16}{81}\\right)=\\frac{16}{81}.\n\\end{align*}\n$I_1+I_2+I_3=\\frac{891+421+2000}{10125}=\\frac{3312}{10125}$ より，面積は $\\frac{6624}{10125}=\\boldsymbol{\\dfrac{736}{1125}}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$a$ を固定すると $q=3a-2p$ で，$b=F(p)=\\frac{2p^3+(3a-2p)^3}3$ を $p$ の区間上の3次関数として扱う．$F'(p)=6(p-a)(3a-p)$ で，極値点 $p=a$（$P=Q$）と $p=3a$（$Q=-P$），区間の端（$Q$ が曲線の端）の値を比べる．比較は $(a+1)^2(5a-1)$ などの因数分解で決まる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 736/1125"
+  },
+  "methods": [],
+  "tags": [
+   "存在範囲",
+   "3次関数の値域",
+   "対称性",
+   "面積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-245",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "3次方程式の解のうち $(-1,1)$ に入るものの個数",
+  "topic": "3次方程式の解のうち $(-1,1)$ に入るものの個数",
+  "statement": {
+   "tex": "$a>0$，$b$ を実数とし，$f(x)=x^3-3a^2x$ とおく．方程式 $f(x)=b$ が相異なる3つの実数解をもつような点 $(a,b)$ に対し，その3つの解のうち開区間 $-1<x<1$ に含まれるものの個数を $N(a,b)$ とする．\n\\begin{enumerate}\n  \\item $N(a,b)=3$ となる点 $(a,b)$ の範囲を求めて図示し，その面積を求めよ．\n  \\item $N(a,b)=2$ となる点 $(a,b)$ の範囲を求めて図示し，その面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $0<a\\leqq\\frac12$ で $|b|<2a^3$，$\\frac12\\leqq a<\\frac1{\\sqrt3}$ で $|b|<1-3a^2$；面積 $\\dfrac{4\\sqrt3}9-\\dfrac{11}{16}$　(2) $0<a<1$，$|b|<2a^3$，$|b|\\geqq1-3a^2$，$|b|>3a^2-1$；面積 $\\dfrac{27}{16}-\\dfrac{8\\sqrt3}9$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$f'(x)=3(x+a)(x-a)$ より，$f$ は $x\\leqq-a$ で狭義増加，$-a\\leqq x\\leqq a$ で狭義減少，$x\\geqq a$ で狭義増加で，$f(-a)=2a^3$，$f(a)=-2a^3$．$f(x)=b$ が相異なる3実数解をもつ条件は $-2a^3<b<2a^3$ で，このとき3解 $\\alpha<\\beta<\\gamma$ は\n\\[\n\\alpha<-a<\\beta<a<\\gamma\n\\]\nをみたし，各単調区間にただ1つずつある．以下 $|b|<2a^3$ とする．\n\n\\textbf{$a\\geqq1$ のとき．} $\\alpha<-a\\leqq-1$，$\\gamma>a\\geqq1$ なので $\\alpha,\\gamma$ は $(-1,1)$ に入らず，$N\\leqq1$．\n\n\\textbf{$0<a<1$ のとき．} $\\beta\\in(-a,a)\\subset(-1,1)$．$f$ は $x\\geqq a$ で狭義増加で $1>a$ なので，$\\gamma<1\\iff f(\\gamma)<f(1)\\iff b<1-3a^2$．同様に $f$ は $x\\leqq-a$ で狭義増加で $-1<-a$ なので，$\\alpha>-1\\iff f(-1)<b\\iff b>3a^2-1$．よって\n\\[\nN(a,b)=1+[\\,b<1-3a^2\\,]+[\\,b>3a^2-1\\,]\n\\]\n（$[\\ \\cdot\\ ]$ は条件が成り立てば $1$，成り立たなければ $0$）．\n\nまた，曲線 $b=2a^3$ と $b=1-3a^2$ について $2a^3-(1-3a^2)=(a+1)^2(2a-1)$，曲線 $b=2a^3$ と $b=3a^2-1$ について $2a^3-(3a^2-1)=(a-1)^2(2a+1)$ が成り立つ．\n\n(1) $N=3$ $\\iff$ $0<a<1$ かつ $3a^2-1<b<1-3a^2$ かつ $|b|<2a^3$，すなわち $|b|<\\min(1-3a^2,\\ 2a^3)$（$1-3a^2>0$ より $a<\\frac1{\\sqrt3}$ が必要）．$(a+1)^2(2a-1)$ の符号から，$a\\leqq\\frac12$ では $2a^3\\leqq1-3a^2$，$a\\geqq\\frac12$ では $2a^3\\geqq1-3a^2$．よって\n\\[\n\\boldsymbol{0<a\\leqq\\tfrac12\\ \\text{で}\\ |b|<2a^3,\\qquad \\tfrac12\\leqq a<\\tfrac1{\\sqrt3}\\ \\text{で}\\ |b|<1-3a^2}.\n\\]\n図は $a>0$ の側で，曲線 $b=2a^3$ と $b=-2a^3$ に挟まれた部分のうち，放物線 $b=1-3a^2$ と $b=-(1-3a^2)$ に挟まれた部分（$b=0$ に関して対称で，境界は含まない）．$\\left(\\frac12,\\pm\\frac14\\right)$ で境界の曲線が入れかわり，$\\left(\\frac1{\\sqrt3},0\\right)$ で閉じる．面積は\n\\[\n\\int_0^{\\frac12}4a^3\\,da+\\int_{\\frac12}^{\\frac1{\\sqrt3}}2(1-3a^2)\\,da=\\frac1{16}+2\\left[a-a^3\\right]_{\\frac12}^{\\frac1{\\sqrt3}}=\\frac1{16}+2\\left(\\frac2{3\\sqrt3}-\\frac38\\right)=\\boldsymbol{\\frac{4\\sqrt3}9-\\frac{11}{16}}.\n\\]\n\n(2) $0<a<1$ で $u=1-3a^2$ とおくと，$N=2$ は「$b<u$」「$b>-u$」のちょうど一方が成り立つこと．両方成り立つのは $|b|<u$，どちらも成り立たないのは $b\\geqq u$ かつ $b\\leqq-u$，すなわち $|b|\\leqq-u$．よって\n\\[\nN=2\\iff\\boldsymbol{0<a<1,\\ |b|<2a^3,\\ |b|\\geqq1-3a^2,\\ |b|>3a^2-1}.\n\\]\n図は $0<a<1$ で曲線 $b=\\pm2a^3$ に挟まれた部分から，(1) の範囲と，$\\frac1{\\sqrt3}\\leqq a<1$ で $|b|\\leqq3a^2-1$ の部分（$N=1$ の部分）を除いたもので，$b=0$ に関して対称な2つの部分からなる．$a<\\frac12$ では $1-3a^2>2a^3$ なので $N=2$ の点はない．上側（$b>0$）の部分は $\\frac12\\leqq a<1$ にあり，下を $b=1-3a^2$（$\\frac12\\leqq a\\leqq\\frac1{\\sqrt3}$，境界を含む）と $b=3a^2-1$（$\\frac1{\\sqrt3}\\leqq a<1$，境界を含まない），上を $b=2a^3$（境界を含まない）で囲まれ，点 $\\left(\\frac12,\\frac14\\right)$ と点 $(1,2)$ で上下の境界が出会う．\n\n面積：$0<a<1$，$|b|<2a^3$ の面積は $\\int_0^14a^3\\,da=1$．$N=1$ の部分（$0<a<1$）は $3a^2-1\\geqq0$，$|b|\\leqq3a^2-1$ で，面積は\n\\[\n\\int_{\\frac1{\\sqrt3}}^12(3a^2-1)\\,da=2\\left[a^3-a\\right]_{\\frac1{\\sqrt3}}^1=\\frac{4}{3\\sqrt3}=\\frac{4\\sqrt3}9.\n\\]\n$0<a<1$ では $N\\geqq1$ なので，$N=2$ の部分の面積は\n\\[\n1-\\left(\\frac{4\\sqrt3}9-\\frac{11}{16}\\right)-\\frac{4\\sqrt3}9=\\boldsymbol{\\frac{27}{16}-\\frac{8\\sqrt3}9}.\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "$f(x)=x^3-3a^2x$ は $(-\\infty,-a]$，$[-a,a]$，$[a,\\infty)$ で単調なので，3解 $\\alpha<-a<\\beta<a<\\gamma$ は各区間にただ1つずつ．$a\\geqq1$ なら $\\alpha,\\gamma$ は $(-1,1)$ に入らない．$a<1$ なら $\\beta$ は必ず入り，$\\gamma<1\\iff b<f(1)$，$\\alpha>-1\\iff b>f(-1)$ と，解の位置を $b$ と $f(\\pm1)$ の大小に翻訳する．境界曲線 $b=\\pm2a^3$ と $b=\\pm(1-3a^2)$ の交点は $(a+1)^2(2a-1)=0$ から $a=\\frac12$．"
+  },
+  "methods": [],
+  "tags": [
+   "3次方程式",
+   "実数解の配置",
+   "単調性",
+   "領域図示",
+   "面積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-246",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 5,
+  "minutes": 35,
+  "theme": "面積の等しい2つの三角形と比の最大・最小（面積を一般化）",
+  "topic": "面積の等しい2つの三角形と比の最大・最小（面積を一般化）",
+  "statement": {
+   "tex": "$S$ は $0<S\\leqq\\dfrac12$ をみたす定数とする．一辺の長さが1の正方形 ABCD を考える．3点 P，Q，R はそれぞれ辺 AB，AD，CD 上にあり，3点 A，P，Q および3点 P，Q，R はどちらも面積が $S$ の三角形の3頂点であるとする．$\\mathrm{AP}=p$ とおく．\n\\begin{enumerate}\n  \\item AQ，DR を $p$，$S$ で表し，$p$ のとりうる値の範囲を求めよ．\n  \\item $\\dfrac{\\mathrm{DR}}{\\mathrm{AQ}}$ の最大値 $M(S)$ を求めよ．\n  \\item $\\dfrac{\\mathrm{DR}}{\\mathrm{AQ}}$ の最小値 $m(S)$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $\\mathrm{AQ}=\\dfrac{2S}{p}$，$\\mathrm{DR}=\\dfrac{p(4S-p)}{2S}$，$2S\\leqq p\\leqq\\min\\{1,\\,4S\\}$　(2) $0<S\\leqq\\dfrac38$ のとき $M(S)=\\dfrac{64S}{27}$，$\\dfrac38<S\\leqq\\dfrac12$ のとき $M(S)=\\dfrac{4S-1}{4S^2}$　(3) $0<S\\leqq\\dfrac14$ のとき $m(S)=0$，$\\dfrac14<S\\leqq\\dfrac{\\sqrt5-1}4$ のとき $m(S)=\\dfrac{4S-1}{4S^2}$，$\\dfrac{\\sqrt5-1}4\\leqq S\\leqq\\dfrac12$ のとき $m(S)=2S$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "A$(0,0)$，B$(1,0)$，C$(1,1)$，D$(0,1)$ と座標を定め，P$(p,0)$，Q$(0,q)$，R$(r,1)$（$0\\leqq p,q,r\\leqq1$）とおく．AQ $=q$，DR $=r$ である．\n\n(1) $\\triangle$APQ $=\\frac12pq=S$ より $pq=2S>0$，よって $p>0$，$q=\\dfrac{2S}{p}$．$\\overrightarrow{\\mathrm{PQ}}=(-p,q)$，$\\overrightarrow{\\mathrm{PR}}=(r-p,1)$ より\n\\[\n\\triangle\\mathrm{PQR}=\\frac12\\bigl|(-p)\\cdot1-q(r-p)\\bigr|=\\frac12\\,|pq-p-qr|=\\frac12\\,|2S-p-qr|.\n\\]\nこれが $S$ に等しいので $p+qr=4S$ または $p+qr=0$．後者は $p>0$，$qr\\geqq0$ に反するから $qr=4S-p$，すなわち\n\\[\n\\mathrm{AQ}=q=\\boldsymbol{\\frac{2S}{p}},\\qquad \\mathrm{DR}=r=\\frac{4S-p}{q}=\\boldsymbol{\\frac{p(4S-p)}{2S}}.\n\\]\n$p$ の条件は $0<p\\leqq1$，$q\\leqq1$（$p\\geqq2S$），$r\\geqq0$（$p\\leqq4S$），$r\\leqq1$ である．相加平均・相乗平均の関係より $p(4S-p)\\leqq\\bigl(\\frac{p+(4S-p)}2\\bigr)^2=4S^2$ なので $r\\leqq2S\\leqq1$ が常に成り立つ．逆に $2S\\leqq p\\leqq\\min\\{1,4S\\}$ ならば上の式で定まる $q$，$r$ は $0\\leqq q,r\\leqq1$ をみたし，二つの三角形の面積はともに $S$ となる（$S>0$ より退化もしない）．$2S\\leqq1$ かつ $2S<4S$ なのでこの区間は空でない．よって $p$ の範囲は\n\\[\n\\boldsymbol{2S\\leqq p\\leqq\\min\\{1,\\ 4S\\}}.\n\\]\n\n(2) $f(p)=\\dfrac{\\mathrm{DR}}{\\mathrm{AQ}}=\\dfrac rq=\\dfrac{p^2(4S-p)}{4S^2}$ とおくと\n\\[\nf'(p)=\\frac{8Sp-3p^2}{4S^2}=\\frac{p(8S-3p)}{4S^2}\n\\]\nで，$p>0$ では $p<\\frac{8S}3$ で $f'>0$，$p>\\frac{8S}3$ で $f'<0$．また\n\\[\nf(2S)=2S,\\qquad f\\Bigl(\\frac{8S}3\\Bigr)=\\frac{64S}{27},\\qquad f(4S)=0,\\qquad f(1)=\\frac{4S-1}{4S^2}.\n\\]\n$2S<\\frac{8S}3<4S$ に注意する．\n\\begin{itemize}\n  \\item $0<S\\leqq\\frac14$ のとき：定義域は $[2S,4S]$ で，$\\frac{8S}3$ を含む．\n  \\item $\\frac14<S\\leqq\\frac38$ のとき：定義域は $[2S,1]$ で，$\\frac{8S}3\\leqq1$ より $\\frac{8S}3$ を含む．\n  \\item $\\frac38<S\\leqq\\frac12$ のとき：定義域は $[2S,1]$ で，$1<\\frac{8S}3$ より $f$ は定義域で増加．\n\\end{itemize}\nよって\n\\[\nM(S)=\\begin{cases}\\boldsymbol{\\dfrac{64S}{27}} & \\Bigl(0<S\\leqq\\dfrac38\\Bigr)\\\\[2ex] \\boldsymbol{\\dfrac{4S-1}{4S^2}} & \\Bigl(\\dfrac38<S\\leqq\\dfrac12\\Bigr)\\end{cases}\n\\]\n（前者は $p=\\frac{8S}3$，後者は $p=1$ で達成される）．\n\n(3) 増減より，最小値は定義域の両端の値の小さい方である．\n\\begin{itemize}\n  \\item $0<S\\leqq\\frac14$ のとき：$\\min\\{f(2S),f(4S)\\}=\\min\\{2S,0\\}=0$（$p=4S$，すなわち R $=$ D のとき）．\n  \\item $\\frac14<S\\leqq\\frac12$ のとき：$\\min\\{f(2S),f(1)\\}$ である．\n  \\[\n  f(2S)-f(1)=2S-\\frac{4S-1}{4S^2}=\\frac{8S^3-4S+1}{4S^2}=\\frac{(2S-1)(4S^2+2S-1)}{4S^2}.\n  \\]\n  $4S^2+2S-1=0$ の正の解は $\\sigma=\\frac{\\sqrt5-1}4$ で，$\\frac14<\\sigma<\\frac38$（$\\sigma-\\frac14=\\frac{\\sqrt5-2}4>0$，$\\frac38-\\sigma=\\frac{5-2\\sqrt5}8>0$）．$S>0$ において $4S^2+2S-1$ は $S<\\sigma$ で負，$S>\\sigma$ で正．$S<\\frac12$ では $2S-1<0$ なので，$\\frac14<S<\\sigma$ のとき $f(2S)>f(1)$，$\\sigma\\leqq S\\leqq\\frac12$ のとき $f(2S)\\leqq f(1)$．\n\\end{itemize}\n以上より\n\\[\nm(S)=\\begin{cases}\\boldsymbol{0} & \\Bigl(0<S\\leqq\\dfrac14\\Bigr)\\\\[2ex]\n\\boldsymbol{\\dfrac{4S-1}{4S^2}} & \\Bigl(\\dfrac14<S\\leqq\\dfrac{\\sqrt5-1}4\\Bigr)\\\\[2ex]\n\\boldsymbol{2S} & \\Bigl(\\dfrac{\\sqrt5-1}4\\leqq S\\leqq\\dfrac12\\Bigr)\\end{cases}\n\\]\n（$S=\\frac{\\sqrt5-1}4$ では $\\frac{4S-1}{4S^2}=2S$ で両者は一致する）．\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "2つの面積条件から $q$，$r$ が $p$ の式で決まり，比 $\\dfrac{\\mathrm{DR}}{\\mathrm{AQ}}$ は $p$ の3次関数になる．面積を定数 $S$ にすると，定義域の右端が $4S$ と $1$ のどちらで決まるか，極大点 $p=\\frac{8S}3$ が定義域に入るか，両端の値の大小がどう入れかわるかで場合が分かれる．両端の値の比較は $8S^3-4S+1=(2S-1)(4S^2+2S-1)$ の符号に帰着する．"
+  },
+  "methods": [],
+  "tags": [
+   "3次関数",
+   "最大最小",
+   "定義域",
+   "場合分け",
+   "黄金比"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-247",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 5,
+  "minutes": 35,
+  "theme": "3次曲線 $y=ax^3+bx$ と単位円が6点で交わる条件",
+  "topic": "3次曲線 $y=ax^3+bx$ と単位円が6点で交わる条件",
+  "statement": {
+   "tex": "$a,\\ b$ を実数とする．座標平面上の曲線 $C:\\ y=ax^3+bx$ と，原点を中心とする半径1の円 $K$ を考える．\n\\begin{enumerate}\n  \\item $C$ と $K$ の共有点の個数が6個であるための $a,\\ b$ の必要十分条件を，$a,\\ b$ の不等式で表せ．\n  \\item $C$ と $K$ の共有点の個数が6個となるような実数 $b$ が存在する $a$ の値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $27a^2+4b(b^2+9)a+4(b^2+1)^2<0$　(2) $a<-\\dfrac{8\\sqrt3}{9}$ または $a>\\dfrac{8\\sqrt3}{9}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{準備（$t=\\tan\\theta$ への帰着）}　$K$ 上の点で $x=0$ のものは $(0,\\pm1)$ であるが，$C$ 上の $x=0$ の点は $(0,0)$ だけなので，共有点の $x$ 座標は0でない．$K$ 上の $x\\neq0$ の点は，$-\\dfrac\\pi2<\\theta<\\dfrac\\pi2$ を満たす $\\theta$ をただ1つ用いて\n\\[(\\cos\\theta,\\ \\sin\\theta)\\quad\\text{または}\\quad(-\\cos\\theta,\\ -\\sin\\theta)\\]\nのいずれか一方の形にただ1通りに表される．$C$ も $K$ も原点に関して対称なので，$(\\cos\\theta,\\sin\\theta)$ が $C$ 上にあることと $(-\\cos\\theta,-\\sin\\theta)$ が $C$ 上にあることは同値である．$(\\cos\\theta,\\sin\\theta)$ が $C$ 上にある条件は $\\sin\\theta=a\\cos^3\\theta+b\\cos\\theta$ で，両辺を $\\cos^3\\theta\\ (\\neq0)$ で割り，$\\dfrac1{\\cos^2\\theta}=1+\\tan^2\\theta$ を用いると，$t=\\tan\\theta$ として\n\\[t(1+t^2)=a+b(1+t^2)\\iff t^3-bt^2+t-(a+b)=0\\qquad\\cdots(\\bigstar)\\]\n$-\\dfrac\\pi2<\\theta<\\dfrac\\pi2$ と実数 $t$ は $t=\\tan\\theta$ で1対1に対応するから，\n\\[(\\text{共有点の個数})=2\\times(\\bigstar\\ \\text{の相異なる実数解の個数})\\]\nである．よって，共有点が6個 $\\iff$ $(\\bigstar)$ が相異なる3つの実数解をもつ．\n\n(1) $k(t)=t^3-bt^2+t-b$ とおくと，$(\\bigstar)\\iff k(t)=a$．$k'(t)=3t^2-2bt+1$．\n\n(i) $b^2\\leqq3$ のとき．$k'(t)\\geqq0$ で，等号は高々1点でしか成り立たないので $k$ は狭義単調増加．$(\\bigstar)$ の実数解は高々1個．\n\n(ii) $b^2>3$ のとき．$k'(t)=0$ は相異なる2実数解 $t_1<t_2$ をもち，$k$ は $t\\leqq t_1$ で増加，$t_1\\leqq t\\leqq t_2$ で減少，$t\\geqq t_2$ で増加する．$c_1=k(t_1)$（極大値），$c_2=k(t_2)$（極小値）とおくと $c_1>c_2$．$t\\to\\pm\\infty$ で $k(t)\\to\\pm\\infty$ である．\n\\begin{itemize}\n  \\item $c_2<a<c_1$ ならば，中間値の定理により3つの区間 $(-\\infty,t_1)$，$(t_1,t_2)$，$(t_2,\\infty)$ のそれぞれに解があり，各区間で $k$ は単調なので解はちょうど3個．\n  \\item $a>c_1$ ならば $t\\leqq t_2$ で $k(t)\\leqq c_1<a$ なので，解は $(t_2,\\infty)$ の1個だけ．$a=c_1$ ならば，解は $t_1$ と $(t_2,\\infty)$ 内の1個の計2個．$a\\leqq c_2$ の場合も同様に解は2個以下．\n\\end{itemize}\nよって3解 $\\iff c_2<a<c_1\\iff(a-c_1)(a-c_2)<0$．\n\n$c_1,c_2$ を計算する．$k(t)$ を $k'(t)$ で割ると\n\\[k(t)=\\left(\\frac t3-\\frac b9\\right)k'(t)-\\frac29\\{(b^2-3)t+4b\\}\\]\n（右辺を展開すると $t^3-bt^2+\\left(\\frac13+\\frac{2b^2}9\\right)t-\\frac b9-\\frac{2(b^2-3)}9t-\\frac{8b}9=k(t)$ となり確かめられる）．$k'(t_j)=0$ より $c_j=-\\dfrac29\\{(b^2-3)t_j+4b\\}$．解と係数の関係 $t_1+t_2=\\dfrac{2b}3$，$t_1t_2=\\dfrac13$ を用いて\n\\[c_1+c_2=-\\frac29\\left\\{(b^2-3)\\cdot\\frac{2b}3+8b\\right\\}=-\\frac{4b(b^2+9)}{27},\\]\n\\[c_1c_2=\\frac4{81}\\left\\{(b^2-3)^2\\cdot\\frac13+4b(b^2-3)\\cdot\\frac{2b}3+16b^2\\right\\}=\\frac4{243}(9b^4+18b^2+9)=\\frac{4(b^2+1)^2}{27}.\\]\nしたがって\n\\[(a-c_1)(a-c_2)=a^2-(c_1+c_2)a+c_1c_2=\\frac1{27}\\,Q(a,b),\\quad Q(a,b)=27a^2+4b(b^2+9)a+4(b^2+1)^2.\\]\n(ii) の場合，条件は $Q(a,b)<0$ である．\n\n一方 (i) の場合は常に $Q(a,b)\\geqq0$ である．実際，$Q$ を $a$ の2次式とみると，判別式 $D$ について\n\\[\\frac D4=4b^2(b^2+9)^2-108(b^2+1)^2=4\\{b^2(b^2+9)^2-27(b^2+1)^2\\}=4(b^2-3)^3\\]\n（$B=b^2$ とおくと $B(B+9)^2-27(B+1)^2=B^3-9B^2+27B-27=(B-3)^3$）であり，$b^2\\leqq3$ なら $D\\leqq0$，$a^2$ の係数は正なので $Q\\geqq0$．\n\n以上より，共有点が6個となる必要十分条件は\n\\[\\boldsymbol{27a^2+4b(b^2+9)a+4(b^2+1)^2<0}.\\]\n\n(2) \\textbf{言い換え}　$(\\bigstar)$ が相異なる3つの実数解 $t_1,t_2,t_3$ をもつとき，解と係数の関係より\n\\[t_1+t_2+t_3=b,\\qquad t_1t_2+t_2t_3+t_3t_1=1,\\qquad t_1t_2t_3=a+b\\]\nで，$a=t_1t_2t_3-(t_1+t_2+t_3)$ である．逆に，$t_1t_2+t_2t_3+t_3t_1=1$ をみたす相異なる実数 $t_1,t_2,t_3$ に対し $b=t_1+t_2+t_3$，$a=t_1t_2t_3-(t_1+t_2+t_3)$ とおくと，$(t-t_1)(t-t_2)(t-t_3)=t^3-bt^2+t-(a+b)$ となり，$(\\bigstar)$ は相異なる3つの実数解 $t_1,t_2,t_3$ をもつ．よって求める条件は\n\\begin{center}\n「$t_1t_2+t_2t_3+t_3t_1=1$ をみたす相異なる実数 $t_1,t_2,t_3$ で，$a=t_1t_2t_3-(t_1+t_2+t_3)$ となるものが存在する」\n\\end{center}\nことである．このとき $t_1t_2=1-(t_1+t_2)t_3$ より\n\\[a=t_3\\{1-(t_1+t_2)t_3\\}-(t_1+t_2)-t_3=-(t_1+t_2)(1+t_3^2)\\qquad\\cdots(\\#)\\]\nが成り立つ．$t_1,t_2,t_3$ の役割は対称なので，同様に $a=-(t_3+t_1)(1+t_2^2)$ でもある．\n\n\\textbf{$a=0$ のとき}　$(\\#)$ より $t_1+t_2=0$，同様に $t_3+t_1=0$ となり $t_2=t_3$ で，相異なることに反する．不適．\n\n\\textbf{$a>0$ のとき}　（必要性）条件をみたす $t_1,t_2,t_3$ があるとし，$P=-(t_1+t_2)$ とおくと，$(\\#)$ より $P=\\dfrac{a}{1+t_3^2}>0$．$t_1,t_2$ は $x^2+Px+(1+Pt_3)=0$（$t_1t_2=1-(t_1+t_2)t_3=1+Pt_3$）の相異なる2つの実数解なので，判別式について\n\\[P^2-4(1+Pt_3)>0,\\quad\\text{すなわち}\\quad t_3<\\frac{P^2-4}{4P}.\\]\n\\begin{itemize}\n  \\item $P>2$ のとき：$a=P(1+t_3^2)\\geqq P>2>\\dfrac{8\\sqrt3}9$．\n  \\item $0<P\\leqq2$ のとき：$t_3<\\dfrac{P^2-4}{4P}\\leqq0$ より $t_3^2>\\left(\\dfrac{4-P^2}{4P}\\right)^2$ なので，$a=P(1+t_3^2)>P+\\dfrac{(4-P^2)^2}{16P}$ で\n  \\[16P\\left(a-\\frac{8\\sqrt3}9\\right)>16P^2+(4-P^2)^2-\\frac{128\\sqrt3}9P=P^4+8P^2-\\frac{128\\sqrt3}9P+16.\\]\n  $P=\\dfrac{2u}{\\sqrt3}$（$u>0$）とおくと，右辺は\n  \\[\\frac{16}9(u^4+6u^2-16u+9)=\\frac{16}9(u-1)^2(u^2+2u+9)\\geqq0\\]\n  となるので $a>\\dfrac{8\\sqrt3}9$．\n\\end{itemize}\n（十分性）$a>\\dfrac{8\\sqrt3}9$ とする．\n\\begin{itemize}\n  \\item $a>2$ のとき：$t_3=0$ とし，$t_1,t_2$ を $x^2+ax+1=0$ の2解とする．判別式 $a^2-4>0$ より $t_1,t_2$ は相異なる実数で，$x=0$ は解でないので $t_3$ とも異なる．$t_1+t_2=-a$，$t_1t_2=1$ より $t_1t_2+t_2t_3+t_3t_1=1$，$t_1t_2t_3-(t_1+t_2+t_3)=a$ である．\n  \\item $\\dfrac{8\\sqrt3}9<a\\leqq2$ のとき：$\\dfrac{\\sqrt3}2a>\\dfrac{\\sqrt3}2\\cdot\\dfrac{8\\sqrt3}9=\\dfrac43$ なので $t_3=-\\sqrt{\\dfrac{\\sqrt3}2a-1}$ とおくと $t_3^2>\\dfrac13$，すなわち $t_3<-\\dfrac1{\\sqrt3}$ であり，$t_3^2\\leqq\\sqrt3-1<3$ より $t_3>-\\sqrt3$．$t_1,t_2$ を $x^2+\\dfrac2{\\sqrt3}x+1+\\dfrac2{\\sqrt3}t_3=0$ の2解とすると，判別式は $\\dfrac43-4-\\dfrac8{\\sqrt3}t_3=-\\dfrac8{\\sqrt3}\\left(t_3+\\dfrac1{\\sqrt3}\\right)>0$ なので相異なる実数である．また $x=t_3$ を左辺に代入した値は $t_3^2+\\dfrac4{\\sqrt3}t_3+1=\\left(t_3+\\dfrac1{\\sqrt3}\\right)(t_3+\\sqrt3)<0$ で $0$ でないから，$t_3$ は $t_1,t_2$ と異なる．$t_1+t_2=-\\dfrac2{\\sqrt3}$，$t_1t_2=1+\\dfrac2{\\sqrt3}t_3$ より $t_1t_2+t_3(t_1+t_2)=1$ であり，$(\\#)$ と同じ計算により\n  \\[t_1t_2t_3-(t_1+t_2+t_3)=-(t_1+t_2)(1+t_3^2)=\\frac2{\\sqrt3}\\cdot\\frac{\\sqrt3}2a=a.\\]\n\\end{itemize}\nよって $a>0$ のときの条件は $a>\\dfrac{8\\sqrt3}9$ である．\n\n\\textbf{$a<0$ のとき}　$t_1,t_2,t_3$ を $-t_1,-t_2,-t_3$ に置き換えると，相異なることと $t_1t_2+t_2t_3+t_3t_1$ の値は変わらず，$t_1t_2t_3-(t_1+t_2+t_3)$ は符号だけが変わる．よって $a$ が条件をみたす $\\iff$ $-a$ が条件をみたす．したがって $a<0$ のときの条件は $-a>\\dfrac{8\\sqrt3}9$．\n\n以上より，求める範囲は\n\\[\\boldsymbol{a<-\\frac{8\\sqrt3}9\\ \\text{または}\\ a>\\frac{8\\sqrt3}9}.\\]\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "円周上の点を $(\\cos\\theta,\\sin\\theta)$ とおいて $\\cos^3\\theta$ で割ると，$t=\\tan\\theta$ の3次方程式 $t^3-bt^2+t-(a+b)=0$ に帰着する．1つの $t$ が原点対称な2点に対応するので「6個 $\\iff$ 異なる3実数解」．(1) は $a$ を分離して極値の積の符号を調べる．(2) は解と係数の関係から $a=-(t_1+t_2)(1+t_3^2)$（$t_1t_2+t_2t_3+t_3t_1=1$）と表し，$t_1,t_2$ が実数である条件（判別式）と4次式の因数分解 $(u-1)^2(u^2+2u+9)$ で $|a|$ の下限を出す．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) a<-8sqrt(3)/9 または a>8sqrt(3)/9"
+  },
+  "methods": [],
+  "tags": [
+   "正接への置き換え",
+   "3次方程式の実数解の個数",
+   "極値の積",
+   "解と係数の関係",
+   "定数分離"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-248",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "区間の幅が一定の距離の積分",
+  "topic": "区間の幅が一定の距離の積分",
+  "statement": {
+   "tex": "座標平面上の放物線 $y=x^2$ を $C$，直線 $y=2x+3$ を $\\ell$ とする．実数 $t$ に対し，$C$ 上の点 $\\mathrm P(t,t^2)$ と $\\ell$ の距離を $f(t)$ とし，実数 $a$ に対して\n\\[\nG(a)=\\int_a^{a+2}f(t)\\,dt\n\\]\nとおく．\n\\begin{enumerate}\n  \\item $G(a)$ の最小値と，最小値を与える $a$ の値を求めよ．\n  \\item 実数 $m$ に対し，$G(a)=m$ をみたす実数 $a$ の個数を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 最小値 $\\dfrac{32\\sqrt5-12\\sqrt{15}}{15}$（$a=\\pm\\sqrt3$）　(2) $m_0=\\dfrac{32\\sqrt5-12\\sqrt{15}}{15}$，$M_0=\\dfrac{22\\sqrt5}{15}$ として，$m<m_0$ のとき0個，$m=m_0$ のとき2個，$m_0<m<M_0$ のとき4個，$m=M_0$ のとき3個，$m>M_0$ のとき2個"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\ell$ は $2x-y+3=0$ なので，$q(t)=t^2-2t-3=(t+1)(t-3)$ とおくと\n\\[\nf(t)=\\frac{|2t-t^2+3|}{\\sqrt5}=\\frac{|q(t)|}{\\sqrt5}．\n\\]\n$q(2-t)=(2-t)^2-2(2-t)-3=t^2-2t-3=q(t)$ より $f(2-t)=f(t)$．$t=2-s$ と置換すると\n\\[\nG(-a)=\\int_{-a}^{2-a}f(t)\\,dt=\\int_{a+2}^{a}f(2-s)(-ds)=\\int_a^{a+2}f(s)\\,ds=G(a)\n\\]\nなので $G$ は偶関数である．以下 $a\\geqq0$ で調べる．$Q(t)=\\dfrac{t^3}3-t^2-3t$ とおくと $Q'(t)=q(t)$，$Q(3)=-9$ で，\n\\[\nQ(a+2)-Q(a)=\\frac{(a+2)^3-a^3}3-\\{(a+2)^2-a^2\\}-6=2a^2-\\frac{22}3,\n\\]\n\\[\nQ(a)+Q(a+2)=\\frac{2a^3+6a^2+12a+8}3-(2a^2+4a+4)-(6a+6)=\\frac{2a^3-18a-22}3．\n\\]\n$q(t)\\leqq0\\iff-1\\leqq t\\leqq3$ に注意する．\n\\begin{itemize}\n  \\item $0\\leqq a\\leqq1$ のとき $[a,a+2]\\subset[-1,3]$ なので $G(a)=-\\dfrac{Q(a+2)-Q(a)}{\\sqrt5}=\\dfrac1{\\sqrt5}\\left(\\dfrac{22}3-2a^2\\right)$．\n  \\item $1\\leqq a\\leqq3$ のとき $G(a)=\\dfrac1{\\sqrt5}\\left\\{-\\int_a^3q\\,dt+\\int_3^{a+2}q\\,dt\\right\\}=\\dfrac{Q(a)+Q(a+2)-2Q(3)}{\\sqrt5}=\\dfrac{2(a^3-9a+16)}{3\\sqrt5}$．\n  \\item $a\\geqq3$ のとき $q\\geqq0$ なので $G(a)=\\dfrac{Q(a+2)-Q(a)}{\\sqrt5}=\\dfrac1{\\sqrt5}\\left(2a^2-\\dfrac{22}3\\right)$．\n\\end{itemize}\n（$a=1$ ではいずれも $\\frac{16}{3\\sqrt5}$，$a=3$ ではいずれも $\\frac{32}{3\\sqrt5}$ で一致する．）導関数は\n\\[\n0<a<1:\\ -\\frac{4a}{\\sqrt5}<0,\\qquad 1<a<3:\\ \\frac{2(a^2-3)}{\\sqrt5},\\qquad a>3:\\ \\frac{4a}{\\sqrt5}>0．\n\\]\nしたがって $G$ は $[0,\\sqrt3]$ で狭義単調減少，$[\\sqrt3,\\infty)$ で狭義単調増加で，$a\\to\\infty$ のとき $G(a)\\to\\infty$．\n\\[\nM_0=G(0)=\\frac{22}{3\\sqrt5}=\\frac{22\\sqrt5}{15},\n\\]\n\\[\nm_0=G(\\sqrt3)=\\frac{2(3\\sqrt3-9\\sqrt3+16)}{3\\sqrt5}=\\frac{32-12\\sqrt3}{3\\sqrt5}=\\frac{32\\sqrt5-12\\sqrt{15}}{15}．\n\\]\n\n(1) 偶関数であることとあわせて，最小値は $\\boldsymbol{\\dfrac{32\\sqrt5-12\\sqrt{15}}{15}}$（$\\boldsymbol{a=\\pm\\sqrt3}$）．\n\n(2) $a>0$ の範囲での $G(a)=m$ の解の個数は，上の増減と連続性から\n$m<m_0$ で0個，$m=m_0$ で1個（$a=\\sqrt3$），$m_0<m<M_0$ で2個（$(0,\\sqrt3)$ と $(\\sqrt3,\\infty)$ に1個ずつ），$m\\geqq M_0$ で1個（$(\\sqrt3,\\infty)$ に1個．$(0,\\sqrt3]$ では $G<M_0$）．\n$a<0$ の解は偶関数性により $a>0$ の解と1対1に対応し，$a=0$ は $m=M_0$ のときだけ解である．$m_0<M_0$（$32\\sqrt5-12\\sqrt{15}<22\\sqrt5\\iff10\\sqrt5<12\\sqrt{15}$）に注意して，\n\\[\n\\boldsymbol{m<m_0:0\\text{個},\\quad m=m_0:2\\text{個},\\quad m_0<m<M_0:4\\text{個},\\quad m=M_0:3\\text{個},\\quad m>M_0:2\\text{個}}\n\\]\n（$m_0=\\frac{32\\sqrt5-12\\sqrt{15}}{15}$，$M_0=\\frac{22\\sqrt5}{15}$）．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "距離は $f(t)=\\dfrac{|t^2-2t-3|}{\\sqrt5}$．$f(2-t)=f(t)$ から $G(-a)=G(a)$．積分区間 $[a,a+2]$ が根 $t=3$ をまたぐか否かで $G$ を場合分けして多項式で表すと，$a\\geqq0$ では $a=\\sqrt3$ を境に減少から増加に転じる．$a=0$ は極大点なので，水平線 $G=m$ との交点の数は $4$ 個になる区間がある．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 最小値：(32sqrt(5)-12sqrt(15))/15\n(2) 記述"
+  },
+  "methods": [],
+  "tags": [
+   "点と直線の距離",
+   "絶対値の積分",
+   "区間幅一定の積分",
+   "対称性",
+   "解の個数"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-249",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "横にずらした3次曲線の下の格子点",
+  "topic": "横にずらした3次曲線の下の格子点",
+  "statement": {
+   "tex": "$c$ を正の定数，$a$ を実数とし，座標平面上の曲線\n\\[C:\\ y=c(x-a)^2(x-a+3)\\]\nを考える．$C$ と $x$ 軸で囲まれた領域（境界は含まない）に含まれる，$x$ 座標と $y$ 座標がともに整数である点の個数を $N(a)$ とする．\n\\begin{enumerate}\n  \\item $c=\\dfrac12$ とする．$N(a)$ のとりうる値をすべて求め，それぞれの値をとるような $a$ の範囲を求めよ．\n  \\item $c$ がどのような正の数であっても，$N(a)\\neq1$ となる実数 $a$ が存在することを示せ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $[a]$ を $a$ 以下の最大の整数として，$0<a-[a]<\\sqrt3-1$ のとき $N(a)=2$，$a-[a]=0$ または $\\sqrt3-1\\leqq a-[a]<1$ のとき $N(a)=1$　(2) 証明"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$f(u)=u^2(3-u)$ とおくと，$y=cf(a-x)$ である．$C$ は $x=a-3$ で $x$ 軸と交わり，$x=a$ で $x$ 軸に接し，$x<a-3$ で $y<0$，$a-3<x<a$ および $x>a$ で $y>0$ である．よって $C$ と $x$ 軸で囲まれた領域は\n\\[\\{(x,y)\\mid a-3<x<a,\\ 0<y<cf(a-x)\\}\\]\nである．$h>0$ に対し，$0<y<h$ を満たす整数 $y$ の個数を $m(h)$ とすると，$0<h\\leqq1$ で $m(h)=0$，$1<h\\leqq2$ で $m(h)=1$，一般に $h>1$ なら $m(h)\\geqq1$ である．よって\n\\[N(a)=\\sum m\\bigl(cf(a-x)\\bigr)\\quad(\\text{和は }a-3<x<a\\text{ を満たす整数 }x\\text{ 全体})．\\]\n\n(1) $c=\\frac12$ のとき．$0<u<3$ において\n\\[4-f(u)=u^3-3u^2+4=(u+1)(u-2)^2\\geqq0\\]\nなので $\\frac12f(u)\\leqq2$．したがって各列の格子点は $\\frac12f(u)>1$，すなわち $f(u)>2$ のとき1個，そうでないとき0個である．\n\\[f(u)-2=-(u^3-3u^2+2)=-(u-1)(u-1-\\sqrt3)(u-1+\\sqrt3)\\]\nで，$0<u<3$ では $u-1+\\sqrt3>0$ である．$1<u<1+\\sqrt3$ のとき $(u-1)>0$，$(u-1-\\sqrt3)<0$ で $f(u)-2>0$．$0<u\\leqq1$ のとき $(u-1)\\leqq0$，$(u-1-\\sqrt3)<0$ で $f(u)-2\\leqq0$．$1+\\sqrt3\\leqq u<3$ のとき $(u-1)>0$，$(u-1-\\sqrt3)\\geqq0$ で $f(u)-2\\leqq0$．よって $f(u)>2\\iff1<u<1+\\sqrt3$ であり（$1+\\sqrt3<3$ に注意），\n\\[N(a)=\\bigl(a-1-\\sqrt3<x<a-1\\ \\text{を満たす整数 }x\\text{ の個数}\\bigr)．\\]\n$n=[a]$（$a$ 以下の最大の整数），$\\theta=a-n\\ (0\\leqq\\theta<1)$ とおくと，区間は $(n-1+\\theta-\\sqrt3,\\ n-1+\\theta)$ である．\n\\begin{itemize}\n  \\item 整数 $x\\geqq n$ は $x\\geqq n>n-1+\\theta$ より含まれない．\n  \\item $x=n-1$：$n-1<n-1+\\theta\\iff\\theta>0$．また $n-1>n-1+\\theta-\\sqrt3$ は常に成り立つ．よって $\\theta>0$ のときに限り含まれる．\n  \\item $x=n-2$：$n-2<n-1+\\theta$ は常に成り立ち，$n-2>n-1+\\theta-\\sqrt3\\iff\\theta<\\sqrt3-1$．\n  \\item 整数 $x\\leqq n-3$：$n-1+\\theta-\\sqrt3\\geqq n-1-\\sqrt3>n-3\\geqq x$ より含まれない．\n\\end{itemize}\nしたがって\n\\[\\boldsymbol{N(a)=\\begin{cases}2&(0<a-[a]<\\sqrt3-1)\\\\1&(a-[a]=0\\ \\text{または}\\ \\sqrt3-1\\leqq a-[a]<1)\\end{cases}}\\]\nであり，$N(a)$ のとりうる値は $1,\\,2$ である．\n\n(2) $c>0$ を任意にとる．$\\theta_0=\\dfrac{-3+\\sqrt{33}}6$ とおくと，$3<\\sqrt{33}<9$ より $0<\\theta_0<1$ で，$3\\theta_0^2+3\\theta_0-2=0$ を満たす．$a=\\theta_0$ とすると，$a-3<x<a$ を満たす整数 $x$ は $-2,-1,0$ であり，対応する $u=a-x$ は $\\theta_0+2,\\ \\theta_0+1,\\ \\theta_0$ である．ここで\n\\begin{align*}\nf(\\theta+1)&=(\\theta+1)^2(2-\\theta)=-\\theta^3+3\\theta+2,\\\\\nf(\\theta+2)&=(\\theta+2)^2(1-\\theta)=-\\theta^3-3\\theta^2+4,\\\\\nf(\\theta)&=-\\theta^3+3\\theta^2\n\\end{align*}\nより\n\\[f(\\theta+1)-f(\\theta+2)=3\\theta^2+3\\theta-2,\\qquad f(\\theta+1)-f(\\theta)=3\\theta(1-\\theta)+2>0\\ \\ (0\\leqq\\theta\\leqq1)．\\]\nよって $\\theta=\\theta_0$ で列 $x=-1$，$x=-2$ の高さは等しく，その値を $H=cf(\\theta_0+1)$ とすると，列 $x=0$ の高さ $cf(\\theta_0)$ は $H$ より小さい．\n\\begin{itemize}\n  \\item $H>1$ のとき：列 $x=-1,-2$ にそれぞれ1個以上の格子点があり $N(a)\\geqq2$．\n  \\item $H\\leqq1$ のとき：3つの列の高さはすべて $1$ 以下で，$N(a)=0$．\n\\end{itemize}\nいずれの場合も $N(\\theta_0)\\neq1$ である．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "格子点は $x$ 座標ごとに数える．高さ $h\\ (>0)$ の列に含まれる格子点は「$h$ 未満の正の整数」の個数．高さの関数 $f(u)=u^2(3-u)$ について $f(u)\\leqq4$ と「$f(u)>2\\iff1<u<1+\\sqrt3$」を因数分解で示すと，個数は長さ $\\sqrt3$ の開区間に含まれる整数の個数に帰着する．(2) は2つの列の高さが等しくなる位置を狙う．"
+  },
+  "methods": [],
+  "tags": [
+   "格子点",
+   "3次関数",
+   "整数部分"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-250",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 35,
+  "theme": "放物線の法線が3本通る点と円板",
+  "topic": "放物線の法線が3本通る点と円板",
+  "statement": {
+   "tex": "座標平面上の放物線 $C:\\ y=x^2$ を考える．$C$ 上の点 Q に対し，Q を通り Q における $C$ の接線に垂直な直線を，Q における $C$ の法線という．\n\\begin{enumerate}\n  \\item 点 $\\mathrm P(p,q)$ に対し，「Q における $C$ の法線が P を通るような $C$ 上の点 Q がちょうど3個ある」ための $p,\\,q$ の条件を求めよ．\n  \\item $r>0$ とし，不等式 $x^2+(y-4)^2<r^2$ が表す領域を $D$ とする．$D$ 内のすべての点 P が (1) の条件を満たすような $r$ の最大値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $27p^2<2(2q-1)^3$　(2) $\\sqrt6$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $\\mathrm Q(t,t^2)$ における接線の傾きは $2t$ なので，法線は $(x-t)+2t(y-t^2)=0$．これが P を通る条件は\n\\[\\phi(t)=2t^3+(1-2q)t-p=0．\\]\n$t$ と Q は1対1に対応するので，条件は「$\\phi(t)=0$ が異なる3つの実数解をもつ」ことである．$\\phi'(t)=6t^2+1-2q$．\n\\begin{itemize}\n  \\item $q\\leqq\\frac12$ のとき，$\\phi'(t)\\geqq0$ で等号は高々1点なので $\\phi$ は単調増加，実数解は1個．\n  \\item $q>\\frac12$ のとき，$w=\\sqrt{\\frac{2q-1}6}>0$ とおくと $\\phi$ は $t=-w$ で極大，$t=w$ で極小．$1-2q=-6w^2$ を用いて\n  \\[\\phi(-w)=-2w^3+6w^3-p=4w^3-p,\\qquad\\phi(w)=2w^3-6w^3-p=-4w^3-p．\\]\n  $\\phi(t)\\to\\pm\\infty\\ (t\\to\\pm\\infty)$ と増減から，異なる3実数解をもつ $\\iff\\phi(-w)>0>\\phi(w)\\iff|p|<4w^3\\iff p^2<16w^6=\\dfrac{2(2q-1)^3}{27}$．\n\\end{itemize}\n$q\\leqq\\frac12$ では $27p^2<2(2q-1)^3$ は成り立たない（右辺 $\\leqq0\\leqq$ 左辺）ので，両方の場合をまとめて\n\\[\\boldsymbol{27p^2<2(2q-1)^3}．\\]\n\n(2) \\textbf{$r=\\sqrt6$ で成り立つこと．} 展開により\n\\[2(2q-1)^3-27\\{6-(q-4)^2\\}=16q^3+3q^2-204q+268=(q-2)^2(16q+67)\\]\n（$2(2q-1)^3=16q^3-24q^2+12q-2$，$27\\{6-(q-4)^2\\}=-27q^2+216q-270$，$(q-2)^2(16q+67)=16q^3+3q^2-204q+268$）．$\\mathrm P(p,q)\\in D$（$r=\\sqrt6$）なら $(q-4)^2<6$ より $q>4-\\sqrt6>0$ で $16q+67>0$．よって\n\\[27p^2<27\\{6-(q-4)^2\\}=2(2q-1)^3-(q-2)^2(16q+67)\\leqq2(2q-1)^3\\]\nとなり，(1) の条件を満たす．$r<\\sqrt6$ のときの $D$ はこれに含まれるので同様に成り立つ．\n\n\\textbf{$r>\\sqrt6$ では成り立たないこと．} 点 $(\\sqrt2,2)$ は $(\\sqrt2)^2+(2-4)^2=6<r^2$ より $D$ に属するが，$27\\cdot2=54=2\\cdot3^3$ で $27p^2<2(2q-1)^3$ を満たさない．\n\n以上より，求める最大値は $\\boldsymbol{\\sqrt6}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$\\mathrm Q(t,t^2)$ における法線が $\\mathrm P(p,q)$ を通る条件は $t$ の3次方程式．異なる3実数解の条件は「極大値 $>0>$ 極小値」で $27p^2<2(2q-1)^3$．円板がこの領域に含まれる条件は，$p^2<r^2-(q-4)^2$ を代入した $q$ の3次式が重解をもつところで決まり，因数分解 $(q-2)^2(16q+67)$ で示せる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 27p^2<2(2q-1)^3\n(2) sqrt(6)"
+  },
+  "methods": [],
+  "tags": [
+   "法線",
+   "3次方程式の実数解の個数",
+   "極値",
+   "不等式の証明"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-251",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 35,
+  "theme": "法線が切り取る3点の「接線の行き先」は一直線に並ぶ",
+  "topic": "法線が切り取る3点の「接線の行き先」は一直線に並ぶ",
+  "statement": {
+   "tex": "$y=x^3-x$ で定まる座標平面上の曲線を $C$ とする．$C$ 上の点 X における $C$ の接線が X 以外で $C$ と交わる点を $\\mathrm X^*$ とする（X が原点のときは $\\mathrm X^*=\\mathrm X$ と定める）．\n\n$C$ 上の点 $\\mathrm P(\\alpha,\\alpha^3-\\alpha)$ を通り，点 P における $C$ の接線と垂直に交わる直線を $\\ell$ とする．$C$ と $\\ell$ は相異なる3点 P，Q，R で交わるとする．\n\\begin{enumerate}\n  \\item $\\alpha$ のとりうる値の範囲を求めよ．\n  \\item 3点 $\\mathrm P^*$，$\\mathrm Q^*$，$\\mathrm R^*$ は相異なり，1つの直線 $L$ 上にあることを示せ．\n  \\item $L$ と $\\ell$ のなす角を $\\theta$ $\\left(0<\\theta\\leqq\\dfrac\\pi2\\right)$ とする．$\\tan\\theta$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $-\\dfrac1{\\sqrt3}<\\alpha<\\dfrac1{\\sqrt3}$　(2) 証明　(3) $0<\\tan\\theta\\leqq\\dfrac34$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{準備（$\\mathrm X^*$）．} X$(s,s^3-s)$ における接線は $y=(3s^2-1)x-2s^3$ で，\n\\[\nx^3-x-\\{(3s^2-1)x-2s^3\\}=x^3-3s^2x+2s^3=(x-s)^2(x+2s).\n\\]\nよって $s\\neq0$ のとき $\\mathrm X^*$ の $x$ 座標は $-2s$．$s=0$ のときも定義より $\\mathrm X^*=\\mathrm X$ で $x$ 座標は $0=-2s$．いずれの場合も $\\mathrm X^*$ は $x$ 座標 $-2s$ の $C$ 上の点である．\n\n\\textbf{共線の補題．} $C$ 上の $x$ 座標が相異なる $u,v,w$ である3点 U，V，W について，$u+v+w=0$ ならば3点は一直線上にある．実際，直線 UV の傾きは $\\frac{(u^3-u)-(v^3-v)}{u-v}=u^2+uv+v^2-1$ で，この直線を $y=kx+c$ とすると $x^3-x-(kx+c)$ は $u,v$ を根にもつ3次式で $x^2$ の係数が $0$ だから，第3の根は $-u-v=w$．よって W は直線 UV 上にある．\n\n(1) $t=3\\alpha^2-1$ とおく（$t\\geqq-1$）．$t=0$ のとき P での接線は $x$ 軸に平行で，$\\ell$ は直線 $x=\\alpha$ となり $C$ とは1点でしか交わらない．よって $t\\neq0$ で，$\\ell$ の傾きは $m=-\\dfrac1t$，\n\\[\nx^3-x-(\\alpha^3-\\alpha)-m(x-\\alpha)=(x-\\alpha)\\,g(x),\\qquad g(x)=x^2+\\alpha x+\\alpha^2-1-m .\n\\]\n条件は「$g(x)=0$ が $\\alpha$ と異なる相異なる2実数解をもつ」こと．判別式は $\\alpha^2-4(\\alpha^2-1-m)=4-3\\alpha^2+4m=3-t-\\frac4t$，$g(\\alpha)=3\\alpha^2-1-m=t+\\frac1t$．\n\\begin{itemize}\n  \\item $t>0$ のとき：$3-t-\\frac4t=-\\frac{(t-\\frac32)^2+\\frac74}{t}<0$ で不適．\n  \\item $-1\\leqq t<0$ のとき：$-t>0$，$-\\frac4t>0$ より判別式 $>0$．また $g(\\alpha)=t+\\frac1t<0$ より $g(\\alpha)\\neq0$．適する．\n\\end{itemize}\nよって条件は $-1\\leqq t<0$，すなわち $0\\leqq\\alpha^2<\\frac13$：$\\boldsymbol{-\\dfrac1{\\sqrt3}<\\alpha<\\dfrac1{\\sqrt3}}$．\n\n(2) Q，R の $x$ 座標を $\\beta,\\gamma$ とする．$\\alpha,\\beta,\\gamma$ は相異なり，$x^3-x-(\\ell\\text{の式})=(x-\\alpha)(x-\\beta)(x-\\gamma)$ の $x^2$ の係数を比べて $\\alpha+\\beta+\\gamma=0$．準備より $\\mathrm P^*,\\mathrm Q^*,\\mathrm R^*$ の $x$ 座標は $-2\\alpha,-2\\beta,-2\\gamma$ で，これらは相異なる（よって3点は相異なる）．和は $0$ なので，補題より3点は1つの直線 $L$ 上にある．\\hfill$\\square$\n\n(3) 解と係数の関係より $\\beta+\\gamma=-\\alpha$，$\\beta\\gamma=\\alpha^2-1-m$ なので\n\\[\n\\beta^2+\\beta\\gamma+\\gamma^2=(\\beta+\\gamma)^2-\\beta\\gamma=1+m .\n\\]\n$L$ は $\\mathrm Q^*$，$\\mathrm R^*$ を通るから，補題の計算より傾きは\n\\[\nn=(-2\\beta)^2+(-2\\beta)(-2\\gamma)+(-2\\gamma)^2-1=4(1+m)-1=3+4m .\n\\]\n(1) より $m=\\dfrac1{1-3\\alpha^2}$ で，$\\alpha$ が $-\\frac1{\\sqrt3}<\\alpha<\\frac1{\\sqrt3}$ を動くとき $1-3\\alpha^2$ は $0<1-3\\alpha^2\\leqq1$ のすべての値をとるので，$m$ は $m\\geqq1$ のすべての値をとる．\n\n$n-m=3+3m>0$，$1+nm=4m^2+3m+1>0$ なので $L$ と $\\ell$ は平行でも垂直でもなく，\n\\[\n\\tan\\theta=\\frac{n-m}{1+nm}=\\frac{3(m+1)}{4m^2+3m+1}.\n\\]\n$s=m+1$（$s\\geqq2$）とおくと $4m^2+3m+1=4s^2-5s+2$ で，\n\\[\n\\tan\\theta=\\frac{3s}{4s^2-5s+2}=\\frac{3}{\\varphi(s)-5},\\qquad \\varphi(s)=4s+\\frac2s .\n\\]\n$2\\leqq s_1<s_2$ のとき $\\varphi(s_2)-\\varphi(s_1)=(s_2-s_1)\\left(4-\\frac2{s_1s_2}\\right)>0$ なので $\\varphi$ は $s\\geqq2$ で増加し，$\\varphi(s)\\geqq\\varphi(2)=9$．よって $0<\\tan\\theta\\leqq\\frac34$．\n\n逆に $0<k\\leqq\\frac34$ とし，$c=5+\\frac3k\\ (\\geqq9)$ とおく．$\\tan\\theta=k\\iff\\varphi(s)=c\\iff4s^2-cs+2=0$ で，その大きい方の解 $s=\\frac{c+\\sqrt{c^2-32}}8$ は $c\\geqq9$ のとき $\\frac{9+7}8=2$ 以上（$c$ について増加）である．よって $k$ は実際にとられる．求める範囲は $\\boldsymbol{0<\\tan\\theta\\leqq\\dfrac34}$（最大は $\\alpha=0$ のとき）．"
+   }
+  ],
+  "idea": {
+   "tex": "$y=x^3-x$ と直線の3交点の $x$ 座標の和は常に $0$ で，逆に $x$ 座標の和が $0$ の相異なる3点は一直線上にある．接線が再び交わる点の $x$ 座標は $-2s$ なので，3交点の「行き先」の $x$ 座標の和も $0$ になり共線．法線の傾き $m$ に対し $\\beta^2+\\beta\\gamma+\\gamma^2=1+m$ が成り立ち，行き先の直線の傾きは $3+4m$ だけで決まる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) -1/sqrt(3)<α<1/sqrt(3)\n(2) 証明\n(3) 0<tan(θ)<=3/4"
+  },
+  "methods": [],
+  "tags": [
+   "3次関数",
+   "法線",
+   "解と係数の関係",
+   "共線条件",
+   "2直線のなす角",
+   "分数関数の値域"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-252",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "放物線の弧上のすべての点から「十分離れた」点の集合",
+  "topic": "放物線の弧上のすべての点から「十分離れた」点の集合",
+  "statement": {
+   "tex": "O を原点とする座標平面上で考える．座標平面上の2点 $\\mathrm S(x_1,y_1)$，$\\mathrm T(x_2,y_2)$ に対し，点 S が点 T から十分離れているとは，\n\\[\n|x_1-x_2|\\geqq1\\quad\\text{または}\\quad|y_1-y_2|\\geqq1\n\\]\nが成り立つことと定義する．不等式 $0\\leqq x\\leqq3$，$0\\leqq y\\leqq3$ が表す正方形の領域を $D$ とし，その2つの頂点 $\\mathrm A(3,0)$，$\\mathrm B(3,3)$ を考える．次の条件 (i)，(ii) をともに満たす点 P を考え，P の $x$ 座標を $a$ とする．\n\\begin{enumerate}[label=(\\roman*)]\n  \\item 点 P は領域 $D$ の点であり，かつ，放物線 $y=x^2$ 上にある．\n  \\item 点 P は，3点 O，A，B のいずれからも十分離れている．\n\\end{enumerate}\n\\begin{enumerate}\n  \\item $a$ のとりうる値の範囲を求めよ．\n  \\item 次の条件 (iii)，(iv) をともに満たす点 Q 全体からなる図形の面積 $S$ を求めよ．\n  \\begin{enumerate}[label=(\\roman*),start=3]\n    \\item 点 Q は領域 $D$ の点である．\n    \\item 点 Q は，3点 O，A，B のいずれからも十分離れており，さらに，条件 (i)，(ii) をともに満たす\\textbf{すべての}点 P から十分離れている．\n  \\end{enumerate}\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $1\\leqq a\\leqq\\sqrt3$　(2) $S=\\dfrac13+\\dfrac{8\\sqrt2}3-2\\sqrt3$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $\\mathrm P(a,a^2)$．$D$ の点なので $0\\leqq a\\leqq\\sqrt3$．O から十分離れる条件は $a\\geqq1$ または $a^2\\geqq1$，すなわち $a\\geqq1$．このとき A$(3,0)$ からは $a^2\\geqq1$ で十分離れ，B$(3,3)$ からは $|a-3|=3-a\\geqq3-\\sqrt3\\geqq1$ で十分離れる．よって $\\boldsymbol{1\\leqq a\\leqq\\sqrt3}$．\n\n(2) Q$(x,y)$ が点 $(p,q)$ から十分離れていないことは $|x-p|<1$ かつ $|y-q|<1$ と同値．$I=\\{a\\mid1\\leqq a\\leqq\\sqrt3\\}$ とする．\n\n\\textbf{弧の点から十分離れていない点の集合 $E$．} Q が「ある $a\\in I$ について $\\mathrm P(a,a^2)$ から十分離れていない」$\\iff$「$x-1<a<x+1$ かつ $|y-a^2|<1$ をみたす $a\\in I$ がある」．$x$ を固定し $I_x=I\\cap(x-1,x+1)$ とする．$I_x$ が空でないのは $0<x<1+\\sqrt3$ のとき．このとき $I_x$ は区間で，その下端・上端を $\\lambda(x)=\\max(1,x-1)$，$\\mu(x)=\\min(\\sqrt3,x+1)$ とすると，$a\\in I_x$ に対する開区間 $(a^2-1,a^2+1)$ は長さ2で，中心 $a^2$ が区間 $I_x$ 上を連続に動くから，それらの和集合は開区間 $(\\lambda^2-1,\\ \\mu^2+1)$ に一致する．よって $0<x<1+\\sqrt3$ で\n\\[\n\\mathrm Q\\in E\\iff \\lambda(x)^2-1<y<\\mu(x)^2+1 .\n\\]\n$0\\leqq y\\leqq3$ の範囲で整理すると（以下，面積に影響しない境界の線分・曲線は区別しない）：\n\\begin{itemize}\n  \\item $0<x\\leqq2$ では下限 $0$．$x<\\sqrt3-1$ では上限 $(x+1)^2+1$ で，これが $3$ 以下となるのは $x\\leqq\\sqrt2-1$ のとき．$x\\geqq\\sqrt3-1$ では上限 $4>3$．\n  \\item $2<x<1+\\sqrt3$ では下限 $(x-1)^2-1$（$0$ から $2$ まで増加），上限 $4>3$．\n\\end{itemize}\n\n\\textbf{条件 (iii)(iv) をみたす点．} O，A，B から十分離れていない $D$ の点はそれぞれ $\\{0\\leqq x<1,\\ 0\\leqq y<1\\}$，$\\{2<x\\leqq3,\\ 0\\leqq y<1\\}$，$\\{2<x\\leqq3,\\ 2<y\\leqq3\\}$．これらと $E$ を $D$ から除いた部分 $F$ は，$x$ の範囲ごとに\n\\begin{itemize}\n  \\item $0\\leqq x<\\sqrt2-1$：$(x+1)^2+1\\leqq y\\leqq3$（ここで $y\\geqq2$ なので O の正方形とは交わらない）．\n  \\item $\\sqrt2-1\\leqq x\\leqq2$：なし．\n  \\item $2<x<1+\\sqrt3$：$y\\leqq(x-1)^2-1$ かつ $1\\leqq y\\leqq2$．$(x-1)^2-1\\leqq2$ なので $1\\leqq y\\leqq(x-1)^2-1$ となり，これは $(x-1)^2\\geqq2$，すなわち $x\\geqq1+\\sqrt2$ のときだけ空でない．\n  \\item $1+\\sqrt3\\leqq x\\leqq3$：$E$ には含まれず，$1\\leqq y\\leqq2$．\n\\end{itemize}\nよって\n\\[\nS=\\int_0^{\\sqrt2-1}\\bigl\\{2-(x+1)^2\\bigr\\}dx+\\int_{1+\\sqrt2}^{1+\\sqrt3}\\bigl\\{(x-1)^2-2\\bigr\\}dx+(3-1-\\sqrt3).\n\\]\n第1項は $u=x+1$ として $\\left[2u-\\frac{u^3}3\\right]_1^{\\sqrt2}=\\frac{4\\sqrt2}3-\\frac53$．第2項は $u=x-1$ として $\\left[\\frac{u^3}3-2u\\right]_{\\sqrt2}^{\\sqrt3}=(\\sqrt3-2\\sqrt3)-\\left(\\frac{2\\sqrt2}3-2\\sqrt2\\right)=\\frac{4\\sqrt2}3-\\sqrt3$．したがって\n\\[\nS=\\frac{4\\sqrt2}3-\\frac53+\\frac{4\\sqrt2}3-\\sqrt3+2-\\sqrt3=\\boldsymbol{\\frac13+\\frac{8\\sqrt2}3-2\\sqrt3}.\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "「十分離れていない」は中心からの辺の長さ $2$ の開いた正方形の内部にあること．$a$ が区間を動くときの正方形の和集合は，$x$ を固定した縦の切り口が「$a$ の範囲の両端での $a^2\\mp1$」で決まる区間になる．よって和集合の境界は放物線を左右・上下に平行移動した曲線 $y=(x+1)^2+1$，$y=(x-1)^2-1$ の弧で，残る部分を3か所に分けて積分する．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 1<=a<=sqrt(3)\n(2) $S$：1/3+8sqrt(2)/3-2sqrt(3)"
+  },
+  "methods": [],
+  "tags": [
+   "領域",
+   "正方形の和集合",
+   "定積分と面積",
+   "不等式",
+   "場合分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-253",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 5,
+  "minutes": 35,
+  "theme": "3交点の間隔の比が $2:1$ になる直線が引ける点の範囲",
+  "topic": "3交点の間隔の比が $2:1$ になる直線が引ける点の範囲",
+  "statement": {
+   "tex": "座標平面上の曲線 $C:\\ y=x^3-x$ を考える．直線 $\\ell$ が $C$ と相異なる3点で交わるとき，3交点を $x$ 座標の小さい順に Q，R，S とする．次の条件を (＊) とよぶ．\n\\begin{center}\n(＊)\\quad 直線 $\\ell$ は $C$ と相異なる3点で交わり，$\\mathrm{QR}=2\\,\\mathrm{RS}$ が成り立つ．\n\\end{center}\n\\begin{enumerate}\n  \\item 直線 $\\ell$ が (＊) を満たすとき，R の $x$ 座標 $t$ は正であることを示し，$\\ell$ の方程式を $t$ で表せ．\n  \\item 点 P を通り (＊) を満たす直線 $\\ell$ が存在するような点 P のとりうる範囲を求め，座標平面上に図示せよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $t>0$，$y=(21t^2-1)x-20t^3$　(2) 「$x\\leqq0$ かつ $y<-x$」または「$x>0$ かつ $y\\leqq\\dfrac{343}{100}x^3-x$」（境界は $x>0$ の曲線部分を含み，$x\\leqq0$ の直線部分と原点は含まない）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) 鉛直な直線は $C$ と1点でしか交わらないので，$\\ell:\\ y=mx+n$ とおける．3交点の $x$ 座標を $p<q<r$ とすると\n\\[\nx^3-(1+m)x-n=(x-p)(x-q)(x-r)\n\\]\nで，$x^2$ の係数から $p+q+r=0$．同一直線上の点の間の距離は $x$ 座標の差に比例する（比例定数 $\\sqrt{1+m^2}$）から，$\\mathrm{QR}=2\\mathrm{RS}\\iff q-p=2(r-q)$．$d=r-q>0$ とおくと $p=q-2d$，$r=q+d$ で，$p+q+r=3q-d=0$ より $d=3q$．$d>0$ なので $t=q>0$ で，$p=-5t$，$r=4t$．係数を比べて\n\\[\n-(1+m)=pq+qr+rp=-5t^2+4t^2-20t^2=-21t^2,\\qquad n=pqr=-20t^3 .\n\\]\nよって $\\boldsymbol{\\ell:\\ y=(21t^2-1)x-20t^3}$（$t>0$）．逆に $t>0$ のとき $x^3-x-\\{(21t^2-1)x-20t^3\\}=x^3-21t^2x+20t^3=(x+5t)(x-t)(x-4t)$ で，3交点の $x$ 座標は $-5t<t<4t$，$t-(-5t)=6t=2(4t-t)$ なので (＊) を満たす．\n\n(2) P$(X,Y)$ を通る (＊) の直線があることは，(1) より\n\\[\nY+X=k(t),\\qquad k(t)=21Xt^2-20t^3\n\\]\nをみたす $t>0$ が存在することと同値．$k'(t)=6t(7X-10t)$．\n\\begin{itemize}\n  \\item $X\\leqq0$ のとき：$t>0$ で $k'(t)<0$，$k$ は狭義減少で，$k(0)=0$，$t\\to\\infty$ で $k(t)\\to-\\infty$．$k$ の $t>0$ での値域は $k(t)<0$ の全体（連続性と中間値の定理）．条件は $Y+X<0$．\n  \\item $X>0$ のとき：$k$ は $0<t\\leqq\\frac{7X}{10}$ で増加，$t\\geqq\\frac{7X}{10}$ で減少し，最大値\n  \\[\n  k\\!\\left(\\tfrac{7X}{10}\\right)=21X\\cdot\\frac{49X^2}{100}-20\\cdot\\frac{343X^3}{1000}=\\frac{1029-686}{100}X^3=\\frac{343}{100}X^3 .\n  \\]\n  $t\\to\\infty$ で $k(t)\\to-\\infty$ なので，$t\\geqq\\frac{7X}{10}$ の部分だけで値域は $k(t)\\leqq\\frac{343}{100}X^3$ の全体．条件は $Y+X\\leqq\\frac{343}{100}X^3$．\n\\end{itemize}\n求める範囲は\n\\[\n\\boldsymbol{\\left\\{x\\leqq0\\ \\text{かつ}\\ y<-x\\right\\}\\ \\cup\\ \\left\\{x>0\\ \\text{かつ}\\ y\\leqq\\dfrac{343}{100}x^3-x\\right\\}}.\n\\]\n\\textbf{図示．} $x\\leqq0$ では直線 $y=-x$ の下側（境界を含まない），$x>0$ では曲線 $y=\\frac{343}{100}x^3-x$ の下側（境界を含む）．2つの境界は原点でつながるが，原点は含まない．曲線 $y=\\frac{343}{100}x^3-x$ は原点で直線 $y=-x$ に接し（原点での傾きは $-1$），$y'=\\frac{1029}{100}x^2-1=0$ となる $x=\\frac{10}{7\\sqrt{21}}=\\frac{10\\sqrt{21}}{147}$ で極小値 $x\\left(\\frac{343}{100}x^2-1\\right)=x\\left(\\frac13-1\\right)=-\\frac{20\\sqrt{21}}{441}$ をとり，その後は増加する．また $x>0$ では $C$ より上にある（差 $\\frac{243}{100}x^3>0$）．"
+   }
+  ],
+  "idea": {
+   "tex": "$y=x^3-x$ と直線の3交点の $x$ 座標の和は $0$．間隔の比 $2:1$ と和 $0$ から3交点の $x$ 座標は $-5t$，$t$，$4t$（$t>0$）に決まり，直線は $y=(21t^2-1)x-20t^3$ の1パラメータ族になる．点 P を通る族の直線があるかは，$t$ の3次関数 $21Xt^2-20t^3$ が $t>0$ で値 $Y+X$ をとるかという存在条件で，$X$ の符号で増減が変わる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) t>0 ; $y$：(21t^2-1)x-20t^3\n(2) 記述"
+  },
+  "methods": [],
+  "tags": [
+   "3次関数",
+   "解と係数の関係",
+   "通過領域",
+   "パラメータの存在条件",
+   "増減表"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-254",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 5,
+  "minutes": 40,
+  "theme": "3本の接線が直角二等辺三角形をつくる",
+  "topic": "3本の接線が直角二等辺三角形をつくる",
+  "statement": {
+   "tex": "$k$ を実数とし，座標平面上の曲線 $C$ を $y=x^3-kx$ で定める．$C$ 上の2点 P，Q に対する次の条件 $(*)$ を考える．\n\\begin{center}\n\\begin{minipage}{0.86\\linewidth}\n条件 $(*)$：原点 O，点 P，点 Q は相異なり，$C$ の O，P，Q における3本の接線のどの2本も交わり，3本の接線で囲まれる三角形は直角二等辺三角形である．\n\\end{minipage}\n\\end{center}\n\\begin{enumerate}\n  \\item 条件 $(*)$ をみたす P，Q が存在するような $k$ の範囲を求めよ．\n  \\item $k$ が (1) の範囲にあるとき，条件 $(*)$ をみたす2点の組 $\\{\\mathrm P,\\mathrm Q\\}$ の個数を求めよ．\n  \\item $k=3$ とする．P，Q が条件 $(*)$ をみたすように動くとき，3本の接線で囲まれる三角形の面積 $S$ の最大値 $M$ と最小値 $m$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $k>0$　(2) $0<k\\leqq1$ のとき $4$ 個，$k>1$ のとき $12$ 個　(3) $M=\\dfrac{500+200\\sqrt6}{81}$，$m=\\dfrac{350-200\\sqrt3}{81}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{準備．}$x=t$ における接線は $y=(3t^2-k)x-2t^3$ で，傾き $3t^2-k\\geqq-k$，等号は $t=0$ のときのみ．\n$\\tan\\theta_0=-k$，$-\\frac\\pi2<\\theta_0<\\frac\\pi2$ とし，直線の傾斜角を $(-\\frac\\pi2,\\frac\\pi2)$ の範囲でとる．P，Q $\\neq$ O なので，P，Q における接線の傾斜角 $\\theta_{\\mathrm P},\\theta_{\\mathrm Q}$ は区間 $(\\theta_0,\\frac\\pi2)$ にある．どの2本も交わるので傾きは互いに異なり，$\\delta_1=\\theta_{\\mathrm P}-\\theta_0$，$\\delta_2=\\theta_{\\mathrm Q}-\\theta_0$ は $0<\\delta_1,\\delta_2<\\frac\\pi2-\\theta_0\\ (<\\pi)$ の相異なる値で，P，Q を入れかえて $\\delta_1<\\delta_2$ としてよい．傾斜角の差が $\\delta$（$0<\\delta<\\pi$）の2直線のなす角は $\\min(\\delta,\\pi-\\delta)$．\n\n3直線で囲まれる三角形の内角は，各頂点で交わる2直線のなす角 $\\varphi$ か $\\pi-\\varphi$ である．直角二等辺三角形なら3つのなす角は $\\frac\\pi2,\\frac\\pi4,\\frac\\pi4$．逆に3つのなす角が $\\frac\\pi2,\\frac\\pi4,\\frac\\pi4$ なら，内角は $\\frac\\pi2$ と，$\\frac\\pi4$ または $\\frac{3\\pi}4$ の2つで，和が $\\pi$ なので後の2つは $\\frac\\pi4$．よって条件 $(*)$ $\\iff$ 3つのなす角が $\\{\\frac\\pi2,\\frac\\pi4,\\frac\\pi4\\}$．\n\n\\textbf{場合分け．}\n(i) O-P，O-Q のなす角が $\\frac\\pi4$，P-Q が $\\frac\\pi2$：$\\delta_1,\\delta_2\\in\\{\\frac\\pi4,\\frac{3\\pi}4\\}$ で $\\delta_1=\\frac\\pi4,\\delta_2=\\frac{3\\pi}4$．このとき差は $\\frac\\pi2$ で適する．\n(ii) O-P が $\\frac\\pi2$：$\\delta_1=\\frac\\pi2$，O-Q が $\\frac\\pi4$ で $\\delta_2>\\delta_1$ より $\\delta_2=\\frac{3\\pi}4$，P-Q は $\\frac\\pi4$ で適する．\n(iii) O-Q が $\\frac\\pi2$：$\\delta_2=\\frac\\pi2$，O-P が $\\frac\\pi4$ で $\\delta_1=\\frac\\pi4$，P-Q は $\\frac\\pi4$ で適する．\nよって $\\{\\delta_1,\\delta_2\\}$ は $\\{\\frac\\pi4,\\frac{3\\pi}4\\}$，$\\{\\frac\\pi2,\\frac{3\\pi}4\\}$，$\\{\\frac\\pi4,\\frac\\pi2\\}$ のいずれかで，ずれ $\\delta$ が使える条件は $\\delta<\\frac\\pi2-\\theta_0$．\n$\\delta=\\frac\\pi2$ が使える $\\iff\\theta_0<0\\iff k>0$；$\\delta=\\frac{3\\pi}4$ が使える $\\iff\\theta_0<-\\frac\\pi4\\iff k>1$；$\\delta=\\frac\\pi4$ は $k>0$ なら使える．\n\n(1) $k\\leqq0$ では $\\delta=\\frac\\pi2$ も $\\frac{3\\pi}{4}$ も使えず，どの組も不可．$k>0$ なら (iii) が実現する（下の傾きに対して $t$ が存在）．答 $\\boldsymbol{k>0}$．\n\n\\textbf{傾きと接点．}加法定理で，$\\tan(\\theta_0+\\frac\\pi4)=\\dfrac{1-k}{1+k}$，$\\tan(\\theta_0+\\frac\\pi2)=\\dfrac1k$，$\\tan(\\theta_0+\\frac{3\\pi}4)=\\tan(\\theta_0-\\frac\\pi4)=\\dfrac{k+1}{k-1}$．\n傾き $\\mu$ の接線の接点 $t$ は $t^2=\\dfrac{\\mu+k}{3}$ で，\n\\[\nX_{1/4}=\\frac{1+k^2}{3(k+1)},\\qquad X_{1/2}=\\frac{1+k^2}{3k},\\qquad X_{3/4}=\\frac{1+k^2}{3(k-1)}\n\\]\nをそれぞれ $t^2$ の値とする（$X_{3/4}$ は $k>1$ のとき）．いずれも正なので，各傾きに対し接点は $t=\\pm\\sqrt{X}$ の2つ．\n\n(2) $\\{\\delta_1,\\delta_2\\}$ の組ごとに P，Q の接点の符号の選び方が $2\\times2=4$ 通りで，傾きが異なるのでこれらの $\\{\\mathrm P,\\mathrm Q\\}$ はすべて異なる．\n$0<k\\leqq1$：(iii) のみで $\\boldsymbol{4}$ 個．$k>1$：3つの組で $\\boldsymbol{12}$ 個．\n\n\\textbf{面積の式．}P，Q の $x$ 座標を $p,q$（$p\\neq0,q\\neq0$，$p^2\\neq q^2$）とする．O の接線 $y=-kx$ と P の接線の交点は $3p^2x=2p^3$ より $A\\left(\\frac{2p}3,-\\frac{2kp}3\\right)$，同様に $B\\left(\\frac{2q}3,-\\frac{2kq}3\\right)$．P，Q の接線の交点 $E(x_E,y_E)$ は $3(p^2-q^2)x_E=2(p^3-q^3)$ より $x_E=\\dfrac{2(p^2+pq+q^2)}{3(p+q)}$．\n$\\overrightarrow{AB}=\\frac{2(q-p)}3(1,-k)$，$\\overrightarrow{AE}=(x_E-\\frac{2p}3,\\ y_E+\\frac{2kp}3)$ で，\n\\[S=\\frac12\\left|\\frac{2(q-p)}3\\right|\\cdot\\left|\\Bigl(y_E+\\frac{2kp}{3}\\Bigr)+k\\Bigl(x_E-\\frac{2p}{3}\\Bigr)\\right|=\\frac{|q-p|}{3}\\,|y_E+kx_E| .\\]\n$y_E=(3p^2-k)x_E-2p^3$ より $y_E+kx_E=3p^2x_E-2p^3=\\dfrac{2p^2\\{(p^2+pq+q^2)-p(p+q)\\}}{p+q}=\\dfrac{2p^2q^2}{p+q}$．よって\n\\[S=\\frac23\\,p^2q^2\\,\\frac{|p-q|}{|p+q|}.\\]\n$p^2=X$，$q^2=Y$（$X\\neq Y$）とすると，$p,q$ が同符号のとき $S=S_-$，異符号のとき $S=S_+$ で\n\\[S_\\pm=\\frac23XY\\frac{(\\sqrt X\\pm\\sqrt Y)^2}{|X-Y|}\\qquad(\\text{複号同順}).\\]\n\n(3) $k=3$：$X_{1/4}=\\frac56$，$X_{1/2}=\\frac{10}9$，$X_{3/4}=\\frac53$．\n\\begin{itemize}\n\\item $\\{\\frac56,\\frac{10}9\\}$：$XY=\\frac{25}{27}$，$|X-Y|=\\frac5{18}$，$(\\sqrt X\\pm\\sqrt Y)^2=\\frac{35}{18}\\pm\\frac{10\\sqrt3}{9}$ より $S_\\pm=\\dfrac{350\\pm200\\sqrt3}{81}$．\n\\item $\\{\\frac56,\\frac53\\}$：$XY=\\frac{25}{18}$，$|X-Y|=\\frac56$，$(\\sqrt X\\pm\\sqrt Y)^2=\\frac52\\pm\\frac{5\\sqrt2}{3}$ より $S_\\pm=\\dfrac{225\\pm150\\sqrt2}{81}$．\n\\item $\\{\\frac{10}9,\\frac53\\}$：$XY=\\frac{50}{27}$，$|X-Y|=\\frac59$，$(\\sqrt X\\pm\\sqrt Y)^2=\\frac{25}9\\pm\\frac{10\\sqrt6}{9}$ より $S_\\pm=\\dfrac{500\\pm200\\sqrt6}{81}$．\n\\end{itemize}\n$S$ はこの6つの値をとる．\n最大：$500+200\\sqrt6$ は $350+200\\sqrt3$ と $225+150\\sqrt2$ より明らかに大きい（各項が大きい）．よって $\\boldsymbol{M=\\dfrac{500+200\\sqrt6}{81}}$．\n最小：$350-200\\sqrt3<225-150\\sqrt2\\iff5+6\\sqrt2<8\\sqrt3\\iff97+60\\sqrt2<192\\iff60\\sqrt2<95\\iff7200<9025$ で成立．\n$350-200\\sqrt3<500-200\\sqrt6\\iff4\\sqrt3(\\sqrt2-1)<3\\iff\\sqrt2<1+\\frac{\\sqrt3}{4}\\iff2<\\frac{19}{16}+\\frac{\\sqrt3}2\\iff\\frac{13}{8}<\\sqrt3\\iff169<192$ で成立．\nよって $\\boldsymbol{m=\\dfrac{350-200\\sqrt3}{81}}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$y=x^3-kx$ の接線の傾き $3t^2-k$ は $t=0$ で最小なので，O での接線の傾斜角 $\\theta_0$ が3本の中で最小．他の2本の傾斜角は $\\theta_0$ から $\\frac\\pi4,\\frac\\pi2,\\frac{3\\pi}4$ のうち2つだけずれ，どれが使えるかは $\\theta_0+\\frac{3\\pi}{4}<\\frac\\pi2$ かどうかで分かれる．面積は $p,q$ の符号の組合せで2通りの値をとり，$\\dfrac23p^2q^2\\dfrac{|p-q|}{|p+q|}$ と表せる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) k>0\n(2) 記述\n(3) $M$：(500+200sqrt(6))/81 ; $m$：(350-200sqrt(3))/81"
+  },
+  "methods": [],
+  "tags": [
+   "接線",
+   "傾きと角",
+   "加法定理",
+   "三角形の面積",
+   "場合分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-255",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "法線の連鎖と面積比・$100$ 番目の点",
+  "topic": "法線の連鎖と面積比・$100$ 番目の点",
+  "statement": {
+   "tex": "座標平面上の放物線 $C:y=x^2$ を考える．$C$ 上の原点以外の点 $\\mathrm X$ に対し，$\\mathrm X$ における $C$ の接線と直交し $\\mathrm X$ を通る直線（$\\mathrm X$ における法線）と $C$ の交点のうち $\\mathrm X$ と異なる点を $\\mathrm X^*$ と書く．\n\n$a$ を正の実数とし，$\\mathrm P_0=(a,\\,a^2)$，$\\mathrm P_{k+1}=\\mathrm P_k{}^*$（$k=0,1,2,\\dots$）により $C$ 上の点 $\\mathrm P_0,\\mathrm P_1,\\mathrm P_2,\\dots$ を定める（どの $\\mathrm P_k$ も原点と異なり，この定義は意味をもつ）．また，線分 $\\mathrm P_k\\mathrm P_{k+1}$ と $C$ で囲まれる部分の面積を $S_k$ とする．\n\\begin{enumerate}\n  \\item $a$ がすべての正の実数を動くとき，$\\dfrac{S_1}{S_0}$ のとりうる値の範囲を求めよ．\n  \\item $a=\\dfrac12$ とする．$\\mathrm P_{100}$ の $x$ 座標の整数部分を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $1<\\dfrac{S_1}{S_0}<8$　(2) $10$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{法線ともう一方の交点．}$p\\neq0$ とする．点 $(p,p^2)$ における接線の傾きは $2p$ なので，法線は $y-p^2=-\\dfrac1{2p}(x-p)$．$y=x^2$ と連立すると\n\\[x^2-p^2=-\\frac{x-p}{2p}\\iff(x-p)\\left(x+p+\\frac1{2p}\\right)=0\\]\nであり，もう一方の交点の $x$ 座標は $-p-\\dfrac1{2p}$ である（これは $p$ と異符号で $0$ でない）．\n\n$\\mathrm P_k$ の $x$ 座標を $x_k$ とすると，$x_0=a>0$，$x_{k+1}=-x_k-\\dfrac1{2x_k}$．帰納的に $x_k\\neq0$ で，$x_k$ の符号は $k$ が偶数なら正，奇数なら負である．よって定義は意味をもち，$|x_{k+1}|=|x_k|+\\dfrac1{2|x_k|}$ が成り立つ．\n\nまた，直線と放物線 $y=x^2$ の交点の $x$ 座標が $\\alpha<\\beta$ のとき，囲まれる部分の面積は $\\displaystyle\\int_\\alpha^\\beta\\{-(x-\\alpha)(x-\\beta)\\}dx=\\frac{(\\beta-\\alpha)^3}6$．したがって $S_k=\\dfrac{|x_k-x_{k+1}|^3}6$．\n\n(1) $x_k$ と $x_{k+1}$ は異符号なので $|x_k-x_{k+1}|=|x_k|+|x_{k+1}|=2|x_k|+\\dfrac1{2|x_k|}$．\n\\[|x_0-x_1|=2a+\\frac1{2a}=\\frac{4a^2+1}{2a},\\qquad |x_1|=a+\\frac1{2a}=\\frac{2a^2+1}{2a},\\]\n\\[|x_1-x_2|=\\frac{2a^2+1}{a}+\\frac{a}{2a^2+1}=\\frac{(2a^2+1)^2+a^2}{a(2a^2+1)}=\\frac{(4a^2+1)(a^2+1)}{a(2a^2+1)}.\\]\nよって\n\\[\\frac{|x_1-x_2|}{|x_0-x_1|}=\\frac{2(a^2+1)}{2a^2+1}=1+\\frac1{2a^2+1},\\qquad \\frac{S_1}{S_0}=\\left(1+\\frac1{2a^2+1}\\right)^3.\\]\n$a>0$ のとき $2a^2+1>1$ なので $0<\\dfrac1{2a^2+1}<1$，よって $1<\\dfrac{S_1}{S_0}<8$．逆に $1<k<8$ をみたす任意の $k$ に対し，$c=\\sqrt[3]k-1\\in(0,1)$ として $a=\\sqrt{\\dfrac12\\left(\\dfrac1c-1\\right)}>0$ とおけば $\\dfrac1{2a^2+1}=c$ となり $\\dfrac{S_1}{S_0}=k$．\n\n求める範囲は $\\boldsymbol{1<\\dfrac{S_1}{S_0}<8}$．\n\n(2) $x_{k+1}^2=\\left(x_k+\\dfrac1{2x_k}\\right)^2=x_k^2+1+\\dfrac1{4x_k^2}$．$x_0^2=\\dfrac14$ なので，帰納的に $x_k^2\\geqq\\dfrac14+k$（$k\\geqq0$）．また\n\\[x_{100}^2=\\frac14+100+\\sum_{k=0}^{99}\\frac1{4x_k^2}.\\]\n右辺の和は正なので $x_{100}^2>100$．一方 $\\dfrac1{4x_k^2}\\leqq\\dfrac1{4k+1}$ より，$k=0$ の項は $1$ 以下，$k\\geqq1$ の項は $\\dfrac1{4k}$ 未満．$\\displaystyle\\sum_{k=1}^{99}\\frac1k\\leqq1+\\sum_{k=2}^{99}\\frac12=1+49=50$ だから\n\\[\\sum_{k=0}^{99}\\frac1{4x_k^2}\\leqq1+\\frac{50}4=\\frac{27}2,\\qquad x_{100}^2\\leqq\\frac14+100+\\frac{27}2<121.\\]\nよって $10<|x_{100}|<11$．$100$ は偶数なので $x_{100}>0$，すなわち $10<x_{100}<11$．整数部分は $\\boldsymbol{10}$．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "放物線 $y=x^2$ 上の点 $(p,p^2)$ における法線ともう一方の交点の $x$ 座標は $-p-\\dfrac1{2p}$．法線と放物線で囲まれる面積は「交点の $x$ 座標の差の3乗の $\\frac16$」．差の比が $2a^2+1$ だけで表せる．また $x_{k+1}^2=x_k^2+1+\\dfrac1{4x_k^2}$ から $x_k^2$ を上下から評価する．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 10"
+  },
+  "methods": [],
+  "tags": [
+   "法線",
+   "放物線と直線の面積",
+   "数列の評価",
+   "漸化式"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-256",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 3,
+  "minutes": 30,
+  "theme": "$|x^2-ax|$ と直線にはさまれた部分",
+  "topic": "$|x^2-ax|$ と直線にはさまれた部分",
+  "statement": {
+   "tex": "$a$ を実数とする．座標平面において，次の連立不等式の表す領域の面積を $S(a)$ とする．\n\\[\n\\begin{cases}\ny\\leqq x\\\\\ny\\geqq|x^2-ax|\\\\\nx\\leqq2\n\\end{cases}\n\\]\n$a$ がすべての実数を動くとき，$S(a)$ の最大値と，そのときの $a$ の値を求めよ．"
+  },
+  "answer": {
+   "tex": "最大値 $2\\sqrt6-\\dfrac{11}3$（$a=\\sqrt6-1$）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "領域の点は $|x^2-ax|\\leqq y\\leqq x$ より $x\\geqq0$ をみたす．$0\\leqq x\\leqq2$ における縦の切り口の長さは\n\\[\\max\\{0,\\ x-|x|\\,|x-a|\\}=x\\cdot\\max\\{0,\\ 1-|x-a|\\}\\]\nなので $S(a)=\\displaystyle\\int_0^2x\\,\\tau(x)\\,dx$，$\\tau(x)=\\max\\{0,1-|x-a|\\}$．$\\tau$ は $[a-1,a+1]$ の外で $0$．\n\nまず，帯の制約がなければ $\\displaystyle\\int_{a-1}^{a+1}x\\,(1-|x-a|)dx=\\int_{-1}^1(a+v)(1-|v|)dv=a$（$v=x-a$，奇関数部分は消える）．\n\n\\textbf{(i) $a\\leqq-1$ または $a\\geqq3$：}$[a-1,a+1]\\cap[0,2]$ は高々1点で $S(a)=0$．\n\n\\textbf{(ii) $-1\\leqq a\\leqq0$：}$S(a)=\\displaystyle\\int_0^{a+1}x(a+1-x)dx=\\frac{(a+1)^3}6\\leqq\\frac16$．\n\n\\textbf{(iii) $0\\leqq a\\leqq1$：}$S(a)=a-\\displaystyle\\int_{a-1}^0x(x-a+1)dx=a+\\frac{(1-a)^3}6$．$S'(a)=1-\\dfrac{(1-a)^2}2>0$ より $S(a)\\leqq S(1)=1$．\n\n\\textbf{(iv) $1\\leqq a\\leqq2$：}$[a-1,a+1]$ のうち $x>2$ の部分を除く．$w=a+1-x$ とおいて\n\\[\\int_2^{a+1}x(a+1-x)dx=\\int_0^{a-1}(a+1-w)w\\,dw=\\frac{(a+1)(a-1)^2}2-\\frac{(a-1)^3}3=\\frac{(a-1)^2(a+5)}6,\\]\n\\[S(a)=a-\\frac{(a-1)^2(a+5)}6=\\frac{-a^3-3a^2+15a-5}6,\\qquad S'(a)=-\\frac{a^2+2a-5}2.\\]\n$S'(a)=0$ の解で $[1,2]$ にあるのは $a=\\sqrt6-1$（$1<\\sqrt6-1<2$）で，$S$ はここまで増加し，その後減少．$a=\\sqrt6-1$ では $a^2=7-2\\sqrt6$，$a^3=9\\sqrt6-19$ より\n\\[S=\\frac{-(9\\sqrt6-19)-3(7-2\\sqrt6)+15(\\sqrt6-1)-5}6=\\frac{12\\sqrt6-22}6=2\\sqrt6-\\frac{11}3.\\]\n\n\\textbf{(v) $2\\leqq a\\leqq3$：}$S(a)=\\displaystyle\\int_{a-1}^2x(x-a+1)dx\\leqq\\int_{a-1}^22(x-a+1)dx=(3-a)^2\\leqq1$．\n\n$2\\sqrt6>\\dfrac{14}3$（$24>\\frac{196}9$）より $2\\sqrt6-\\dfrac{11}3>1$．以上から最大値は $\\boldsymbol{2\\sqrt6-\\dfrac{11}3}$（$\\boldsymbol{a=\\sqrt6-1}$）．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$x\\geqq0$ では $x-|x^2-ax|=x\\bigl(1-|x-a|\\bigr)$ となり，縦の切り口は「$x$ と山形の関数の積」．山形が帯 $0\\leqq x\\leqq2$ からはみ出す部分を差し引くと，各範囲で面積は $a$ の3次式になる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "最大値：2sqrt(6)-11/3"
+  },
+  "methods": [],
+  "tags": [
+   "絶対値",
+   "面積",
+   "場合分け",
+   "3次関数の最大"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-257",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "接する2つの放物線と係数の制約がつくる接点の範囲",
+  "topic": "接する2つの放物線と係数の制約がつくる接点の範囲",
+  "statement": {
+   "tex": "0でない実数 $a$，$b$，$c$ が次の条件 (i)，(ii) をみたしながら動く．\n\\begin{enumerate}[label=(\\roman*)]\n  \\item $|a|\\leqq1$，$|c|\\leqq1$，$b\\leqq-1$\n  \\item 2つの放物線 $C_1:y=ax^2$ と $C_2:y=b(x-1)^2+c$ は接している．\n\\end{enumerate}\nただし，2つの曲線が接するとは，ある共有点において共通の接線をもつことであり，その共有点を接点という．\n\\begin{enumerate}\n  \\item $C_1$ と $C_2$ が接するとき，接点はただ1つであることを示し，接点を $(X,Y)$ として $a$，$b$，$c$ を $X$，$Y$ で表せ．\n  \\item $C_1$ と $C_2$ の接点が動く範囲を図示し，その面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a=\\dfrac{Y}{X^2}$，$b=\\dfrac{Y}{X(X-1)}$，$c=\\dfrac{Y}{X}$（$X\\neq0,1$，$Y\\neq0$）　(2) $\\left\\{\\dfrac12\\leqq x<1,\\ x-x^2\\leqq y\\leqq x^2\\right\\}$ と $\\left\\{1<x\\leqq2,\\ -x\\leqq y\\leqq x-x^2\\right\\}$ の和集合，面積 $\\dfrac78$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $C_1$，$C_2$ が $x=X$ の点で接するとする．共有点であることと接線の傾きが等しいことから\n\\[aX^2=b(X-1)^2+c,\\qquad 2aX=2b(X-1).\\]\n$X=1$ とすると第2式から $a=0$ となり不適なので $X\\neq1$ で，$b=\\dfrac{aX}{X-1}$．第1式に代入して $c=aX^2-aX(X-1)=aX$．$c\\neq0$ より $X\\neq0$．また $c=aX$ より $X=\\dfrac ca$ であり，接点の $x$ 座標は $a$，$c$ からただ1通りに決まるので，接点はただ1つである．\n\n接点を $(X,Y)$ とすると $Y=aX^2$ だから\n\\[\\boldsymbol{a=\\frac{Y}{X^2},\\quad b=\\frac{Y}{X(X-1)},\\quad c=\\frac{Y}{X}}\\qquad(X\\neq0,\\ X\\neq1,\\ Y\\neq0).\\]\n逆に $X\\neq0,1$，$Y\\neq0$ である点 $(X,Y)$ に対してこの式で $a,b,c$ を定めると，これらは0でなく，上の2式がみたされるので $C_1$ と $C_2$ は $(X,Y)$ で接する．\n\n(2) したがって求める範囲は，$X\\neq0,1$，$Y\\neq0$ かつ\n\\[\\left|\\frac{Y}{X^2}\\right|\\leqq1,\\qquad \\left|\\frac YX\\right|\\leqq1,\\qquad \\frac{Y}{X(X-1)}\\leqq-1\\]\nをみたす点 $(X,Y)$ 全体である．\n\n\\textbf{$Y>0$ のとき．}第3式で $X(X-1)>0$ なら左辺は正で不成立．よって $0<X<1$ で，両辺に $X(X-1)<0$ をかけて $Y\\geqq X(1-X)$．第1式は $Y\\leqq X^2$．このとき $X^2\\leqq X$ より第2式 $Y\\leqq X$ は自動的に成り立つ．$X(1-X)\\leqq X^2\\iff X\\geqq\\frac12$ だから，この部分は\n\\[\\frac12\\leqq X<1,\\qquad X-X^2\\leqq Y\\leqq X^2 .\\]\n\n\\textbf{$Y<0$ のとき．}第3式で $0<X<1$ なら $Y\\geqq X(1-X)>0$ となり不適．よって $X<0$ または $X>1$ で，$Y\\leqq X-X^2$．$X<0$ のときは第1式 $Y\\geqq-X^2$ と $X-X^2<-X^2$ が矛盾する．$X>1$ のとき，第1式 $Y\\geqq-X^2$，第2式 $Y\\geqq-X$ で，$-X>-X^2$ だから下限は $-X$．$-X\\leqq X-X^2\\iff X\\leqq2$．よってこの部分は\n\\[1<X\\leqq2,\\qquad -X\\leqq Y\\leqq X-X^2\\]\n（$X-X^2<0$ なので $Y<0$ は自動的に成り立つ）．\n\n以上より，接点の動く範囲は\n\\[\\boldsymbol{\\left\\{\\tfrac12\\leqq x<1,\\ x-x^2\\leqq y\\leqq x^2\\right\\}\\cup\\left\\{1<x\\leqq2,\\ -x\\leqq y\\leqq x-x^2\\right\\}}\\]\nである．図示すると，第1の部分は放物線 $y=x^2$ と $y=x-x^2$ にはさまれた，点 $\\left(\\frac12,\\frac14\\right)$ から右へ開く部分（直線 $x=1$ 上の点を除く），第2の部分は直線 $y=-x$ と放物線 $y=x-x^2$ にはさまれた，$x=1$ の側で開き点 $(2,-2)$ で閉じる部分（直線 $x=1$ 上の点を除く）であり，その他の境界はすべて含む．\n\n面積は\n\\[\n\\int_{\\frac12}^{1}(2x^2-x)\\,dx+\\int_1^2(2x-x^2)\\,dx=\\left(\\frac16+\\frac1{24}\\right)+\\frac23=\\boldsymbol{\\frac78}.\n\\]\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "接点の $x$ 座標を $X$ とすると，接する条件から $b=\\dfrac{aX}{X-1}$，$c=aX$ が出て，接点 $(X,Y)$ を使うと $a=\\dfrac{Y}{X^2}$，$b=\\dfrac{Y}{X(X-1)}$，$c=\\dfrac YX$ と逆に表せる．係数の不等式は $X$，$X-1$，$Y$ の符号で場合分けすると放物線と直線で囲まれた領域になる．"
+  },
+  "methods": [],
+  "tags": [
+   "接する2曲線",
+   "接点による係数の表示",
+   "不等式の表す領域",
+   "面積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-258",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 3,
+  "minutes": 25,
+  "theme": "二重の絶対値のグラフと直線が囲む図形",
+  "topic": "二重の絶対値のグラフと直線が囲む図形",
+  "statement": {
+   "tex": "$xy$ 平面上で，直線 $y=x$ と曲線 $y=\\left|\\,\\left|\\dfrac34x^2-3\\right|-2\\,\\right|$ によって囲まれる図形の面積を求めよ．"
+  },
+  "answer": {
+   "tex": "$\\dfrac{64}{3}-\\dfrac{8\\sqrt3}{9}-\\dfrac{40\\sqrt{15}}{9}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$g(x)=\\left|\\,\\left|\\frac34x^2-3\\right|-2\\,\\right|$ とおき，$h(x)=\\left|\\frac34x^2-3\\right|-2$ とする．$|x|\\leqq2$ のとき $h(x)=1-\\frac34x^2$，$|x|\\geqq2$ のとき $h(x)=\\frac34x^2-5$ である．$h(x)<0$ となるのは $\\frac2{\\sqrt3}<|x|<\\frac{2\\sqrt{15}}3$ のときで，$x\\geqq0$ では\n\\[\ng(x)=\\begin{cases}\n1-\\frac34x^2 & \\left(0\\leqq x\\leqq\\frac2{\\sqrt3}\\right)\\\\[1mm]\n\\frac34x^2-1 & \\left(\\frac2{\\sqrt3}\\leqq x\\leqq2\\right)\\\\[1mm]\n5-\\frac34x^2 & \\left(2\\leqq x\\leqq\\frac{2\\sqrt{15}}3\\right)\\\\[1mm]\n\\frac34x^2-5 & \\left(x\\geqq\\frac{2\\sqrt{15}}3\\right)\n\\end{cases}\n\\]\nとなる．\n\n\\textbf{共有点．}$x<0$ では $g(x)\\geqq0>x$，$x=0$ では $g(0)=1\\neq0$ だから，共有点は $x>0$ にある．各区間で $x-g(x)$ を計算すると\n\\begin{align*}\n0\\leqq x\\leqq\\tfrac2{\\sqrt3}&：\\ x-g(x)=\\tfrac14(3x-2)(x+2),\\\\\n\\tfrac2{\\sqrt3}\\leqq x\\leqq2&：\\ x-g(x)=-\\tfrac14(3x+2)(x-2),\\\\\n2\\leqq x\\leqq\\tfrac{2\\sqrt{15}}3&：\\ x-g(x)=\\tfrac14(3x+10)(x-2),\\\\\nx\\geqq\\tfrac{2\\sqrt{15}}3&：\\ x-g(x)=-\\tfrac14(3x-10)(x+2).\n\\end{align*}\n$\\frac23<\\frac2{\\sqrt3}$，$\\frac{2\\sqrt{15}}3<\\frac{10}3$（$60<100$）に注意すると，$x-g(x)$ は $0<x<\\frac23$ で負，$\\frac23<x<2$ および $2<x<\\frac{10}3$ で正，$x>\\frac{10}3$ で負であり，0になるのは $x=\\frac23,\\ 2,\\ \\frac{10}3$ のときだけである．\n\nよって直線は $x<\\frac23$ と $x>\\frac{10}3$ では曲線の下にあり，囲まれる図形は\n\\[\\frac23\\leqq x\\leqq\\frac{10}3,\\qquad g(x)\\leqq y\\leqq x\\]\nで，点 $(2,2)$ で直線が曲線のとがった点に上から触れる，1点でつながった2つの部分からなる．\n\n\\textbf{面積．}$\\displaystyle\\int_{\\frac23}^{\\frac{10}3}x\\,dx=\\frac12\\left(\\frac{100}9-\\frac49\\right)=\\frac{16}3$．また $b=\\frac{2\\sqrt{15}}3$ とおくと $b^3=\\frac{40\\sqrt{15}}9$ で，\n\\begin{align*}\n\\int_{\\frac23}^{\\frac2{\\sqrt3}}\\left(1-\\tfrac34x^2\\right)dx&=\\Bigl[x-\\tfrac{x^3}4\\Bigr]_{\\frac23}^{\\frac2{\\sqrt3}}=\\frac{4\\sqrt3}9-\\frac{16}{27},\\\\\n\\int_{\\frac2{\\sqrt3}}^{2}\\left(\\tfrac34x^2-1\\right)dx&=\\Bigl[\\tfrac{x^3}4-x\\Bigr]_{\\frac2{\\sqrt3}}^{2}=\\frac{4\\sqrt3}9,\\\\\n\\int_2^{b}\\left(5-\\tfrac34x^2\\right)dx&=\\Bigl[5x-\\tfrac{x^3}4\\Bigr]_2^{b}=\\frac{20\\sqrt{15}}9-8,\\\\\n\\int_b^{\\frac{10}3}\\left(\\tfrac34x^2-5\\right)dx&=\\Bigl[\\tfrac{x^3}4-5x\\Bigr]_b^{\\frac{10}3}=-\\frac{200}{27}+\\frac{20\\sqrt{15}}9 .\n\\end{align*}\nこれらの和は $\\dfrac{8\\sqrt3}9+\\dfrac{40\\sqrt{15}}9-16$．よって求める面積は\n\\[\\frac{16}3-\\left(\\frac{8\\sqrt3}9+\\frac{40\\sqrt{15}}9-16\\right)=\\boldsymbol{\\frac{64}3-\\frac{8\\sqrt3}9-\\frac{40\\sqrt{15}}9}.\\]\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$h(x)=\\left|\\frac34x^2-3\\right|-2$ の負の部分を折り返すと，$x=\\pm2$ のとがった点が $(\\pm2,-2)$ から $(\\pm2,2)$ に移る．直線 $y=x$ はもとのグラフでは $(-2,-2)$ を通ったが，折り返し後は $(2,2)$ で「上から接する」ので，囲まれる図形は1点でつながった2つの部分になる．各区間で $x-g(x)$ を因数分解して符号を確かめる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "64/3-8sqrt(3)/9-40sqrt(15)/9"
+  },
+  "methods": [],
+  "tags": [
+   "絶対値のグラフ",
+   "共有点",
+   "面積",
+   "場合分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-259",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 35,
+  "theme": "接線が再び交わる点をさかのぼる点列と面積の和",
+  "topic": "接線が再び交わる点をさかのぼる点列と面積の和",
+  "statement": {
+   "tex": "関数 $y=f(x)$ のグラフ $C$ は，座標平面で原点に関して点対称である．さらに $C$ の $x\\leqq0$ の部分は，軸が $y$ 軸に平行で，点 $\\left(-\\dfrac12,\\dfrac14\\right)$ を頂点とし，原点を通る放物線と一致している．\n\n$C$ 上の点 $P_0(1,f(1))$ から始めて，$n=0,1,2,\\dots$ に対し，$C$ 上の点 $P_{n+1}$ を「$P_n$ と異なり，$P_{n+1}$ における $C$ の接線が $P_n$ を通る点」として定める．\n\\begin{enumerate}\n  \\item すべての $n$ について $P_{n+1}$ はただ1つに定まることを示し，$P_n$ の $x$ 座標 $x_n$ を求めよ．\n  \\item $n\\geqq1$ に対し，$P_n$ における $C$ の接線と $C$ によって囲まれる図形の面積を $S_n$ とする．$\\displaystyle\\sum_{n=1}^{\\infty}S_n$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $x_n=(1-\\sqrt2)^n$　(2) $\\dfrac{2+3\\sqrt2}{21}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$C$ の $x\\leqq0$ の部分は $y=-\\left(x+\\frac12\\right)^2+\\frac14=-x^2-x$．点対称性から $x\\geqq0$ では $f(x)=-f(-x)=x^2-x$．よって\n\\[f(x)=-x^2-x\\ (x\\leqq0),\\qquad f(x)=x^2-x\\ (x\\geqq0)\\]\nで，$f'(0)=-1$（左右とも）である．\n\n\\textbf{補題．}$t\\neq0$ のとき，$x=t$ における接線は，$C$ と接点以外ではちょうど1点 $x=-(1+\\sqrt2)t$ で交わる．$t=0$ のときの接線は $C$ と原点以外で交わらない．\n\n\\textbf{証明．}$t<0$ とし，$u=-t>0$ とおく．接線は $\\ell:y=(-2t-1)x+t^2$．\n$x\\leqq0$ では $f(x)-\\ell(x)=-(x-t)^2$ で，0になるのは $x=t$ のみ．\n$x\\geqq0$ では $f(x)-\\ell(x)=x^2+2tx-t^2=x^2-2ux-u^2$ で，その根は $x=(1\\pm\\sqrt2)u$，このうち $x\\geqq0$ をみたすのは $x=(1+\\sqrt2)u=-(1+\\sqrt2)t$ のみ．\n$t>0$ のときは，$C$ が原点対称で，$x=-t$ での接線を原点対称に移したものが $x=t$ での接線であることから同じ結論を得る．\n$t=0$ のとき接線は $y=-x$ で，$f(x)+x=-x^2\\ (x\\leqq0)$，$x^2\\ (x\\geqq0)$ が0になるのは $x=0$ のみ．\\hfill$\\square$\n\n(1) 補題より，$C$ 上の点 T における接線が T と異なる $C$ 上の点 R を通るのは，T の $x$ 座標 $\\tau$ が0でなく，R の $x$ 座標が $-(1+\\sqrt2)\\tau$ のときに限る．よって $P_n$ の $x$ 座標 $x_n$ が0でなければ，$P_{n+1}$ は $x$ 座標 $x_{n+1}=-\\dfrac{x_n}{1+\\sqrt2}=(1-\\sqrt2)x_n$ の点としてただ1つに定まり，$x_{n+1}\\neq0$．$x_0=1$ より帰納的にすべての $n$ で $P_{n+1}$ はただ1つに定まり，\n\\[\\boldsymbol{x_n=(1-\\sqrt2)^n}.\\]\n\n(2) $t<0$，$u=-t$，$s=(1+\\sqrt2)u$ とする．補題の計算より，$t\\leqq x\\leqq0$ で $f-\\ell=-(x-t)^2\\leqq0$，$0\\leqq x\\leqq s$ で $f-\\ell=x^2-2ux-u^2\\leqq0$（2根 $(1-\\sqrt2)u<0<s$ の間）であり，$x<t$，$x>s$ では交わらないので，囲まれる図形は $t\\leqq x\\leqq s$ で接線と $C$ にはさまれた部分である．その面積は\n\\begin{align*}\n&\\int_t^0(x-t)^2dx+\\int_0^s(u^2+2ux-x^2)\\,dx=\\frac{u^3}3+u^2s+us^2-\\frac{s^3}3\\\\\n&\\qquad=u^3\\left\\{\\frac13+(1+\\sqrt2)+(3+2\\sqrt2)-\\frac{7+5\\sqrt2}3\\right\\}=\\frac23(3+2\\sqrt2)u^3 .\n\\end{align*}\n$t>0$ の場合も対称性から同じ式（$u=|t|$）になる．よって $S_n=\\frac23(3+2\\sqrt2)|x_n|^3=\\frac23(3+2\\sqrt2)\\rho^n$，$\\rho=(\\sqrt2-1)^3=5\\sqrt2-7$．$0<\\rho<1$（$49<50<64$）なので\n\\begin{align*}\n\\sum_{n=1}^\\infty S_n&=\\frac23(3+2\\sqrt2)\\cdot\\frac{\\rho}{1-\\rho}=\\frac23\\cdot\\frac{(3+2\\sqrt2)(5\\sqrt2-7)}{8-5\\sqrt2}=\\frac23\\cdot\\frac{\\sqrt2-1}{8-5\\sqrt2}\\\\\n&=\\frac23\\cdot\\frac{(\\sqrt2-1)(8+5\\sqrt2)}{14}=\\boldsymbol{\\frac{2+3\\sqrt2}{21}}.\n\\end{align*}\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$f(x)=x|x|-x$ の $x=t$ における接線は，$t\\neq0$ ならグラフともう1点 $x=-(1+\\sqrt2)t$ だけで交わる（差をとると1次の項が消える）．したがって「接線が $P_n$ を通る接点」は一意で，$x$ 座標は毎回 $-(\\sqrt2-1)$ 倍．接線とグラフで囲まれる面積は $|t|^3$ に比例し，和は無限等比級数．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $x_n$：(1-sqrt(2))^n\n(2) (2+3sqrt(2))/21"
+  },
+  "methods": [],
+  "tags": [
+   "点対称なグラフ",
+   "接線",
+   "面積",
+   "無限等比級数"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-260",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 35,
+  "theme": "$\\tan\\theta=3$ の角だけ回した接線と3次曲線の交点",
+  "topic": "$\\tan\\theta=3$ の角だけ回した接線と3次曲線の交点",
+  "statement": {
+   "tex": "$xy$ 平面上の曲線 $C:y=x^3-3x$ 上の点 $\\mathrm P(t,\\,t^3-3t)$ における接線を，P を中心にして反時計回りに角 $\\theta$ だけ回転して得られる直線を $L$ とする．ただし $\\theta$ は $\\tan\\theta=3$，$0<\\theta<\\dfrac\\pi2$ をみたす角である．$C$ と $L$ が相異なる3点で交わるような $t$ の範囲を求めよ．"
+  },
+  "answer": {
+   "tex": "$|t|<\\dfrac{\\sqrt{10}}{3}$ または $\\dfrac{2}{\\sqrt3}<|t|<\\dfrac{\\sqrt{30}}{3}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\mathrm P$ における接線の傾きは $m=3t^2-3\\ (\\geqq-3)$．$m=\\tan\\varphi$（$-\\frac\\pi2<\\varphi<\\frac\\pi2$）とすると，$L$ の方向の角は $\\varphi+\\theta$ である．\n\n\\textbf{$m=\\frac13$ のとき．}$\\tan(\\varphi+\\theta)$ の分母 $1-\\tan\\varphi\\tan\\theta=1-3m=0$ だから $\\varphi+\\theta=\\frac\\pi2$ で，$L$ は直線 $x=t$．$C$ との交点は1個なので不適．\n\n\\textbf{$m\\neq\\frac13$ のとき．}$L$ の傾きは $M=\\tan(\\varphi+\\theta)=\\dfrac{m+3}{1-3m}$ で，$L:y=M(x-t)+t^3-3t$．$C$ との交点の $x$ 座標は\n\\[x^3-3x-(t^3-3t)=M(x-t)\\iff(x-t)\\,(x^2+tx+t^2-3-M)=0\\]\nの解である．$Q(x)=x^2+tx+t^2-3-M$ とすると，3点で交わる条件は「$Q(x)=0$ が $t$ と異なる相異なる2つの実数解をもつ」こと．\n\n$Q(t)=3t^2-3-M=m-M$ で，$M=m\\iff m+3=m-3m^2\\iff m^2=-1$ となり不可能なので，常に $Q(t)\\neq0$．\n判別式は $t^2-4(t^2-3-M)=12+4M-3t^2=9-m+4M$（$3t^2=m+3$ を用いた）．よって条件は\n\\[9-m+\\frac{4(m+3)}{1-3m}>0 .\\]\n\\begin{itemize}\n  \\item $m<\\frac13$ のとき：両辺に $1-3m>0$ をかけて $(9-m)(1-3m)+4(m+3)>0\\iff3m^2-24m+21>0\\iff3(m-1)(m-7)>0$．$m<\\frac13<1$ なのでつねに成り立つ．\n  \\item $m>\\frac13$ のとき：$1-3m<0$ をかけて向きが変わり，$3(m-1)(m-7)<0\\iff1<m<7$．\n\\end{itemize}\nよって求める条件は $-3\\leqq m<\\frac13$ または $1<m<7$，すなわち\n\\[3t^2-3<\\frac13\\quad\\text{または}\\quad1<3t^2-3<7\\iff t^2<\\frac{10}9\\quad\\text{または}\\quad\\frac43<t^2<\\frac{10}3 .\\]\n答えは $\\boldsymbol{|t|<\\dfrac{\\sqrt{10}}3}$ または $\\boldsymbol{\\dfrac2{\\sqrt3}<|t|<\\dfrac{\\sqrt{30}}3}$．（$\\frac{\\sqrt{10}}3<\\frac2{\\sqrt3}$ なので2つの範囲は重ならない．P はこの範囲の $t$ に対応する $C$ 上の部分を動く．）\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "接線の傾き $m=3t^2-3$ を回転すると傾き $M=\\dfrac{m+3}{1-3m}$（$m=\\frac13$ では鉛直）．$C$ と $L$ の交点は $x=t$ と2次方程式 $x^2+tx+t^2-3-M=0$ の解で，判別式の条件は分母 $1-3m$ の符号で向きが変わる．$m<\\frac13$ では常に成立し，$m>\\frac13$ では $(m-1)(m-7)<0$ が必要十分になるため，P の範囲は2つに分かれる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "|t|<sqrt(10)/3 または 2/sqrt(3)<|t|<sqrt(30)/3"
+  },
+  "methods": [],
+  "tags": [
+   "接線",
+   "回転",
+   "正接の加法定理",
+   "2次方程式の判別式",
+   "場合分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-261",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "弓形の面積が三角形 OPQ の $k$ 倍となる弦の中点",
+  "topic": "弓形の面積が三角形 OPQ の $k$ 倍となる弦の中点",
+  "statement": {
+   "tex": "$k$ を正の定数とする．放物線 $y=x^2$ 上の2点 P，Q が，直線 PQ が原点 O を通らないようにして，次の条件をみたしながら動く．\n\\begin{center}\n放物線と線分 PQ で囲まれる部分の面積が，三角形 OPQ の面積の $k$ 倍である．\n\\end{center}\n線分 PQ の中点 R が描く図形を，$k$ の値によって場合分けして求めよ．"
+  },
+  "answer": {
+   "tex": "$0<k<\\dfrac43$ のとき 放物線 $y=\\dfrac{6k+4}{3k+4}x^2$（$x\\neq0$）；$k=\\dfrac43$ のとき 放物線 $y=\\dfrac32x^2$（$x\\neq0$）と半直線 $x=0$，$y>0$；$k>\\dfrac43$ のとき 2つの放物線 $y=\\dfrac{6k+4}{3k+4}x^2$，$y=\\dfrac{6k-4}{3k-4}x^2$（いずれも $x\\neq0$）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "P$(p,p^2)$，Q$(q,q^2)$（$p<q$）とし，$d=q-p>0$，$s=\\frac{p+q}2$ とおく．R$=\\left(s,\\frac{p^2+q^2}2\\right)=\\left(s,\\ s^2+\\frac{d^2}4\\right)$，$pq=s^2-\\frac{d^2}4$．\n\n直線 PQ は $y=(p+q)x-pq$ で，弓形の面積は\n\\[\\int_p^q\\{(p+q)x-pq-x^2\\}\\,dx=\\int_p^q(x-p)(q-x)\\,dx=\\frac{d^3}6 .\\]\n三角形 OPQ の面積は $\\frac12|pq^2-qp^2|=\\frac12|pq|\\,d$．直線 PQ が O を通らないことは $pq\\neq0$ と同値．条件は\n\\[\\frac{d^3}6=\\frac k2|pq|\\,d\\iff|pq|=\\frac{d^2}{3k}\\quad(pq\\neq0).\\]\n\n\\textbf{(ア) $pq>0$ のとき．}$s^2-\\frac{d^2}4=\\frac{d^2}{3k}$，すなわち $s^2=\\frac{(3k+4)d^2}{12k}$．$d>0$ より $s\\neq0$ で，$\\frac{d^2}4=\\frac{3k}{3k+4}s^2$．よって R の $y$ 座標は $s^2+\\frac{3k}{3k+4}s^2=\\frac{6k+4}{3k+4}s^2$．逆に任意の $s\\neq0$ に対し $d=\\sqrt{\\frac{12k}{3k+4}}|s|>0$ とおけば $pq=\\frac{d^2}{3k}>0$ となり条件をみたす．よって R は放物線 $y=\\frac{6k+4}{3k+4}x^2$ の $x\\neq0$ の部分全体を動く．\n\n\\textbf{(イ) $pq<0$ のとき．}$\\frac{d^2}4-s^2=\\frac{d^2}{3k}$，すなわち $s^2=\\frac{(3k-4)d^2}{12k}$．\n\\begin{itemize}\n  \\item $0<k<\\frac43$：右辺は負で不可能．\n  \\item $k=\\frac43$：$s=0$ で，$d>0$ は任意．このとき $pq=-\\frac{d^2}4<0$ で条件をみたし，R$=\\left(0,\\frac{d^2}4\\right)$ は半直線 $x=0$，$y>0$ 全体を動く．\n  \\item $k>\\frac43$：$s\\neq0$ で $\\frac{d^2}4=\\frac{3k}{3k-4}s^2$，R の $y$ 座標は $\\frac{6k-4}{3k-4}s^2$．逆に任意の $s\\neq0$ に対し $d=\\sqrt{\\frac{12k}{3k-4}}|s|$ とおけば $pq=s^2-\\frac{d^2}4=-\\frac{d^2}{3k}<0$ で条件をみたす．よって R は放物線 $y=\\frac{6k-4}{3k-4}x^2$ の $x\\neq0$ の部分全体を動く．\n\\end{itemize}\n\n以上より，R の描く図形は\n\\begin{itemize}\n  \\item $0<k<\\frac43$ のとき：\\textbf{放物線 $\\boldsymbol{y=\\dfrac{6k+4}{3k+4}x^2}$（$x\\neq0$）}\n  \\item $k=\\frac43$ のとき：\\textbf{放物線 $\\boldsymbol{y=\\dfrac32x^2}$（$x\\neq0$）と半直線 $\\boldsymbol{x=0,\\ y>0}$}\n  \\item $k>\\frac43$ のとき：\\textbf{2つの放物線 $\\boldsymbol{y=\\dfrac{6k+4}{3k+4}x^2}$，$\\boldsymbol{y=\\dfrac{6k-4}{3k-4}x^2}$（いずれも $x\\neq0$）}\n\\end{itemize}\n（$k=\\frac43$ の半直線は，O における接線が PQ に平行なときの「弓形の面積は三角形の $\\frac43$ 倍」に対応する．）\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$P(p,p^2)$，$Q(q,q^2)$ の中点を $(s,\\,s^2+\\frac{d^2}4)$（$d=q-p$）と書くと，弓形の面積は $\\frac{d^3}6$，三角形 OPQ は $\\frac12|pq|d$，$pq=s^2-\\frac{d^2}4$．条件 $\\frac{d^2}{3k}=|pq|$ を $pq$ の符号で場合分けすると，$pq<0$ の枝は $k\\geqq\\frac43$ でだけ現れる（$k=\\frac43$ は「弓形＝$\\frac43\\times$アルキメデスの三角形」で $s=0$ の弦すべて）．"
+  },
+  "methods": [],
+  "tags": [
+   "放物線の弦",
+   "面積",
+   "軌跡",
+   "場合分け",
+   "アルキメデスの三角形"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-262",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 5,
+  "minutes": 40,
+  "theme": "接線が2等分する $k$ の個数",
+  "topic": "接線が2等分する $k$ の個数",
+  "statement": {
+   "tex": "$k>1$ とし，2つの放物線 $y=x^2+1$ と $y=kx^2$ で囲まれた部分を $D_k$ とする．$a\\geqq0$ とし，放物線 $y=x^2+1$ 上の点 P$(a,\\,a^2+1)$ における接線を $L$ とする．「$L$ が $D_k$ の面積を2等分する」とは，$D_k$ のうち $L$ の上側にある部分の面積と下側にある部分の面積が等しいことをいう．\n\\begin{enumerate}\n  \\item $c=\\sqrt[3]{\\dfrac{k}{4(k-1)}}$ とおく．$L$ が $D_k$ の面積を2等分するための必要十分条件は $a^2=4c^3(1-c)$ であることを示せ．\n  \\item $a$ を固定する．$L$ が $D_k$ の面積を2等分するような $k\\ (>1)$ の個数 $N(a)$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) $0\\leqq a\\leqq\\sqrt{1-\\dfrac{\\sqrt[3]2}{2}}$ のとき $N(a)=1$，$\\sqrt{1-\\dfrac{\\sqrt[3]2}{2}}<a<\\dfrac{3\\sqrt3}{8}$ のとき $N(a)=2$，$a=\\dfrac{3\\sqrt3}{8}$ のとき $N(a)=1$（$k=\\dfrac{27}{11}$），$a>\\dfrac{3\\sqrt3}{8}$ のとき $N(a)=0$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $x^2+1=kx^2\\iff x=\\pm w$，$w=\\frac1{\\sqrt{k-1}}$．$D_k$ の面積は\n\\[S=\\int_{-w}^{w}\\{1-(k-1)x^2\\}\\,dx=\\frac43w=\\frac{4}{3\\sqrt{k-1}} .\\]\n$L:y=2ax-a^2+1$ で，$(x^2+1)-(2ax-a^2+1)=(x-a)^2\\geqq0$ だから $L$ は放物線 $y=x^2+1$ の下側（接点を除く）にある．よって $D_k$ のうち $L$ の下側にある部分は $\\{(x,y)\\mid kx^2\\leqq y<2ax-a^2+1\\}$ であり，これは $kx^2-2ax+a^2-1<0$ をみたす $x$ の範囲にある．この2次式の判別式の $\\frac14$ は $h=a^2-k(a^2-1)=k-(k-1)a^2$．\n\n$h\\leqq0$ なら下側の部分の面積は0で，2等分しない．$h>0$ なら2根を $x_1<x_2$ として $x_2-x_1=\\frac{2\\sqrt h}{k}$，下側の面積は\n\\[\\int_{x_1}^{x_2}k(x-x_1)(x_2-x)\\,dx=\\frac k6(x_2-x_1)^3=\\frac{4h^{\\frac32}}{3k^2}.\\]\n2等分の条件は $\\frac{4h^{3/2}}{3k^2}=\\frac{2}{3\\sqrt{k-1}}$，すなわち $h^{\\frac32}=\\frac{k^2}{2\\sqrt{k-1}}$．両辺は正なので2乗と同値で $h^3=\\frac{k^4}{4(k-1)}=k^3c^3$．$h>0$，$kc>0$ で3乗は正の数の範囲で単調だから $h=kc$．よって\n\\[\\text{2等分}\\iff k-(k-1)a^2=kc\\iff a^2=\\frac{k}{k-1}(1-c)=4c^3(1-c)\\]\n（$\\frac k{k-1}=4c^3$ を用いた）．なお $a^2=4c^3(1-c)$ のとき $h=kc>0$ は自動的にみたされる．\\hfill$\\square$\n\n(2) $c^3=\\dfrac{k}{4(k-1)}=\\dfrac14+\\dfrac1{4(k-1)}$ より，$k$ が $k>1$ を動くとき $c$ は $c>c_0$（$c_0=\\sqrt[3]{\\frac14}=\\frac{\\sqrt[3]2}2$）の範囲を動き，$k\\mapsto c$ は狭義単調減少な1対1の対応である．したがって $N(a)$ は，$\\varphi(c)=4c^3(1-c)$ が $c>c_0$ で値 $a^2$ をとる $c$ の個数に等しい．\n\n$\\varphi'(c)=12c^2-16c^3=4c^2(3-4c)$ より，$\\varphi$ は $c_0<c\\leqq\\frac34$ で狭義増加，$c\\geqq\\frac34$ で狭義減少（$c_0^3=\\frac14<\\frac{27}{64}$ より $c_0<\\frac34$）．\n\\[\\varphi(c_0)=4\\cdot\\frac14(1-c_0)=1-\\frac{\\sqrt[3]2}2,\\qquad\\varphi\\!\\left(\\frac34\\right)=\\frac{27}{64},\\qquad\\varphi(1)=0,\\]\n$c>1$ では $\\varphi(c)<0$．よって $\\varphi$ は $\\left(c_0,\\frac34\\right]$ で区間 $\\left(1-\\frac{\\sqrt[3]2}2,\\ \\frac{27}{64}\\right]$ の各値をちょうど1回，$\\left[\\frac34,1\\right]$ で区間 $\\left[0,\\frac{27}{64}\\right]$ の各値をちょうど1回とり，$c>1$ では0以上の値をとらない．これより $A=a^2$ に対し\n\\begin{itemize}\n  \\item $0\\leqq A\\leqq1-\\frac{\\sqrt[3]2}2$：1個，\n  \\item $1-\\frac{\\sqrt[3]2}2<A<\\frac{27}{64}$：2個，\n  \\item $A=\\frac{27}{64}$：$c=\\frac34$ の1個，\n  \\item $A>\\frac{27}{64}$：0個．\n\\end{itemize}\n$a\\geqq0$ で書くと\n\\[\nN(a)=\\begin{cases}\n\\boldsymbol1 & \\left(0\\leqq a\\leqq\\sqrt{1-\\frac{\\sqrt[3]2}2}\\right)\\\\[2mm]\n\\boldsymbol2 & \\left(\\sqrt{1-\\frac{\\sqrt[3]2}2}<a<\\frac{3\\sqrt3}8\\right)\\\\[2mm]\n\\boldsymbol1 & \\left(a=\\frac{3\\sqrt3}8\\right)\\\\[2mm]\n\\boldsymbol0 & \\left(a>\\frac{3\\sqrt3}8\\right)\n\\end{cases}\n\\]\n$a=\\frac{3\\sqrt3}8$ のとき $c=\\frac34$ で，$\\frac{27}{64}=\\frac14+\\frac1{4(k-1)}$ より $k=\\frac{27}{11}$．\n（$c\\to c_0$ は $k\\to\\infty$ に対応し，$a^2\\to1-\\frac{\\sqrt[3]2}{2}$ である．）\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "接線より下の部分は「$y=kx^2$ と接線の間」で面積 $\\frac43h^{3/2}/k^2$（$h=k-(k-1)a^2$）．2等分の式 $h^3=\\frac{k^4}{4(k-1)}$ は $h=kc$，$c^3=\\frac{k}{4(k-1)}$ とおくと $a^2=4c^3(1-c)$ に化け，$k\\leftrightarrow c$ は単調な1対1対応．$k$ の個数は $\\varphi(c)=4c^3(1-c)$（$c>\\sqrt[3]{1/4}$）が値 $a^2$ をとる回数で，増減の境目 $c=\\frac34$ と端の値 $\\varphi(\\sqrt[3]{1/4})=1-\\frac{\\sqrt[3]2}2$ で決まる．"
+  },
+  "methods": [],
+  "tags": [
+   "放物線で囲まれた面積",
+   "接線",
+   "置き換え",
+   "増減と解の個数"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-263",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 35,
+  "theme": "放物線との3交点で3次曲線の接線が1点で交わる条件",
+  "topic": "放物線との3交点で3次曲線の接線が1点で交わる条件",
+  "statement": {
+   "tex": "$a$，$b$，$c$ を実数とする．$xy$ 平面上の2曲線\n\\[C_1:y=x^2,\\qquad C_2:y=x^3+ax^2+bx+c\\]\nが相異なる3点で交わり，かつそれらの3点における $C_2$ の接線3本が1点 P$(p,q)$ で交わるとする．\n\\begin{enumerate}\n  \\item $b=\\dfrac{a(a-2)}{3}$，$p=\\dfrac{2-a}{3}$ であることを示し，$q$ を $a$，$c$ で表せ．\n  \\item 点 P の存在範囲を求め，図示せよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $q=3c-\\dfrac{a(a-2)^2}{9}$　(2) $x^2-\\dfrac49<y<x^2$（2つの放物線の間，境界を含まない）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$g(x)=x^3+ax^2+bx+c$，$I(x)=g(x)-x^2=x^3+(a-1)x^2+bx+c$ とする．\n\n(1) $C_2$ の $x=t$ における接線 $y=g'(t)(x-t)+g(t)$ が P$(p,q)$ を通る条件は\n\\[q=g(t)+g'(t)(p-t)=-2t^3+(3p-a)t^2+2apt+bp+c,\\]\nすなわち\n\\[\\psi(t)=2t^3-(3p-a)t^2-2apt+(q-bp-c)=0 .\\]\n3交点の $x$ 座標 $\\alpha,\\beta,\\gamma$（相異なる）は $I(x)=0$ の3解で，3本の接線が P を通るので $\\psi(\\alpha)=\\psi(\\beta)=\\psi(\\gamma)=0$．$\\psi(t)-2I(t)$ は2次以下の多項式で相異なる3つの値 $\\alpha,\\beta,\\gamma$ で0になるから恒等的に0，すなわち $\\psi(t)=2I(t)$．係数を比べて\n\\[-(3p-a)=2(a-1),\\qquad-2ap=2b,\\qquad q-bp-c=2c .\\]\n第1式より $\\boldsymbol{p=\\dfrac{2-a}3}$，第2式より $\\boldsymbol{b=-ap=\\dfrac{a(a-2)}3}$，第3式より\n\\[q=3c+bp=3c+\\frac{a(a-2)}3\\cdot\\frac{2-a}3=\\boldsymbol{3c-\\frac{a(a-2)^2}9}.\\]\n（なお，3次関数のグラフの1本の直線が相異なる2点で接することはないので，3本の接線は相異なる．）\n\n(2) (1) より $a=2-3p$，$b=-p(2-3p)=3p^2-2p$，$c=\\dfrac{q-3p^3+2p^2}3$（$a(a-2)^2=9p^2(2-3p)$ を用いた）．逆に，任意の $(p,q)$ に対してこの式で $a,b,c$ を定めると，$\\psi(t)=2I(t)$ が恒等的に成り立つので，$C_1$ と $C_2$ が相異なる3点で交わりさえすれば，その3点での接線はすべて P を通る．よって P の存在範囲は「このとき $I(x)=0$ が相異なる3つの実数解をもつ」ような $(p,q)$ 全体である．\n\n$H(x)=x^3+(1-3p)x^2+(3p^2-2p)x$ とおくと $I(x)=H(x)+c$ で，\n\\[H'(x)=3x^2+2(1-3p)x+3p^2-2p=3(x-p)\\left(x-p+\\tfrac23\\right).\\]\n$H$ は $x=p-\\frac23$ で極大，$x=p$ で極小をとり，\n\\[H(p)=p^2(p-1),\\qquad H\\!\\left(p-\\tfrac23\\right)=\\frac{(3p-2)^2(3p+1)}{27}.\\]\n$I(x)=0$ すなわち $H(x)=-c$ が相異なる3つの実数解をもつ条件は $H(p)<-c<H\\!\\left(p-\\frac23\\right)$．$-c=\\frac{3p^3-2p^2-q}3$ を代入すると\n\\begin{align*}\np^3-p^2<\\frac{3p^3-2p^2-q}3&\\iff q<p^2,\\\\\n\\frac{3p^3-2p^2-q}3<\\frac{(3p-2)^2(3p+1)}{27}&\\iff 27p^3-18p^2-9q<27p^3-27p^2+4\\iff q>p^2-\\frac49 .\n\\end{align*}\nよって P の存在範囲は\n\\[\\boldsymbol{x^2-\\frac49<y<x^2}\\]\nであり，2つの放物線 $y=x^2$ と $y=x^2-\\frac49$ にはさまれた帯状の部分（境界を含まない）である．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$C_2$ の $x=t$ における接線が P を通る条件は $t$ の3次方程式で，最高次の係数は $-2$．交点の3つの $x$ 座標がすべてその解だから，この3次式は $-2\\{x^3+(a-1)x^2+bx+c\\}$ と恒等的に等しい．係数比較で $p$，$b$，$q$ が決まり，3交点の条件は「極大値・極小値で $-c$ をはさむ」に帰着して，P の範囲は2つの放物線の間の帯になる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $q$：3c-a(a-2)^2/9\n(2) 記述"
+  },
+  "methods": [],
+  "tags": [
+   "3次関数の接線",
+   "接点の方程式",
+   "恒等式",
+   "3次方程式の解の個数",
+   "領域"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-264",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "絶対値のついた2つの2次関数の大小がつねに成り立つ条件",
+  "topic": "絶対値のついた2つの2次関数の大小がつねに成り立つ条件",
+  "statement": {
+   "tex": "実数 $a,b$ について，次の条件を考える．\n\\begin{center}\n「すべての実数 $x$ に対して $|2x^2+ax+b|\\geqq|x^2-2|$ が成り立つ．」\n\\end{center}\n\\begin{enumerate}\n  \\item この条件をみたす点 $(a,b)$ の集合を $ab$ 平面上に図示せよ．\n  \\item (1) の集合のうち $b\\leqq8$ をみたす部分の面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 領域 $b\\geqq\\dfrac{a^2}{4}-2$ かつ $b\\geqq\\dfrac{a^2}{12}+2$（境界を含む）と1点 $(0,-4)$ の和集合　(2) $\\dfrac{80\\sqrt{10}-32\\sqrt6}{3}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) 両辺は0以上なので，条件は $(2x^2+ax+b)^2-(x^2-2)^2\\geqq0$，すなわち\n\\[f(x)g(x)\\geqq0\\ (\\text{すべての }x),\\quad f=x^2+ax+b+2,\\ g=3x^2+ax+b-2.\\]\n\\textit{$g$ の判別式 $a^2-12(b-2)\\leqq0$ のとき．} $g\\geqq0$ で，$g=0$ となる $x$ は高々1つ．それ以外の $x$ で $f(x)\\geqq0$ が必要で，連続性からすべての $x$ で $f\\geqq0$，すなわち $a^2\\leqq4(b+2)$．逆に $f\\geqq0$，$g\\geqq0$ なら成立．\n\\textit{$a^2-12(b-2)>0$ のとき．} $g$ の解を $\\gamma_1<\\gamma_2$ とすると $(\\gamma_1,\\gamma_2)$ で $g<0$，その外で $g>0$．条件より $(\\gamma_1,\\gamma_2)$ で $f\\leqq0$，その外で $f\\geqq0$．連続性から $f(\\gamma_1)=f(\\gamma_2)=0$．$\\gamma_i$ は $f-g=-2x^2+4$ の解なので $\\{\\gamma_1,\\gamma_2\\}=\\{-\\sqrt2,\\sqrt2\\}$，$g=3(x^2-2)$，$a=0$，$b=-4$．逆にこのとき $f=x^2-2$，$fg=3(x^2-2)^2\\geqq0$．\n\\textbf{答：領域 $\\boldsymbol{b\\geqq\\frac{a^2}4-2}$ かつ $\\boldsymbol{b\\geqq\\frac{a^2}{12}+2}$（境界を含む）と1点 $\\boldsymbol{(0,-4)}$}．2つの放物線は $a^2=24$，$b=4$ で交わり，$|a|\\leqq2\\sqrt6$ では $b\\geqq\\frac{a^2}{12}+2$，$|a|\\geqq2\\sqrt6$ では $b\\geqq\\frac{a^2}4-2$ が境界になる．\n\n(2) $b=8$ と $b=\\frac{a^2}4-2$ の交点は $a=\\pm2\\sqrt{10}$．点 $(0,-4)$ の面積は0．対称性より\n\\[2\\int_0^{2\\sqrt6}\\left(6-\\frac{a^2}{12}\\right)da+2\\int_{2\\sqrt6}^{2\\sqrt{10}}\\left(10-\\frac{a^2}4\\right)da.\\]\n第1項：$2\\left(12\\sqrt6-\\frac{48\\sqrt6}{36}\\right)=\\frac{64\\sqrt6}3$．第2項：$2\\left[10a-\\frac{a^3}{12}\\right]_{2\\sqrt6}^{2\\sqrt{10}}=2\\left(\\frac{40\\sqrt{10}}3-16\\sqrt6\\right)$．\n合計 $\\boldsymbol{\\dfrac{80\\sqrt{10}-32\\sqrt6}{3}}$．"
+   }
+  ],
+  "idea": {
+   "tex": "両辺が0以上なので2乗して差をとると $(x^2+ax+b+2)(3x^2+ax+b-2)\\geqq0$．一方の2次式が符号を変えるなら，その2つの変わり目で他方も0にならなければならず，共通解は差 $-2x^2+4$ の解 $\\pm\\sqrt2$ に限られる．孤立点 $(0,-4)$ が現れる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) (80sqrt(10)-32sqrt(6))/3"
+  },
+  "methods": [],
+  "tags": [
+   "絶対値",
+   "因数分解",
+   "符号",
+   "図示",
+   "面積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-265",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "2重接線と4点で交わる放物線",
+  "topic": "2重接線と4点で交わる放物線",
+  "statement": {
+   "tex": "曲線 $C:\\ y=x^4-2x^2$ に異なる2点で接する直線を $l$ とし，その接点を P，Q（P の $x$ 座標は Q の $x$ 座標より小さい）とする．$y$ 軸に平行な直線を軸とする放物線 $D$ は P，Q を通り，$C$ の弧 PQ と P，Q 以外の2点 R，R$'$（R の $x$ 座標は R$'$ の $x$ 座標より小さい）で交わるものとする．$C$ と $D$ の弧 RR$'$ で囲まれた部分の面積を $S$，$C$ と $D$ の弧 PR で囲まれた部分の面積と $C$ と $D$ の弧 R$'$Q で囲まれた部分の面積の和を $T$，$D$ の弧 RR$'$，$C$ の弧 PR，$C$ の弧 R$'$Q および線分 PQ で囲まれた部分の面積を $U$ とする．$S=T$ となるように $D$ を定めるとき，$S:U$ を求めよ．"
+  },
+  "answer": {
+   "tex": "$S:U=6\\sqrt5:(125-6\\sqrt5)$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{直線 $l$．}直線 $y=px+q$ が $C$ に $x=\\alpha,\\beta$（$\\alpha\\neq\\beta$）で接することは，$x^4-2x^2-px-q=(x-\\alpha)^2(x-\\beta)^2$ が恒等式であることと同値．$x^3$ の係数から $-2(\\alpha+\\beta)=0$，よって $\\beta=-\\alpha$ で，右辺は $(x^2-\\alpha^2)^2=x^4-2\\alpha^2x^2+\\alpha^4$．係数を比べて $\\alpha^2=1$，$p=0$，$q=-1$．逆に $x^4-2x^2+1=(x-1)^2(x+1)^2$ なので，$l:\\ y=-1$，$\\mathrm P(-1,-1)$，$\\mathrm Q(1,-1)$．\n\n\\textbf{放物線 $D$．}$D:\\ y=cx^2+dx+e$（$c\\neq0$）が P，Q を通るとき，2次式 $cx^2+dx+e+1$ は $x=\\pm1$ で0なので $c(x^2-1)$ に等しい．よって $D:\\ y=c(x^2-1)-1$ で\n\\[(C\\text{ の式})-(D\\text{ の式})=(x^2-1)^2-c(x^2-1)=(x^2-1)(x^2-1-c).\\]\n$D$ が $-1<x<1$ で $C$ と異なる2点で交わる条件は $x^2=1+c$ が $-1<x<1$ に異なる2解をもつこと，すなわち $-1<c<0$．$\\rho=\\sqrt{1+c}$（$0<\\rho<1$）とおくと R，R$'$ の $x$ 座標は $-\\rho$，$\\rho$ で，$C-D=(x^2-1)(x^2-\\rho^2)$ は $|x|<\\rho$ で正，$\\rho<|x|<1$ で負．よって\n\\[S=\\int_{-\\rho}^{\\rho}(x^2-1)(x^2-\\rho^2)dx,\\qquad T=-\\int_{-1}^{-\\rho}(x^2-1)(x^2-\\rho^2)dx-\\int_{\\rho}^{1}(x^2-1)(x^2-\\rho^2)dx.\\]\n\n\\textbf{$S=T$ の条件．}\n\\[S-T=\\int_{-1}^{1}(x^2-1)(x^2-\\rho^2)dx=2\\int_0^1\\{x^4-(1+\\rho^2)x^2+\\rho^2\\}dx=2\\left(\\frac15-\\frac{1+\\rho^2}{3}+\\rho^2\\right)=\\frac{4}{15}(5\\rho^2-1).\\]\nよって $S=T\\iff\\rho^2=\\dfrac15$，$c=-\\dfrac45$，$\\rho=\\dfrac{1}{\\sqrt5}$．\n\n\\textbf{$S$．}\n\\[S=2\\int_0^\\rho\\left(x^4-\\frac65x^2+\\frac15\\right)dx=2\\left(\\frac{\\rho^5}{5}-\\frac{2\\rho^3}{5}+\\frac{\\rho}{5}\\right)=\\frac{2\\rho}{5}(1-\\rho^2)^2=\\frac{2}{5\\sqrt5}\\cdot\\frac{16}{25}=\\frac{32\\sqrt5}{625}.\\]\n\n\\textbf{$U$．}$-1\\leqq x\\leqq1$ で $(C\\text{ の式})+1=(x^2-1)^2\\geqq0$，$(D\\text{ の式})+1=\\frac45(1-x^2)\\geqq0$ なので，$C$，$D$ はともに $l$ の上側（または $l$ 上）にある．$|x|\\leqq\\rho$ では $D$ が $C$ の下，$\\rho\\leqq|x|\\leqq1$ では $C$ が $D$ の下にあるので，$U$ は $l$ と「$C$，$D$ のうち下側にある方」の間の部分である．$|x|\\leqq\\rho$ では $(D+1)=(C+1)-(C-D)$ なので\n\\[U=\\int_{-1}^1(x^2-1)^2dx-S=2\\left(\\frac15-\\frac23+1\\right)-S=\\frac{16}{15}-\\frac{32\\sqrt5}{625}.\\]\n$\\dfrac{1875}{16}$ 倍すると $S\\to6\\sqrt5$，$U\\to125-6\\sqrt5$ なので\n\\[\\boldsymbol{S:U=6\\sqrt5:(125-6\\sqrt5)}.\\]\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "4次曲線に2点で接する直線 $l$ に対し，2接点を通る放物線は $y+1=c(x^2-1)$ の形に限られ，$C-D=(x^2-1)(x^2-1-c)$ と因数分解される．$S=T$ は $C-D$ の $[-1,1]$ 上の積分が0という1次の条件になる．$U$ は「$l$ と $C$ で囲まれた部分」から $S$ を除いたもの．"
+  },
+  "methods": [],
+  "tags": [
+   "面積",
+   "2重接線",
+   "4次関数",
+   "因数分解"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-CAL-266",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-12",
+  "level": 4,
+  "minutes": 30,
+  "theme": "3本の接線の接点がつくる三角形",
+  "topic": "3本の接線の接点がつくる三角形",
+  "statement": {
+   "tex": "$f(x)=x^3-3x$ とし，曲線 $y=f(x)$ を $C$ とする．点 $\\mathrm P(a,b)$ から $C$ にちょうど3本の接線が引けるとき，3つの接点を $\\mathrm A(\\alpha,f(\\alpha))$，$\\mathrm B(\\beta,f(\\beta))$，$\\mathrm C(\\gamma,f(\\gamma))$ とし，$\\triangle\\mathrm{ABC}$ の重心を G，面積を $S$ とする．\n\\begin{enumerate}\n  \\item P から $C$ にちょうど3本の接線が引けるための $a,b$ の条件を求めよ．\n  \\item G の $y$ 座標から $f\\!\\left(\\text{G の $x$ 座標}\\right)$ を引いた値を $D$ とする．$D$ を $a,b$ で表し，G は $C$ 上にないことを示せ．また，$a>0$ を固定して $b$ を動かすとき，$D$ のとりうる値の範囲を求めよ．\n  \\item $a>0$ を固定して $b$ を動かすとき，$S$ の最大値と，そのときの $b$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a>0$ のとき $-3a<b<a^3-3a$，$a<0$ のとき $a^3-3a<b<-3a$（$a=0$ では不可）　(2) $D=\\dfrac{2a^3-3a-b}{2}$（$a>0$ で $D>0$，$a<0$ で $D<0$ なので $D\\neq0$），$a>0$ のとき $\\dfrac{a^3}{2}<D<a^3$　(3) 最大値 $\\dfrac{9\\sqrt3}{16}a^4$（$b=\\dfrac{a^3}{2}-3a$）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) 接点の $x$ 座標が $t$ の接線は $y=(3t^2-3)(x-t)+t^3-3t$，すなわち $y=(3t^2-3)x-2t^3$．これが P を通る条件は\n\\[b=(3t^2-3)a-2t^3\\iff 2t^3-3at^2=-(3a+b).\\tag{$*$}\\]\n3次関数のグラフに対して，1本の直線が異なる2点で接することはない（直線との差の3次式が2つの重解をもつと4次以上になる）から，接点が異なれば接線も異なる．よって接線の本数は $(*)$ の異なる実数解の個数に等しい．\n\n$h(t)=2t^3-3at^2$ とおくと $h'(t)=6t(t-a)$．$a=0$ なら $h$ は単調増加で解は1個．$a>0$ なら極大値 $h(0)=0$，極小値 $h(a)=-a^3$ で，3個の解をもつ条件は $-a^3<-(3a+b)<0$，すなわち $-3a<b<a^3-3a$．$a<0$ なら極大値 $h(a)=-a^3$，極小値 $h(0)=0$ で，$0<-(3a+b)<-a^3$，すなわち $a^3-3a<b<-3a$．\n\n答：$\\boldsymbol{a>0}$ のとき $\\boldsymbol{-3a<b<a^3-3a}$，$\\boldsymbol{a<0}$ のとき $\\boldsymbol{a^3-3a<b<-3a}$．\n\n以下 $r=\\dfrac{3a+b}2$ とおくと，(1) の条件は「$a>0$ かつ $0<r<\\frac{a^3}2$」または「$a<0$ かつ $\\frac{a^3}2<r<0$」．$\\alpha,\\beta,\\gamma$ は\n\\[g(t)=t^3-\\tfrac{3a}2t^2+r=0\\]\nの3解なので，$\\alpha+\\beta+\\gamma=\\frac{3a}2$，$\\alpha\\beta+\\beta\\gamma+\\gamma\\alpha=0$，$\\alpha\\beta\\gamma=-r$．\n\n(2) $\\alpha^2+\\beta^2+\\gamma^2=\\left(\\frac{3a}2\\right)^2-0=\\frac{9a^2}4$．$g(\\alpha)=0$ より $\\alpha^3=\\frac{3a}2\\alpha^2-r$ などだから\n\\[\\alpha^3+\\beta^3+\\gamma^3=\\frac{3a}2\\cdot\\frac{9a^2}4-3r=\\frac{27a^3}8-3r.\\]\nよって G の座標は $x_G=\\dfrac a2$，\n\\[y_G=\\frac13\\left\\{\\frac{27a^3}8-3r-3\\cdot\\frac{3a}2\\right\\}=\\frac{9a^3}8-r-\\frac{3a}2.\\]\n$f(x_G)=\\dfrac{a^3}8-\\dfrac{3a}2$ より\n\\[D=a^3-r=\\boldsymbol{\\frac{2a^3-3a-b}2}.\\]\n$a>0$ のとき $0<r<\\frac{a^3}2$ より $\\frac{a^3}2<D<a^3$，特に $D>0$．$a<0$ のとき $\\frac{a^3}2<r<0$ より $a^3<D<\\frac{a^3}2<0$．いずれの場合も $D\\neq0$ なので G は $C$ 上にない．\\hfill$\\square$\n\n$a>0$ を固定すると，$b$ が $-3a<b<a^3-3a$ を動くとき $r$ は $0<r<\\frac{a^3}2$ の全体を動き，$D=a^3-r$ は連続的に変化するので，$D$ のとりうる値の範囲は $\\boldsymbol{\\dfrac{a^3}2<D<a^3}$．\n\n(3) \\textbf{面積の式．}$f(\\gamma)-f(\\alpha)=(\\gamma-\\alpha)(\\gamma^2+\\gamma\\alpha+\\alpha^2-3)$ などを用いると\n\\begin{align*}\nS&=\\frac12\\left|(\\beta-\\alpha)\\{f(\\gamma)-f(\\alpha)\\}-(\\gamma-\\alpha)\\{f(\\beta)-f(\\alpha)\\}\\right|\\\\\n&=\\frac12\\left|(\\beta-\\alpha)(\\gamma-\\alpha)\\{(\\gamma^2+\\gamma\\alpha)-(\\beta^2+\\beta\\alpha)\\}\\right|\n=\\frac12\\left|(\\beta-\\alpha)(\\gamma-\\alpha)(\\gamma-\\beta)\\right|\\cdot|\\alpha+\\beta+\\gamma|.\n\\end{align*}\n\\textbf{差積の2乗．}$g(t)=(t-\\alpha)(t-\\beta)(t-\\gamma)$ である．一方 $g(\\alpha)=0$ より\n\\[g(t)=g(t)-g(\\alpha)=(t^3-\\alpha^3)-\\frac{3a}2(t^2-\\alpha^2)=(t-\\alpha)\\left\\{t^2+\\alpha t+\\alpha^2-\\frac{3a}2(t+\\alpha)\\right\\}.\\]\n$t\\neq\\alpha$ で両辺を $t-\\alpha$ で割ると $(t-\\beta)(t-\\gamma)=t^2+\\alpha t+\\alpha^2-\\frac{3a}2(t+\\alpha)$ が $\\alpha$ 以外のすべての $t$ で成り立ち，両辺は2次以下の多項式なので恒等式である．$t=\\alpha$ とおくと $(\\alpha-\\beta)(\\alpha-\\gamma)=3\\alpha^2-3a\\alpha=g'(\\alpha)$．$\\beta$，$\\gamma$ についても同様に $g'(\\beta)=(\\beta-\\alpha)(\\beta-\\gamma)$，$g'(\\gamma)=(\\gamma-\\alpha)(\\gamma-\\beta)$ なので\n\\[g'(\\alpha)g'(\\beta)g'(\\gamma)=-\\{(\\alpha-\\beta)(\\beta-\\gamma)(\\gamma-\\alpha)\\}^2.\\]\n一方 $g'(t)=3t^2-3at=3t(t-a)$ だから\n\\[g'(\\alpha)g'(\\beta)g'(\\gamma)=27\\,\\alpha\\beta\\gamma\\,(\\alpha-a)(\\beta-a)(\\gamma-a)=27(-r)\\{-g(a)\\}=27r\\left(r-\\frac{a^3}2\\right)\\]\n（$g(a)=(a-\\alpha)(a-\\beta)(a-\\gamma)$，$g(a)=a^3-\\frac32a^3+r=r-\\frac{a^3}2$ を用いた）．ゆえに\n\\[\\{(\\alpha-\\beta)(\\beta-\\gamma)(\\gamma-\\alpha)\\}^2=27r\\left(\\frac{a^3}2-r\\right),\\qquad S^2=\\frac14\\cdot27r\\left(\\frac{a^3}2-r\\right)\\cdot\\frac{9a^2}4=\\frac{243a^2}{16}\\,r\\left(\\frac{a^3}2-r\\right).\\]\n$a>0$ を固定すると $r$ は $0<r<\\frac{a^3}2$ を動き，\n\\[r\\left(\\frac{a^3}2-r\\right)=\\frac{a^6}{16}-\\left(r-\\frac{a^3}4\\right)^2\\leqq\\frac{a^6}{16}\\]\nで，等号は $r=\\frac{a^3}4$（範囲内）のとき．よって $S^2\\leqq\\frac{243a^8}{256}$，$S$ の最大値は $\\boldsymbol{\\dfrac{9\\sqrt3}{16}a^4}$ で，そのとき $3a+b=2r=\\frac{a^3}2$ より $\\boldsymbol{b=\\dfrac{a^3}2-3a}$．"
+   }
+  ],
+  "idea": {
+   "tex": "接点の $x$ 座標は $t$ の3次方程式 $g(t)=0$ の3解で，和・積から重心が出る．三角形の面積は $\\frac12|(\\alpha-\\beta)(\\beta-\\gamma)(\\gamma-\\alpha)(\\alpha+\\beta+\\gamma)|$ となり，差積の2乗は $g'(\\alpha)g'(\\beta)g'(\\gamma)=-\\{(\\alpha-\\beta)(\\beta-\\gamma)(\\gamma-\\alpha)\\}^2$ と $g'(t)=3t(t-a)$ から $g(0)g(a)$ の積に帰着する．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 記述\n(3) 最大値：(9sqrt(3)/16)a^4"
+  },
+  "methods": [],
+  "tags": [
+   "接線の本数",
+   "解と係数の関係",
+   "差積",
+   "重心",
+   "面積の最大"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
  }
 ]

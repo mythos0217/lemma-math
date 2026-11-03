@@ -6419,5 +6419,384 @@
    },
    "verified": false
   }
+ },
+ {
+  "id": "I-QF-138",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-02",
+  "level": 4,
+  "minutes": 30,
+  "theme": "整数点でだけ正となる2次式と区間の和",
+  "topic": "整数点でだけ正となる2次式と区間の和",
+  "statement": {
+   "tex": "$n$ を正の整数，$a$ を実数とする．すべての整数 $m$ に対して\n\\[m^2-am+\\frac{n(n+1)}{(2n+1)^2}a^2>0\\]\nが成り立つような $a$ について考える．\n\\begin{enumerate}\n  \\item このような実数 $a$ の範囲を $n$ を用いて表せ．\n  \\item (1) の範囲のうち $a>0$ の部分は有限個の区間の和集合になる．それらの区間の長さの和を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $j=0,1,\\dots,n-1$ のいずれかについて $\\dfrac{j(2n+1)}n<|a|<\\dfrac{(j+1)(2n+1)}{n+1}$（$j=0$ は $0<|a|<\\dfrac{2n+1}{n+1}$）　(2) $\\dfrac{2n+1}2$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\alpha=\\dfrac n{2n+1}$，$\\beta=\\dfrac{n+1}{2n+1}$ とおくと $\\alpha+\\beta=1$，$\\alpha\\beta=\\dfrac{n(n+1)}{(2n+1)^2}$ なので，左辺を $g(m)$ として\n\\[g(m)=(m-\\alpha a)(m-\\beta a).\\]\n$g$ を $a$ の関数ともみて $g_a(m)$ と書くと $g_{-a}(-m)=g_a(m)$ なので，条件は $a$ と $-a$ で同じ．$a=0$ では $g(0)=0$ で不適．以下 $a>0$ とする．$0<\\alpha a<\\beta a$ で，$g(m)\\leqq0\\iff\\alpha a\\leqq m\\leqq\\beta a$．よって条件は「閉区間 $I=[\\alpha a,\\beta a]$ が整数を含まない」．\n\n$j$ を $\\alpha a$ 未満の最大の整数とする（$\\alpha a>0$ より $j\\geqq0$）．$j+1\\geqq\\alpha a$ だから，$I$ が整数を含まない $\\iff j+1>\\beta a$．したがって条件は「ある整数 $j\\geqq0$ について $j<\\alpha a$ かつ $\\beta a<j+1$」，すなわち\n\\[\\frac{j(2n+1)}n<a<\\frac{(j+1)(2n+1)}{n+1}.\\]\nこの区間が空でない $\\iff j(n+1)<(j+1)n\\iff j<n$．\n\n(1) 求める範囲は\n\\[\\boldsymbol{\\frac{j(2n+1)}n<|a|<\\frac{(j+1)(2n+1)}{n+1}\\ \\ (j=0,1,\\dots,n-1\\text{ のいずれか})}\\]\n（$j=0$ の部分は $0<|a|<\\dfrac{2n+1}{n+1}$）．\n\n(2) これらの区間は $\\dfrac{(j+1)(2n+1)}{n+1}\\leqq\\dfrac{(j+1)(2n+1)}n$ より重ならないので，長さの和は\n\\[(2n+1)\\sum_{j=0}^{n-1}\\left(\\frac{j+1}{n+1}-\\frac jn\\right)=(2n+1)\\left(\\frac{n(n+1)}{2(n+1)}-\\frac{(n-1)n}{2n}\\right)=\\boldsymbol{\\frac{2n+1}2}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "2次式 $m^2-am+\\frac{n(n+1)}{(2n+1)^2}a^2$ は $\\left(m-\\frac{n}{2n+1}a\\right)\\left(m-\\frac{n+1}{2n+1}a\\right)$ と因数分解でき，負または0となる $m$ は長さ $\\frac{|a|}{2n+1}$ の閉区間．「その区間に整数がない」ことを「区間が隣り合う整数 $j,j+1$ の間にはさまる」と言い換える．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) (2n+1)/2"
+  },
+  "methods": [],
+  "tags": [
+   "2次不等式",
+   "整数",
+   "区間",
+   "和の計算"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-QF-139",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-02",
+  "level": 4,
+  "minutes": 30,
+  "theme": "3つの2次不等式の解が1点を除く全体になるとき",
+  "topic": "3つの2次不等式の解が1点を除く全体になるとき",
+  "statement": {
+   "tex": "$a,\\,b,\\,c,\\,p$ を実数とする．不等式\n\\[ax^2+bx+c>0,\\qquad bx^2+cx+a>0,\\qquad cx^2+ax+b>0\\]\nをすべて満たす実数 $x$ の集合が，$p$ 以外のすべての実数からなる集合と一致しているとする．\n\\begin{enumerate}\n  \\item $a,\\,b,\\,c$ はすべて正であることを示せ．\n  \\item $p$ のとりうる値の範囲を求めよ．\n  \\item $p=-1$ のとき，比 $a:b:c$ として考えられるものをすべて求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) $-2<p<-\\dfrac12$　(3) $a:b:c=1:2:1,\\ 2:1:1,\\ 1:1:2$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$F_1(x)=ax^2+bx+c$，$F_2(x)=bx^2+cx+a$，$F_3(x)=cx^2+ax+b$ とおく．$(a,b,c)$ を $(b,c,a)$ に置き換えると $(F_1,F_2,F_3)$ は $(F_2,F_3,F_1)$ になり，条件は変わらない．\n\n\\textbf{補題．} $g(x)=\\alpha x^2+\\beta x+\\gamma$ が $x\\neq p$ を満たすすべての実数 $x$ で $g(x)>0$ ならば，次のいずれかである．\n(i) $\\alpha=\\beta=0,\\ \\gamma>0$．(ii) $\\alpha>0,\\ \\beta^2-4\\alpha\\gamma<0$．(iii) $\\alpha>0$，$g(x)=\\alpha(x-p)^2$．\n\n（証明）$\\alpha<0$ なら $x\\to\\infty$ で $g(x)\\to-\\infty$ となり，十分大きい $x\\ (\\neq p)$ で $g(x)<0$．$\\alpha=0,\\ \\beta\\neq0$ なら $g$ は1次関数で，負の値をとる $x$ が無数にあり，その中に $p$ 以外のものがある．$\\alpha=\\beta=0$ なら $g=\\gamma$ で $\\gamma>0$．$\\alpha>0$ で判別式が正なら，2解 $r_1<r_2$ の間で $g<0$ となり，この区間には $p$ 以外の点がある．判別式が $0$ なら $g=\\alpha(x-r)^2$ で $g(r)=0$ より $r=p$．以上で示された．\\hfill$\\square$\n\n各型で $g(p)\\geqq0$ であり，$g(p)=0$ となるのは (iii) に限る．\n\n\\textbf{分析．} 各 $F_i$ は $x\\neq p$ で正なので補題が使える．$p$ は解の集合に含まれないから，ある $i$ で $F_i(p)\\leqq0$，したがって $F_i(p)=0$ で $F_i$ は (iii) 型である．巡回対称性により $i=1$ としてよい：\n\\[a>0,\\qquad b=-2ap,\\qquad c=ap^2．\\]\n$p=0$ なら $b=c=0$ で $F_3(x)=ax$ は $x=-1$ で負となり不適．よって $p\\neq0$，$b\\neq0$ で，$F_2$ は (ii) か (iii) 型，特に $b>0$ より $p<0$．$F_2$ が (iii) 型なら重解 $-\\frac c{2b}=\\frac p4$ が $p$ に等しくなり $p=0$ となって矛盾．よって (ii) 型で\n\\[c^2-4ab=a^2p^4+8a^2p=a^2p(p^3+8)<0\\iff p^3+8>0\\iff p>-2\\quad(p<0\\ \\text{より})．\\]\n$F_3$ は $c=ap^2>0$ より (ii) か (iii) 型．(iii) 型なら重解 $-\\frac a{2c}=-\\frac1{2p^2}$ が $p$ に等しく $p^3=-\\frac12$ だが，このとき判別式 $a^2-4cb=a^2(1+8p^3)=-3a^2\\neq0$ で矛盾．よって (ii) 型で $a^2(1+8p^3)<0\\iff p<-\\frac12$．\n\n(1) 以上より $a>0$，$b=-2ap>0$，$c=ap^2>0$．$i=2,3$ の場合は $(a,b,c)$ が巡回的に入れ替わるだけなので，いずれにせよ $\\boldsymbol{a,b,c>0}$．\\hfill$\\square$\n\n(2) 分析から $-2<p<-\\frac12$ が必要．逆に $-2<p<-\\frac12$ のとき $a=1,\\ b=-2p,\\ c=p^2$ とすると，$F_1=(x-p)^2$ は $x\\neq p$ で正，$x=p$ で $0$．$F_2,F_3$ は2次の係数が正で判別式 $p(p^3+8)<0$，$1+8p^3<0$ より常に正．よって解の集合は $p$ 以外のすべての実数となる．\n\\[\\boldsymbol{-2<p<-\\frac12}\\]\n\n(3) $p=-1$ のとき，$F_1$ が (iii) 型なら $(a,b,c)=(a,2a,a)$．$F_2$，$F_3$ が (iii) 型の場合は巡回的に置き換えて $(b,c,a)=(\\lambda,2\\lambda,\\lambda)$，$(c,a,b)=(\\lambda,2\\lambda,\\lambda)$．いずれも (2) の逆の確認と同様に条件を満たす．\n\\[\\boldsymbol{a:b:c=1:2:1,\\ \\ 2:1:1,\\ \\ 1:1:2}\\]"
+   }
+  ],
+  "idea": {
+   "tex": "解の集合が「$p$ 以外のすべての実数」なので，3つの式はどれも $x\\neq p$ で正．そのような2次以下の式は「正の定数」「判別式が負」「$\\alpha(x-p)^2\\ (\\alpha>0)$」の3型に限られ，$x=p$ を除くにはどれか1つが第3の型．巡回対称性でそれを第1式とし，残り2式の判別式から $p$ の範囲を決める．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 証明\n(2) -2<p<-1/2\n(3) 記述"
+  },
+  "methods": [],
+  "tags": [
+   "2次不等式",
+   "判別式",
+   "巡回対称",
+   "場合分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-QF-140",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-02",
+  "level": 3,
+  "minutes": 25,
+  "theme": "頂点の高さが一定で定点を通る放物線",
+  "topic": "頂点の高さが一定で定点を通る放物線",
+  "statement": {
+   "tex": "正の実数 $k$ および $\\alpha<\\beta$ となる実数 $\\alpha$，$\\beta$ が次の条件をみたすように動く．\n\\begin{center}\n\\begin{minipage}{0.86\\linewidth}\n条件：座標平面上の放物線 $C:\\ y=k(x-\\alpha)(\\beta-x)$ の頂点の $y$ 座標は1であり，$C$ は点 $(1,-3)$ を通り，$C$ は $y$ 軸と $-2\\leqq y\\leqq0$ の範囲で交わる．\n\\end{minipage}\n\\end{center}\n\\begin{enumerate}\n  \\item $C$ の頂点の $x$ 座標のとりうる値の範囲を求めよ．\n  \\item $C$ と $x$ 軸で囲まれる図形の面積 $S$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $-3-2\\sqrt3\\leqq p\\leqq-1$ または $\\dfrac13\\leqq p\\leqq2\\sqrt3-3$（$p$ は頂点の $x$ 座標）　(2) $\\dfrac{8-4\\sqrt3}{3}\\leqq S\\leqq\\dfrac49$ または $\\dfrac43\\leqq S\\leqq\\dfrac{8+4\\sqrt3}{3}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{設定．}頂点を $(p,1)$，$d=\\frac{\\beta-\\alpha}2>0$ とおく．$C$ は $\\alpha,\\beta$ で $x$ 軸と交わり，軸は $x=\\frac{\\alpha+\\beta}2=p$，頂点の $y$ 座標は $kd^2=1$．よって $k=\\dfrac1{d^2}$，$\\alpha=p-d$，$\\beta=p+d$ で\n\\[C:\\ y=1-\\frac{(x-p)^2}{d^2}.\\]\n逆に任意の実数 $p$ と $d>0$ に対してこれは条件の形の放物線である．\n面積は $S=\\displaystyle\\int_\\alpha^\\beta k(x-\\alpha)(\\beta-x)dx=\\frac k6(\\beta-\\alpha)^3=\\frac{8d^3}{6d^2}=\\frac43d$．\n\n\\textbf{条件．}点 $(1,-3)$ を通る：$1-\\dfrac{(1-p)^2}{d^2}=-3\\iff(1-p)^2=4d^2\\iff p=1\\pm2d$．\n$y$ 切片 $1-\\dfrac{p^2}{d^2}$ が $-2$ 以上0以下 $\\iff d^2\\leqq p^2\\leqq3d^2\\iff d\\leqq|p|\\leqq\\sqrt3d$．\n\n$p=1+2d$ のとき：$p^2-3d^2=d^2+4d+1>0$ で不適．\n\n$p=1-2d$ のとき：\n・$0<d\\leqq\\frac12$：$|p|=1-2d$．$d\\leqq1-2d\\iff d\\leqq\\frac13$，$1-2d\\leqq\\sqrt3d\\iff d\\geqq\\frac1{2+\\sqrt3}=2-\\sqrt3$．よって $2-\\sqrt3\\leqq d\\leqq\\frac13$．\n・$d>\\frac12$：$|p|=2d-1$．$d\\leqq2d-1\\iff d\\geqq1$，$2d-1\\leqq\\sqrt3d\\iff d\\leqq\\frac1{2-\\sqrt3}=2+\\sqrt3$．よって $1\\leqq d\\leqq2+\\sqrt3$．\n（$2-\\sqrt3<\\frac13$ は $5<3\\sqrt3$ から，いずれの区間も空でない．）\n\n(1) $p=1-2d$ は $d$ について減少．$d\\in[2-\\sqrt3,\\frac13]$ で $p\\in[\\frac13,\\,2\\sqrt3-3]$，$d\\in[1,2+\\sqrt3]$ で $p\\in[-3-2\\sqrt3,\\,-1]$．\n\\[\\boldsymbol{-3-2\\sqrt3\\leqq p\\leqq-1\\quad\\text{または}\\quad\\frac13\\leqq p\\leqq2\\sqrt3-3}.\\]\n\n(2) $S=\\frac43d$ より\n\\[\\boldsymbol{\\frac{8-4\\sqrt3}{3}\\leqq S\\leqq\\frac49\\quad\\text{または}\\quad\\frac43\\leqq S\\leqq\\frac{8+4\\sqrt3}{3}}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "頂点を $(p,1)$，$x$ 軸との交点の半分の幅を $d$ とおくと $k=\\dfrac1{d^2}$，面積 $S=\\dfrac43d$．定点を通る条件で $p=1\\pm2d$ と決まり，$y$ 切片の条件 $d^2\\leqq p^2\\leqq3d^2$ が $d$ の不等式になる．$p=1-2d$ の符号で場合分けすると $d$ の範囲が2つの区間に分かれる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) (8-4sqrt(3))/3<=S<=4/9 または 4/3<=S<=(8+4sqrt(3))/3"
+  },
+  "methods": [],
+  "tags": [
+   "放物線と面積",
+   "頂点",
+   "y切片",
+   "不等式",
+   "範囲が2つに分かれる"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-QF-141",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-02",
+  "level": 4,
+  "minutes": 35,
+  "theme": "折れ線と放物線の族の共有点の個数",
+  "topic": "折れ線と放物線の族の共有点の個数",
+  "statement": {
+   "tex": "$a$ を正の実数とし，関数 $f(x)$ を\n\\[f(x)=\\frac a4x^2+\\frac1a-2\\]\nと定める．また，関数 $g(x)$ を次のように定める．整数 $n$ に対し，\n\\[\n\\begin{array}{ll}\n2n\\leqq x<2n+1 \\text{ のとき} & g(x)=x-2n\\\\[2pt]\n2n+1\\leqq x<2n+2 \\text{ のとき} & g(x)=-x+2n+2\n\\end{array}\n\\]\nとする．\n\\begin{enumerate}\n  \\item すべての実数 $x$ に対して $f(x)\\geqq|x|-2$ が成り立つことを示せ．\n  \\item 座標平面上の $y=f(x)$ のグラフと $y=g(x)$ のグラフの共有点の個数を，$a$ の値によって答えよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) $0<a<6-4\\sqrt2$ のとき $0$ 個，$a=6-4\\sqrt2$ のとき $2$ 個，$6-4\\sqrt2<a<\\dfrac12$ のとき $4$ 個，$a=\\dfrac12$ のとき $3$ 個，$\\dfrac12<a<\\dfrac23$ のとき $2$ 個，$\\dfrac23\\leqq a<1$ のとき $4$ 個，$a\\geqq1$ のとき $2$ 個"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $f(x)-(x-2)=\\dfrac a4x^2-x+\\dfrac1a=\\dfrac a4\\left(x-\\dfrac2a\\right)^2\\geqq0$．$f$ は偶関数なので $f(x)-(-x-2)=f(-x)-(-x-2)\\geqq0$ も成り立つ．よって $f(x)\\geqq|x|-2$．\\hfill$\\square$\n\n(2) $g(x)$ は $x$ と最も近い偶数との距離に等しく，偶関数で $0\\leqq g\\leqq1$．$f$ も偶関数なので，$x\\geqq0$ の共有点の個数を $n_+$ とし，$x=0$ が共有点かどうかで全体を数える．$x=0$：$f(0)=\\frac1a-2=g(0)=0\\iff a=\\frac12$．\n以下 $x\\geqq0$ で調べる．$f$ は $x\\geqq0$ で狭義増加．\n\n\\textbf{(ア) $x\\geqq3$．}相加平均と相乗平均の関係より $f(3)=\\frac{9a}4+\\frac1a-2\\geqq2\\sqrt{\\frac94}-2=1$（等号は $a=\\frac23$）．よって $x\\geqq3$ で $f(x)\\geqq f(3)\\geqq1\\geqq g(x)$．共有点は $f(x)=1=g(x)$ のときで，$f(x)=f(3)=1$ より $x=3$，$a=\\frac23$；$g(3)=1$ で実際に共有点．\n\n\\textbf{(イ) $2\\leqq x<3$．}$g=x-2$ で，(1) の式より共有点は $x=\\frac2a$ のみ（接する）．$2\\leqq\\frac2a<3\\iff\\frac23<a\\leqq1$．\n\n\\textbf{(ウ) $1\\leqq x<2$．}$g=2-x$．$f(x)=2-x\\iff a^2x^2+4ax+4-16a=0\\iff(ax+2)^2=16a$．$ax+2>0$ より $x=\\dfrac{4\\sqrt a-2}{a}$．\nこれが $[1,2)$ に入る $\\iff a\\leqq4\\sqrt a-2<2a$．$v=\\sqrt a$ として $v^2-4v+2\\leqq0$ かつ $2(v-1)^2>0$，すなわち $2-\\sqrt2\\leqq v\\leqq2+\\sqrt2$，$v\\neq1$．\nよって $6-4\\sqrt2\\leqq a\\leqq6+4\\sqrt2,\\ a\\neq1$ のとき1個，それ以外0個．\n\n\\textbf{(エ) $0\\leqq x<1$．}$g=x$．$f(x)=x\\iff a^2x^2-4ax+4-8a=0\\iff(ax-2)^2=8a\\iff x=x_\\pm=\\dfrac{2\\pm2\\sqrt{2a}}{a}$．$u=\\sqrt{2a}$ とおく．\n$x_+>0$ で，$x_+<1\\iff2+2u<\\frac{u^2}2\\iff u^2-4u-4>0\\iff u>2+2\\sqrt2\\iff a>6+4\\sqrt2$．\n$x_-\\geqq0\\iff u\\leqq1\\iff a\\leqq\\frac12$．$x_-<1\\iff2-2u<\\frac{u^2}2\\iff u^2+4u-4>0\\iff u>2\\sqrt2-2\\iff a>6-4\\sqrt2$．\nよって $x_-\\in[0,1)\\iff6-4\\sqrt2<a\\leqq\\frac12$（$x_-=0$ は $a=\\frac12$），$x_+\\in[0,1)\\iff a>6+4\\sqrt2$．\n（$6-4\\sqrt2<\\frac12<\\frac23<1<6+4\\sqrt2$．）\n\n\\textbf{集計．}(ア)〜(エ) の区間は互いに重ならず，得られる点はすべて異なる．$x>0$ の共有点の個数と，$x=0$ の有無から全体の個数 $N$ は\n\\begin{center}\n\\begin{tabular}{c|c|c|c}\n$a$ の範囲 & $x>0$ の共有点 & $x=0$ & $N$\\\\ \\hline\n$0<a<6-4\\sqrt2$ & なし & & $0$\\\\\n$a=6-4\\sqrt2$ & (ウ) $x=1$ & & $2$\\\\\n$6-4\\sqrt2<a<\\frac12$ & (エ) $x_-$，(ウ) & & $4$\\\\\n$a=\\frac12$ & (ウ) & あり & $3$\\\\\n$\\frac12<a<\\frac23$ & (ウ) & & $2$\\\\\n$a=\\frac23$ & (ウ)，(ア) $x=3$ & & $4$\\\\\n$\\frac23<a<1$ & (ウ)，(イ) $x=\\frac2a$ & & $4$\\\\\n$a=1$ & (イ) $x=2$ & & $2$\\\\\n$1<a\\leqq6+4\\sqrt2$ & (ウ) & & $2$\\\\\n$a>6+4\\sqrt2$ & (エ) $x_+$ & & $2$\n\\end{tabular}\n\\end{center}\n（$N$ は $2n_+$ に，$a=\\frac12$ のときだけ $x=0$ の1個を加えたもの．）まとめて\n\\[\n\\boldsymbol{N=\\begin{cases}0&(0<a<6-4\\sqrt2)\\\\2&(a=6-4\\sqrt2)\\\\4&(6-4\\sqrt2<a<\\frac12)\\\\3&(a=\\frac12)\\\\2&(\\frac12<a<\\frac23)\\\\4&(\\frac23\\leqq a<1)\\\\2&(a\\geqq1)\\end{cases}}\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "$f(x)-(x-2)=\\dfrac a4\\left(x-\\dfrac2a\\right)^2$ なので，どの $a$ でも放物線は直線 $y=x-2$ に接し，$f(x)\\geqq|x|-2$．$x\\geqq3$ では相加相乗平均で $f(3)\\geqq1$．あとは $0\\leqq x<1$，$1\\leqq x<2$ の2本の線分との交点を，$x$ の2次方程式を平方完成した形 $(ax\\mp2)^2=\\cdots$ で解き，区間に入る条件を $\\sqrt{a}$ の2次不等式で処理する．"
+  },
+  "methods": [],
+  "tags": [
+   "共有点の個数",
+   "包絡線",
+   "相加相乗平均",
+   "場合分け",
+   "接する"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-QF-142",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-02",
+  "level": 4,
+  "minutes": 30,
+  "theme": "3つの値がすべて有理数になる2次関数",
+  "topic": "3つの値がすべて有理数になる2次関数",
+  "statement": {
+   "tex": "$\\sqrt2$，$\\sqrt3$，$\\sqrt6$ が無理数であることは使ってよい．実数 $a,b$ に対して $f(x)=x^2+ax+b$ とする．\n\\begin{enumerate}\n  \\item $f(\\sqrt2)$，$f(\\sqrt3)$，$f(\\sqrt2+\\sqrt3)$ がすべて有理数となるような $(a,b)$ をすべて求めよ．\n  \\item 有理数 $p,q,r,s$ が $p+q\\sqrt2+r\\sqrt3+s\\sqrt6=0$ をみたすならば $p=q=r=s=0$ であることを示せ．\n  \\item どのような実数 $a,b$ に対しても，$f(1)$，$f(\\sqrt2)$，$f(\\sqrt3)$，$f(\\sqrt2+\\sqrt3)$ のうち少なくとも1つは無理数であることを示せ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a=-2(\\sqrt2+\\sqrt3)$，$b=5+2\\sqrt6+r$（$r$ は任意の有理数），すなわち $f(x)=(x-\\sqrt2-\\sqrt3)^2+r$　(2) 証明　(3) 証明"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $f(\\sqrt2)=\\alpha$，$f(\\sqrt3)=\\beta$，$f(\\sqrt2+\\sqrt3)=\\gamma$ がすべて有理数とする．$\\beta-\\alpha=1+a(\\sqrt3-\\sqrt2)$ より $k=a(\\sqrt3-\\sqrt2)$ は有理数で，$\\sqrt3+\\sqrt2$ を掛けて $a=k(\\sqrt3+\\sqrt2)$．\n$b=\\alpha-2-a\\sqrt2=\\alpha-2-k(\\sqrt6+2)$．\n\\[\n\\gamma=(5+2\\sqrt6)+k(\\sqrt3+\\sqrt2)^2+b=(3+3k+\\alpha)+(2+k)\\sqrt6.\n\\]\n$\\sqrt6$ は無理数なので $2+k=0$，$k=-2$．よって $a=-2(\\sqrt2+\\sqrt3)$，$b=\\alpha+2+2\\sqrt6$．$r=\\alpha-3$ とおくと $b=5+2\\sqrt6+r$ で，\n\\[\nf(x)=x^2-2(\\sqrt2+\\sqrt3)x+(\\sqrt2+\\sqrt3)^2+r=(x-\\sqrt2-\\sqrt3)^2+r.\n\\]\n逆にこのとき $f(\\sqrt2)=3+r$，$f(\\sqrt3)=2+r$，$f(\\sqrt2+\\sqrt3)=r$ はすべて有理数．\n\n答 $\\boldsymbol{a=-2(\\sqrt2+\\sqrt3),\\ b=5+2\\sqrt6+r\\ (r\\ \\text{は任意の有理数})}$．\n\n(2) $p+q\\sqrt2=-\\sqrt3(r+s\\sqrt2)$ とする．$r+s\\sqrt2\\neq0$ と仮定すると $(r,s)\\neq(0,0)$ で，$\\sqrt2$ が無理数なので $r-s\\sqrt2\\neq0$，$r^2-2s^2\\neq0$．よって\n\\[\n\\sqrt3=-\\frac{(p+q\\sqrt2)(r-s\\sqrt2)}{r^2-2s^2}=U+V\\sqrt2\\quad(U,V\\ \\text{は有理数}).\n\\]\n2乗して $3=U^2+2V^2+2UV\\sqrt2$．$UV\\neq0$ なら $\\sqrt2$ が有理数になるので $UV=0$．$V=0$ なら $\\sqrt3=U$，$U=0$ なら $\\sqrt6=\\sqrt2\\cdot V\\sqrt2=2V$ がともに有理数で矛盾．よって $r+s\\sqrt2=0$ で $r=s=0$，さらに $p+q\\sqrt2=0$ から $p=q=0$．\\hfill$\\square$\n\n(3) $f(\\sqrt2),f(\\sqrt3),f(\\sqrt2+\\sqrt3)$ がすべて有理数なら，(1) より $f(x)=(x-\\sqrt2-\\sqrt3)^2+r$ で\n\\[\nf(1)=(1-\\sqrt2-\\sqrt3)^2+r=(6+r)-2\\sqrt2-2\\sqrt3+2\\sqrt6.\n\\]\nこれが有理数 $t$ なら $(6+r-t)-2\\sqrt2-2\\sqrt3+2\\sqrt6=0$ で，(2) より $-2=0$ となり矛盾．よって $f(1)$ は無理数．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$f(\\sqrt3)-f(\\sqrt2)$ から $a(\\sqrt3-\\sqrt2)$ が有理数，よって $a=k(\\sqrt3+\\sqrt2)$．$f(\\sqrt2+\\sqrt3)$ の $\\sqrt6$ の係数 $2+k$ が0でなければならず，$f(x)=(x-\\sqrt2-\\sqrt3)^2+r$ に決まる．さらに $f(1)$ の無理性は「$p+q\\sqrt2+r\\sqrt3+s\\sqrt6=0\\Rightarrow$ 全部0」による．"
+  },
+  "methods": [],
+  "tags": [
+   "無理数",
+   "有理数",
+   "2次関数",
+   "1次独立性"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-QF-143",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-02",
+  "level": 4,
+  "minutes": 30,
+  "theme": "係数を入れかえた2つの2次方程式",
+  "topic": "係数を入れかえた2つの2次方程式",
+  "statement": {
+   "tex": "実数 $a,b$ に対して，$x$ の方程式 $(x^2+ax+b)(x^2+bx+a)=0$ の異なる実数解の個数を $N(a,b)$ とする．\n\\begin{enumerate}\n  \\item $a\\neq b$ のとき，2つの2次方程式 $x^2+ax+b=0$，$x^2+bx+a=0$ が共通の解（虚数解も含む）をもつための条件と，その共通の解を求めよ．\n  \\item $N(a,b)=3$ となる点 $(a,b)$ の集合を $ab$ 平面上に図示せよ．\n  \\item $N(a,b)=1$ となる点 $(a,b)$ の集合を $ab$ 平面上に図示せよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a+b=-1$，共通の解は $x=1$　(2) 直線 $a+b=-1$ から3点 $\\left(-\\dfrac12,-\\dfrac12\\right),(1,-2),(-2,1)$ を除いたもの，放物線 $b=\\dfrac{a^2}4$ の $a<0$ または $a>4$ の部分から点 $(-2,1)$ を除いたもの，放物線 $a=\\dfrac{b^2}4$ の $b<0$ または $b>4$ の部分から点 $(1,-2)$ を除いたもの，の和集合　(3) 放物線 $b=\\dfrac{a^2}4$ の $0\\leqq a\\leqq4$ の部分と，放物線 $a=\\dfrac{b^2}4$ の $0\\leqq b\\leqq4$ の部分の和集合"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$g_1=x^2+ax+b$，$g_2=x^2+bx+a$，判別式 $D_1=a^2-4b$，$D_2=b^2-4a$．\n\n(1) 共通解 $x$ について辺々引くと $(a-b)x-(a-b)=0$，$a\\neq b$ より $x=1$．$g_1(1)=1+a+b=0$．逆に $a+b=-1$ なら $x=1$ は共通解．条件 $\\boldsymbol{a+b=-1}$，共通の解 $\\boldsymbol{x=1}$．\n\n\\textbf{$N$ の決定．}\n\\textit{$a=b$．} $g_1=g_2$ で，$N$ は $a<0$ または $a>4$ で2，$a=0,4$ で1，$0<a<4$ で0．\n\\textit{$a\\neq b$，$a+b=-1$．} $g_1=(x-1)(x-b)$，$g_2=(x-1)(x-a)$ で実数解の集合は $\\{1,a,b\\}$．$N=3$ だが，$a=1$ または $b=1$（$(a,b)=(1,-2),(-2,1)$）なら $N=2$．\n\\textit{$a\\neq b$，$a+b\\neq-1$．} 共通解はないので，$N=n_1+n_2$（$n_i$ は $D_i>0,=0,<0$ に応じて $2,1,0$）．\n\n(2) $N=3$ となるのは，直線 $a+b=-1$ 上（$a\\neq b$ より $\\left(-\\frac12,-\\frac12\\right)$ を除き，$(1,-2),(-2,1)$ も除く）と，$a\\neq b$，$a+b\\neq-1$ で $\\{n_1,n_2\\}=\\{2,1\\}$ の場合．\n$D_1=0$，$D_2>0$：$b=\\frac{a^2}4$，$\\frac{a^4}{16}>4a\\iff a(a^3-64)>0\\iff a<0$ または $a>4$．$a=b$ となるのは $a=0,4$ で範囲外，$a+b=-1\\iff(a+2)^2=0\\iff a=-2$ を除く．\n$D_2=0$，$D_1>0$：対称に $a=\\frac{b^2}4$，$b<0$ または $b>4$，$b\\neq-2$．\n\\textbf{答：直線 $\\boldsymbol{a+b=-1}$ から $\\boldsymbol{\\left(-\\frac12,-\\frac12\\right),(1,-2),(-2,1)}$ を除いたもの，放物線 $\\boldsymbol{b=\\frac{a^2}4}$ の $\\boldsymbol{a<0}$ または $\\boldsymbol{a>4}$ の部分から $\\boldsymbol{(-2,1)}$ を除いたもの，放物線 $\\boldsymbol{a=\\frac{b^2}4}$ の $\\boldsymbol{b<0}$ または $\\boldsymbol{b>4}$ の部分から $\\boldsymbol{(1,-2)}$ を除いたもの，の和集合．}\n\n(3) 直線 $a+b=-1$ 上では $N\\geqq2$．$a=b$ では $(0,0),(4,4)$．$a\\neq b$，$a+b\\neq-1$ では $\\{n_1,n_2\\}=\\{1,0\\}$：$D_1=0$，$D_2<0$ は $b=\\frac{a^2}4$，$a^4<64a\\iff0<a<4$（このとき $a\\neq b$，$a+b\\neq-1$）．対称に $a=\\frac{b^2}4$，$0<b<4$．\n\\textbf{答：放物線 $\\boldsymbol{b=\\frac{a^2}4}$ の $\\boldsymbol{0\\leqq a\\leqq4}$ の部分と，放物線 $\\boldsymbol{a=\\frac{b^2}4}$ の $\\boldsymbol{0\\leqq b\\leqq4}$ の部分の和集合}（端点 $(0,0)$，$(4,4)$ を含む）．"
+   }
+  ],
+  "idea": {
+   "tex": "$x^2+ax+b=0$ と $x^2+bx+a=0$ の共通解は，辺々引いて $(a-b)(x-1)=0$．$a\\neq b$ なら共通解は $x=1$ だけで，そのとき $a+b=-1$ で解は $\\{1,a,b\\}$．共通解がなければ個数は2つの判別式の符号だけで決まる．"
+  },
+  "methods": [],
+  "tags": [
+   "共通解",
+   "判別式",
+   "実数解の個数",
+   "図示"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-QF-144",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-02",
+  "level": 4,
+  "minutes": 30,
+  "theme": "放物線と線分の共有点の個数",
+  "topic": "放物線と線分の共有点の個数",
+  "statement": {
+   "tex": "$xy$ 平面上の原点と点 $(1,2)$ を結ぶ線分（両端を含む）を L とする．曲線 $y=x^2+ax+b$ と L の共有点の個数を考える．\n\\begin{enumerate}\n  \\item 共有点がちょうど2個となるような点 $(a,b)$ の集合を $ab$ 平面上に図示し，その面積を求めよ．\n  \\item 共有点がちょうど1個となるような点 $(a,b)$ の集合を $ab$ 平面上に図示せよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $0<a<2$，$b\\geqq0$，$a+b\\geqq1$，$b<\\dfrac{(a-2)^2}{4}$ で表される領域，面積 $\\dfrac16$　(2) 領域 $b(a+b-1)<0$（境界を除く），直線 $b=0$ の $a<1$ または $a\\geqq2$ の部分，直線 $a+b=1$ の $a\\leqq0$ または $a>1$ の部分，放物線 $b=\\dfrac{(a-2)^2}{4}$ の $0<a<2$ の部分，の和集合"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "L 上の点は $(x,2x)$，$0\\leqq x\\leqq1$ なので，共有点の個数は $h(x)=x^2+(a-2)x+b$ の $0\\leqq x\\leqq1$ における異なる解の個数．$h(0)=b$，$h(1)=a+b-1$，軸 $x=\\frac{2-a}2$．\n\n(1) 区間 $[0,1]$ に異なる2解 $\\iff$ 判別式 $(a-2)^2-4b>0$，$0<\\frac{2-a}2<1$，$h(0)\\geqq0$，$h(1)\\geqq0$（軸が区間の端なら一方の解は区間外）．\n\\[\\boldsymbol{0<a<2,\\quad b\\geqq0,\\quad a+b\\geqq1,\\quad b<\\frac{(a-2)^2}4}.\\]\n$0<a<2$ で $\\frac{(a-2)^2}4-\\max(0,1-a)>0$ より面積は\n\\[\\int_0^2\\frac{(a-2)^2}4da-\\int_0^1(1-a)\\,da=\\frac23-\\frac12=\\boldsymbol{\\frac16}.\\]\n\n(2) 次のように場合分けする．\n\\textit{$h(0)h(1)<0$．} 中間値の定理で $(0,1)$ に解があり，2解とも $[0,1]$ にあれば $h(0),h(1)\\geqq0$ となるので，ちょうど1個．\n\\textit{$h(0)=0$（$b=0$）．} 解は $0$ と $2-a$．ちょうど1個 $\\iff2-a\\notin(0,1]\\iff a\\geqq2$ または $a<1$．\n\\textit{$h(1)=0$（$a+b=1$）．} 解は $1$ と $b=1-a$．ちょうど1個 $\\iff1-a\\notin[0,1)\\iff a>1$ または $a\\leqq0$．\n\\textit{$h(0)h(1)>0$．} $h(0),h(1)<0$ なら下に凸より $[0,1]$ で $h<0$ で0個．$h(0),h(1)>0$ のとき，$(0,1)$ に単解がちょうど1つあれば端点の符号が異なるので，ちょうど1個 $\\iff$ 重解が $(0,1)$ にある $\\iff b=\\frac{(a-2)^2}4$，$0<a<2$（このとき $h(0)=b>0$，$h(1)=\\frac{a^2}4>0$）．\n\\textbf{答：領域 $\\boldsymbol{b(a+b-1)<0}$（境界を除く），直線 $\\boldsymbol{b=0}$ の $\\boldsymbol{a<1}$ または $\\boldsymbol{a\\geqq2}$ の部分，直線 $\\boldsymbol{a+b=1}$ の $\\boldsymbol{a\\leqq0}$ または $\\boldsymbol{a>1}$ の部分，放物線 $\\boldsymbol{b=\\frac{(a-2)^2}4}$ の $\\boldsymbol{0<a<2}$ の部分，の和集合．}"
+   }
+  ],
+  "idea": {
+   "tex": "L 上の点は $y=2x$（$0\\leqq x\\leqq1$）なので，共有点の個数は $h(x)=x^2+(a-2)x+b$ の区間 $[0,1]$ における異なる解の個数．端点の値 $h(0)=b$，$h(1)=a+b-1$ の符号で分け，端点が解になる境界の場合と重解の場合を個別に処理する．"
+  },
+  "methods": [],
+  "tags": [
+   "解の配置",
+   "図示",
+   "面積",
+   "場合分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-QF-145",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-02",
+  "level": 4,
+  "minutes": 25,
+  "theme": "文字定数について因数分解できる不等式と孤立した値",
+  "topic": "文字定数について因数分解できる不等式と孤立した値",
+  "statement": {
+   "tex": "$a$ を実数の定数とし，\n\\[\nE(x)=(x^2+1)a^2-2(x^2+x+2)a+x^2+2x+3\n\\]\nとおく．\n\\begin{enumerate}\n  \\item すべての実数 $x$ に対して $E(x)\\geqq0$ が成り立つような $a$ の値の範囲を求めよ．\n  \\item すべての $x\\geqq0$ に対して $E(x)>0$ が成り立つような $a$ の値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a\\leqq2-\\sqrt2$，$a=1$，$a\\geqq2+\\sqrt2$　(2) $a<1$，$a>2+\\sqrt2$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{$a$ について因数分解．}\n\\[\n(a-1)\\{(x^2+1)a-(x^2+2x+3)\\}=(x^2+1)a^2-(x^2+1)a-(x^2+2x+3)a+x^2+2x+3=E(x)\n\\]\nであるから，$g(x)=\\dfrac{x^2+2x+3}{x^2+1}$ とおくと\n\\[\nE(x)=(x^2+1)(a-1)\\bigl(a-g(x)\\bigr),\\qquad x^2+1>0 .\n\\]\nよって $E(x)$ の符号は $(a-1)(a-g(x))$ の符号と一致する．\n\n\\textbf{$g$ の値域．}$g(x)=1+h(x)$，$h(x)=\\dfrac{2(x+1)}{x^2+1}$．実数 $c$ が $h$ の値となる $\\iff$ $c(x^2+1)=2x+2$，すなわち $cx^2-2x+c-2=0$ が実数解をもつ．$c=0$ なら $x=-1$ が解．$c\\neq0$ なら判別式の条件 $1-c(c-2)\\geqq0\\iff c^2-2c-1\\leqq0\\iff1-\\sqrt2\\leqq c\\leqq1+\\sqrt2$．よって $h$ の値域は $[1-\\sqrt2,\\ 1+\\sqrt2]$，$g$ の値域は $[2-\\sqrt2,\\ 2+\\sqrt2]$ で，両端の値はとられる．なお $c=1+\\sqrt2$ のとき重解は $x=\\dfrac1c=\\sqrt2-1>0$．\n\n(1) すべての実数 $x$ で $(a-1)(a-g(x))\\geqq0$ となる条件を調べる．\n\n$a>1$ のとき：$a\\geqq g(x)$ がすべての $x$ で必要十分 $\\iff a\\geqq2+\\sqrt2$（$g$ の最大値 $2+\\sqrt2$ はとられる）．$2+\\sqrt2>1$ なので $a\\geqq2+\\sqrt2$．\n\n$a<1$ のとき：$a\\leqq g(x)$ がすべての $x$ で必要十分 $\\iff a\\leqq2-\\sqrt2$．$2-\\sqrt2<1$ なので $a\\leqq2-\\sqrt2$．\n\n$a=1$ のとき：$E(x)=0$ で条件をみたす．\n\n以上より $\\boldsymbol{a\\leqq2-\\sqrt2,\\ a=1,\\ a\\geqq2+\\sqrt2}$．\n\n（$1$ は $g$ の値域 $[2-\\sqrt2,2+\\sqrt2]$ の内部にあるが，$a=1$ では $E$ が恒等的に0になるため孤立した値として答えに入る．）\n\n(2) $x\\geqq0$ では $x+1>0$ より $h(x)>0$，すなわち $g(x)>1$．また $h$ の最大値 $1+\\sqrt2$ は $x=\\sqrt2-1\\ (\\geqq0)$ でとられる．よって $x\\geqq0$ における $g$ の値の範囲は「$1<g(x)$ かつ $g(x)\\leqq2+\\sqrt2$」で，最大値 $2+\\sqrt2$ はとられる．\n\nすべての $x\\geqq0$ で $(a-1)(a-g(x))>0$ となる条件を調べる．\n\n$a<1$ のとき：$a-1<0$，$a-g(x)<1-g(x)<0$ より積は正．条件をみたす．\n\n$a=1$ のとき：$E(x)=0$ となり不適．\n\n$a>1$ のとき：$a>g(x)$ がすべての $x\\geqq0$ で必要十分 $\\iff a>2+\\sqrt2$（最大値がとられるので等号は不可）．\n\n以上より $\\boldsymbol{a<1,\\ a>2+\\sqrt2}$．\n\n（(1) と比べると，$x\\geqq0$ では $g(x)>1$ の下限1が達せられないため，$1$ と $2-\\sqrt2$ の間の $a$ もすべて条件をみたすようになる．）"
+   }
+  ],
+  "idea": {
+   "tex": "$a$ について整理すると $(a-1)\\{(x^2+1)a-(x^2+2x+3)\\}$ と因数分解でき，$x^2+1>0$ で割れば条件は「$(a-1)(a-g(x))$ の符号」になる．$g(x)=\\dfrac{x^2+2x+3}{x^2+1}$ の値域を判別式で求め，$a>1$，$a<1$，$a=1$ に分ける．等号を許すと $a=1$ が孤立して答えに加わり，$x\\geqq0$ に制限すると値域の下端が達せられない（開いた端）ことが答えを変える．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) a<=2-sqrt(2) ; $a$：1 ; a>=2+sqrt(2)\n(2) a<1 ; a>2+sqrt(2)"
+  },
+  "methods": [],
+  "tags": [
+   "恒等的に成り立つ不等式",
+   "文字定数で整理",
+   "因数分解",
+   "分数関数の値域",
+   "判別式"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
  }
 ]

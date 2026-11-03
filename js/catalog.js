@@ -2,7 +2,7 @@
 import { PROBLEMS as BUILTIN, cardById, problemById as builtinById, unitOf as builtinUnit } from './content.js';
 import { retrievability, dueAt, TARGET_R } from './scheduler.js';
 
-export const FILE_VERSION = '0.7.0';
+export const FILE_VERSION = '0.9.0';
 
 // 難易度（問題管理表と同じ6段階。0=基礎 は v0.6 で追加）
 export const LEVELS = { 0: '基礎', 1: '標準', 2: '2次基礎', 3: '国立2次', 4: '難関', 5: '最難関' };
@@ -159,3 +159,54 @@ export function nextReviewTime(state) {
   const ts = Object.values(state.pstat || {}).map(dueAt);
   return ts.length ? Math.min(...ts) : null;
 }
+
+// ---------- 検索（data/search.json を初めて使うときに読む） ----------
+// 比較用の正規化：tools/tags.py の norm() と同じ規則（全角半角・大文字小文字・中黒や空白の違いを無視）
+export const normText = (s) => String(s || '').normalize('NFKC').toLowerCase().replace(/[・･\s、,／/()（）「」\-−ー~〜]/g, '');
+let searchIndex = null;
+export async function loadSearch() {
+  if (!searchIndex) {
+    searchIndex = fetch('data/search.json').then(r => { if (!r.ok) throw new Error(`data/search.json を読めません（${r.status}）`); return r.json(); })
+      .then(d => { if (META.dataVersion && d.dataVersion !== META.dataVersion) staleData.add('data/search.json'); return d.items; })
+      .catch(e => { searchIndex = null; throw e; });
+  }
+  return searchIndex;
+}
+// 空白で区切った語をすべて含む問題を返す。タグが語と一致 > テーマに含む > 本文に含む の順、同点は易しい順
+export async function searchProblems(query, { levels = null } = {}) {
+  const terms = String(query || '').split(/[\s　]+/).map(normText).filter(Boolean);
+  if (!terms.length) return [];
+  const items = await loadSearch();
+  const ls = levels && new Set(levels);
+  const out = [];
+  for (const [id, text] of items) {
+    if (!terms.every(t => text.includes(t))) continue;
+    const e = entryById.get(id);
+    if (!e || (ls && !ls.has(e.lv))) continue;
+    const tags = (e.tg || []).map(normText), theme = normText((e.th || '').replace(/<[^>]+>|\$[^$]*\$/g, ''));
+    let score = 0;
+    for (const t of terms) score += tags.includes(t) ? 3 : theme.includes(t) ? 2 : tags.some(x => x.includes(t)) ? 1.5 : 1;
+    out.push({ e, score });
+  }
+  out.sort((a, b) => b.score - a.score || a.e.lv - b.e.lv || (a.e.id < b.e.id ? -1 : 1));
+  return out.map(x => x.e);
+}
+
+// ---------- 問題セット（data/collections.json） ----------
+let collections = null;
+export async function loadCollections() {
+  if (!collections) {
+    collections = fetch('data/collections.json').then(r => r.ok ? r.json() : { collections: [] })
+      .then(d => (d.collections || []).map(c => ({ ...c, items: c.items.filter(it => entryById.has(it.id)) })).filter(c => c.items.length))
+      .catch(() => { collections = null; return []; });
+  }
+  return collections;
+}
+// セットの順番どおりに、まだ解いていない問題から。全部解いたら、最後に解いてから久しい順
+export function pickCollection(state, col, size = 8) {
+  const ids = col.items.map(it => it.id);
+  const fresh = ids.filter(id => !state.problems[id]);
+  const done = ids.filter(id => state.problems[id]).sort((a, b) => state.problems[a].last - state.problems[b].last);
+  return [...fresh, ...done].slice(0, size).map(pid => ({ kind: 'problem', pid }));
+}
+export const collectionProgress = (state, col) => col.items.filter(it => state.problems[it.id]).length;

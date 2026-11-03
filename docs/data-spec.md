@@ -1,4 +1,4 @@
-# Lemma データ仕様（v0.7）
+# Lemma データ仕様（v0.8）
 
 問題データは「Excel（マスター）→ 正規データ `content/` → アプリ用データ `data/`」の2段で作る。
 アプリが読むのは `data/` だけで、その形は v0.6 までと同じ。`content/` は LaTeX のままの正規データで、
@@ -9,10 +9,11 @@ Lemma問題管理表.xlsx（手元のみ。参考元を含むので公開リポ�
    │ tools/xlsx_to_content.py   … 非公開の列（参考元・メモ）はここで捨てる
    ▼
 content/                       … 正規データ（公開・git で差分を見る）
-   taxonomy.json  methods.json  meta.json  problems/<分野ID>.json  problems/builtin.json
+   taxonomy.json  methods.json  meta.json  tags.json  collections/*.json
+   problems/<分野ID>.json  problems/builtin.json
    │ tools/build_app_data.py
    ▼
-data/                          … アプリ用（index.json・f-<分野ID>.json）
+data/                          … アプリ用（index.json・f-<分野ID>.json・search.json・collections.json）
 ```
 
 ふだんは `python3 tools/import_xlsx.py Lemma問題管理表.xlsx` で 1〜3 をまとめて行い、`node tests/run.mjs` で検査する。
@@ -59,12 +60,41 @@ data/                          … アプリ用（index.json・f-<分野ID>.json
 `fields[]` = `{key, subject, name, idPrefix, order}`。`builtinUnits` = 内蔵問題の単元（`i-quad` など）→ 分野ID。
 `order` が画面の並び順。分野を統合して ID が無くなるときは `replacedBy` に移り先を書く（アプリ側の読み替えは未実装）。
 
+## タグ辞書（`content/tags.json`、`lemma.tags/1`）
+
+`tags[]` = `{name, aliases?, count}`。`name` が正規名、`aliases` が同じ意味の別の表記。表記ゆれ（中黒・空白・全角半角）は
+比較のときに無視する（`tools/tags.py` の `norm()`。アプリの `normText()` も同じ規則）。
+問題の正規データのタグは Excel の表記のままで、**アプリ用データを作るときに正規名に置き換える**。
+取り込みのたびに `tools/tags.py` が新しいタグを足す（既存の項目・人が足した別名は消さない）。
+
+## 問題セット（`content/collections/<ID>.json`、`lemma.collection/1`）
+
+`{id, title, description?, level?, order?, items:[{id, note?}], visibility, createdBy}`。ファイル名＝`id`。
+`items` の並びが出題順で、アプリは「まだ解いていない問題から順に」出す。非公開の問題・無い問題はアプリ用データから外れる。
+共有リンク：`#set=<セットID>`、`#ids=<問題ID,問題ID,…>`（最大50問）、`#search=<言葉>`。
+
+## 検索用の索引（`data/search.json`）
+
+`{dataVersion, items:[[問題ID, 文字列], …]}`。文字列はテーマ・分野名・タグ（正規名と別名）・問題文の文章部分
+（数式は sin・log などの関数名だけ残す）を `norm()` で正規化して連ねたもの。アプリは初めて検索したときに読む。
+
 ## アプリ用データ（`data/`、`lemma.data/1`）
 
 v0.6 と同じ項目に、次を足しただけ（古いアプリは無視する）。
 
 - `index.json`：`format`（`"lemma.data/1"`）、`dataVersion`（`content/` の中身から計算する12桁）、`builtinUnits`
 - `f-*.json`：`"_meta": {"dataVersion"}`。`index.json` と違えば、アプリは「問題データの版が揃っていません」と表示する
+- `search.json`・`collections.json`：上記。どちらも `dataVersion` を持つ
+- `dataVersion` は taxonomy・problems・tags・collections の中身から計算する
+
+## オフライン（Service Worker、`sw.js`）
+
+| キャッシュ | 中身 | 入れ替え |
+| --- | --- | --- |
+| `lemma-v<版>` | コード（HTML・JS・CSS・KaTeX） | `VERSION` を上げると古いものを消す |
+| `lemma-data-<dataVersion>` | `data/` のファイル（開いた分野の本文・検索の索引など） | `data/index.json` を取り直して版が変わったら、古いデータ用キャッシュを丸ごと消す |
+
+どちらも「まずネットワーク、つながらなければキャッシュ」。オフラインでは、一度開いた分野の問題が解ける。
 
 ## 版は3つを分ける
 

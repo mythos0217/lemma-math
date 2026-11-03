@@ -5550,5 +5550,245 @@
    },
    "verified": false
   }
+ },
+ {
+  "id": "I-TRI-119",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-03",
+  "level": 4,
+  "minutes": 30,
+  "theme": "正方形に含まれる正三角形と正六角形",
+  "topic": "正方形に含まれる正三角形と正六角形",
+  "statement": {
+   "tex": "1辺の長さが1の正方形を $K$ とする．図形が $K$ に含まれるとは，その図形のすべての点が $K$ の周または内部にあることとする．\n\\begin{enumerate}\n  \\item $K$ に含まれる正三角形の1辺の長さは $\\sqrt6-\\sqrt2$ 以下であることを示せ．また，等号が成り立つ例を1つ挙げよ．\n  \\item $K$ に含まれる正六角形の面積の最大値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明（例：$K=\\{0\\leqq x\\leqq1,0\\leqq y\\leqq1\\}$ で頂点 $(0,0)$，$(1,2-\\sqrt3)$，$(2-\\sqrt3,1)$）　(2) $3\\sqrt3-\\dfrac92$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$K=\\{(x,y)\\mid0\\leqq x\\leqq1,0\\leqq y\\leqq1\\}$ とする．$\\cos15^\\circ=\\frac{\\sqrt6+\\sqrt2}4$ より $\\frac1{\\cos15^\\circ}=\\frac4{\\sqrt6+\\sqrt2}=\\sqrt6-\\sqrt2$．\n\n\\textbf{補題．}$K$ に含まれる3本の線分の向きが互いに $60^\\circ$ ずつ異なる（どの2本も $60^\\circ$ の角をなす）とき，その長さがすべて $L$ なら $L\\leqq\\sqrt6-\\sqrt2$．\n\n\\textit{証明．}線分の向きの角を $0^\\circ$ 以上 $180^\\circ$ 未満で表すと，最小のものを $\\theta$（$0^\\circ\\leqq\\theta<60^\\circ$）として $\\theta,\\theta+60^\\circ,\\theta+120^\\circ$．\n\\begin{itemize}\n  \\item $\\theta\\leqq15^\\circ$ なら向き $\\theta$ の線分は $x$ 軸と $15^\\circ$ 以下の角をなす．\n  \\item $15^\\circ<\\theta<45^\\circ$ なら $\\theta+60^\\circ\\in(75^\\circ,105^\\circ)$ で，$y$ 軸と $15^\\circ$ 未満の角をなす．\n  \\item $45^\\circ\\leqq\\theta<60^\\circ$ なら $\\theta+120^\\circ\\in[165^\\circ,180^\\circ)$ で，$x$ 軸と $15^\\circ$ 以下の角をなす．\n\\end{itemize}\n$x$ 軸と角 $\\psi\\leqq15^\\circ$ をなす長さ $L$ の線分の両端の $x$ 座標の差は $L\\cos\\psi\\geqq L\\cos15^\\circ$ で，両端が $K$ にあるのでこの差は1以下．$y$ 軸の場合も同様．よって $L\\cos15^\\circ\\leqq1$．\\hfill$\\square$\n\n(1) 正三角形の3辺は互いに $60^\\circ$ の角をなすので，補題より1辺は $\\sqrt6-\\sqrt2$ 以下．等号の例：頂点 $(0,0)$，$(1,2-\\sqrt3)$，$(2-\\sqrt3,1)$．実際 $1+(2-\\sqrt3)^2=8-4\\sqrt3$，$2(\\sqrt3-1)^2=8-4\\sqrt3$ で3辺とも $\\sqrt{8-4\\sqrt3}=\\sqrt6-\\sqrt2$，3頂点は $K$ にあり $K$ は凸なので三角形は $K$ に含まれる．\\hfill$\\square$\n\n(2) 1辺 $s$ の正六角形の3本の主対角線（長さ $2s$）は互いに $60^\\circ$ の角をなし，$K$ に含まれる．補題より $2s\\leqq\\sqrt6-\\sqrt2$，$s^2\\leqq\\frac{8-4\\sqrt3}4=2-\\sqrt3$．面積は $\\frac{3\\sqrt3}2s^2\\leqq\\frac{3\\sqrt3}2(2-\\sqrt3)=3\\sqrt3-\\frac92$．\n\n等号の例：$s=\\frac{\\sqrt6-\\sqrt2}2$，すなわち $s\\cos15^\\circ=\\frac12$ とし，頂点を $\\left(\\frac12+s\\cos\\omega_j,\\ \\frac12+s\\sin\\omega_j\\right)$，$\\omega_j=15^\\circ+60^\\circ j$（$j=0,\\dots,5$）とする．$\\omega_j$ は $15^\\circ,75^\\circ,135^\\circ,195^\\circ,255^\\circ,315^\\circ$ で，$|\\cos\\omega_j|$ の最大は $\\cos15^\\circ$，$|\\sin\\omega_j|$ の最大は $\\sin75^\\circ=\\cos15^\\circ$．よって頂点の座標は $\\frac12\\pm s\\cos15^\\circ=\\frac12\\pm\\frac12$ の範囲にあり $K$ に含まれ，$K$ は凸なので正六角形は $K$ に含まれる．\n\n最大値 $\\boldsymbol{3\\sqrt3-\\dfrac92}$．"
+   }
+  ],
+  "idea": {
+   "tex": "互いに $60^\\circ$ ずつ向きの異なる3本の線分のうち，どれか1本は $x$ 軸または $y$ 軸と $15^\\circ$ 以内の角をなす．その線分の軸への正射影は1以下なので長さは $\\frac1{\\cos15^\\circ}=\\sqrt6-\\sqrt2$ 以下．正三角形の3辺，正六角形の3本の主対角線に同じ議論が使え，置き方に制限をつけずに最大値が求まる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 3sqrt(3)-9/2"
+  },
+  "methods": [],
+  "tags": [
+   "正射影",
+   "方向の角",
+   "最大値",
+   "15度"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-TRI-120",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-03",
+  "level": 4,
+  "minutes": 30,
+  "theme": "3つの円で外接円をおおう",
+  "topic": "3つの円で外接円をおおう",
+  "statement": {
+   "tex": "平面上で $\\mathrm{AB}=\\mathrm{AC}=1$，$\\angle\\mathrm{BAC}=\\theta$（$0<\\theta<\\pi$）である二等辺三角形 ABC を考え，その外接円の周とその内部をあわせた図形を $K$ とする．正の実数 $r$ に対し，A，B，C それぞれを中心とする半径 $r$ の円（周と内部）3つを合わせた領域を $D_r$ とし，$K$ が $D_r$ に含まれるような最小の $r$ を $u$ とする．\n\\begin{enumerate}\n  \\item $\\theta=\\dfrac\\pi2$ のとき，$u$ を求めよ．\n  \\item $u$ を $\\theta$ を用いて表せ．\n  \\item $\\theta$ が $0<\\theta<\\pi$ の範囲を動くとき，$u$ の最小値と，そのときの $\\theta$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $u=1$　(2) $0<\\theta\\leqq\\dfrac\\pi3$ のとき $u=\\dfrac1{2\\cos\\frac{\\pi-\\theta}4}$，$\\dfrac\\pi3\\leqq\\theta<\\pi$ のとき $u=\\tan\\dfrac\\theta2$　(3) 最小値 $\\dfrac1{\\sqrt3}$（$\\theta=\\dfrac\\pi3$）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "外接円を $\\Gamma$，中心を O，半径を $R$ とする．$\\mathrm{BC}=2\\sin\\dfrac\\theta2$ と正弦定理より $R=\\dfrac{\\mathrm{BC}}{2\\sin\\theta}=\\dfrac1{2\\cos\\frac\\theta2}$．\n$\\Gamma$ は A，B，C により3つの弧に分かれる．円周角の定理より，A を含まない弧 BC の中心角は $2\\theta$，B を含まない弧 CA と C を含まない弧 AB の中心角はともに $2\\cdot\\dfrac{\\pi-\\theta}2=\\pi-\\theta$ である（和は $2\\pi$）．各弧の中心角の半分を，それぞれ $\\theta$，$\\dfrac{\\pi-\\theta}2$，$\\dfrac{\\pi-\\theta}2$ とし，その最大値を $\\mu$ とおく．\n\n$f(\\mathrm P)=\\min\\{\\mathrm{PA},\\mathrm{PB},\\mathrm{PC}\\}$ とおくと，$\\mathrm P\\in D_r\\iff f(\\mathrm P)\\leqq r$．したがって $K\\subset D_r\\iff$「$K$ のすべての点 P で $f(\\mathrm P)\\leqq r$」．以下，$K$ 上の $f$ の最大値 $M$ を求める（$u=M$ となる）．\n\n\\textbf{上からの評価．}P$=$O なら $f(\\mathrm P)=R$．P$\\neq$O のとき，半直線 OP と $\\Gamma$ の交点を $\\mathrm P'$ とする．$\\mathrm P'$ はある弧（両端を X，Y，中心角 $2\\alpha$，$\\alpha\\leqq\\mu<\\pi$）上にあり，弧 $\\mathrm P'\\mathrm X$，$\\mathrm P'\\mathrm Y$ の中心角の和が $2\\alpha$ なので，例えば弧 $\\mathrm P'\\mathrm X$ の中心角 $\\delta$ は $\\delta\\leqq\\alpha$．$\\delta\\leqq\\alpha<\\pi$ より $\\angle\\mathrm{POX}=\\delta$．$\\rho=\\mathrm{OP}$（$0<\\rho\\leqq R$）とすると，余弦定理と $\\cos\\delta\\geqq\\cos\\alpha$ より\n\\[\\mathrm{PX}^2=\\rho^2+R^2-2\\rho R\\cos\\delta\\leqq\\rho^2+R^2-2\\rho R\\cos\\alpha=:h(\\rho).\\]\n$h$ は下に凸な2次関数なので，$0\\leqq\\rho\\leqq R$ における最大値は $h(0)=R^2$ と $h(R)=2R^2(1-\\cos\\alpha)=\\left(2R\\sin\\dfrac\\alpha2\\right)^2$ の大きい方．$\\alpha\\leqq\\mu$ より\n\\[f(\\mathrm P)\\leqq\\mathrm{PX}\\leqq\\max\\left\\{R,\\ 2R\\sin\\frac\\mu2\\right\\}.\\]\n\n\\textbf{等号の実現．}O では $f=R$．中心角 $2\\mu$ の弧（両端 X，Y，残りの頂点 Z）の中点を N とすると $\\mathrm{NX}=\\mathrm{NY}=2R\\sin\\dfrac\\mu2$．N から Z へ $\\Gamma$ を回る2通りの弧の中心角は，どちらも「$\\mu$ と別の弧の中心角の和」なので $\\mu$ 以上，よって $\\angle\\mathrm{NOZ}\\geqq\\mu$ で，弦の長さは中心角（$\\pi$ 以下）について増加するから $\\mathrm{NZ}\\geqq\\mathrm{NX}$．ゆえに $f(\\mathrm N)=2R\\sin\\dfrac\\mu2$．\n以上より\n\\[u=M=\\max\\left\\{R,\\ 2R\\sin\\frac\\mu2\\right\\}.\\]\n\n(2) \\textbf{$\\dfrac\\pi3\\leqq\\theta<\\pi$ のとき．}$\\theta\\geqq\\dfrac{\\pi-\\theta}2$ なので $\\mu=\\theta$．$2R\\sin\\dfrac\\theta2=\\tan\\dfrac\\theta2$ で，$\\sin\\dfrac\\theta2\\geqq\\dfrac12$ より $\\tan\\dfrac\\theta2\\geqq R$．$u=\\tan\\dfrac\\theta2$．\n\n\\textbf{$0<\\theta\\leqq\\dfrac\\pi3$ のとき．}$\\mu=\\dfrac{\\pi-\\theta}2$．$\\cos\\dfrac\\theta2=\\sin\\dfrac{\\pi-\\theta}2=2\\sin\\dfrac{\\pi-\\theta}4\\cos\\dfrac{\\pi-\\theta}4$ より\n\\[2R\\sin\\frac{\\pi-\\theta}4=\\frac{\\sin\\frac{\\pi-\\theta}4}{\\cos\\frac\\theta2}=\\frac1{2\\cos\\frac{\\pi-\\theta}4}.\\]\n$\\dfrac{\\pi-\\theta}4\\geqq\\dfrac\\pi6$ より $\\sin\\dfrac{\\pi-\\theta}4\\geqq\\dfrac12$ なので，これは $R$ 以上．\n\\[\\boldsymbol{u=\\frac1{2\\cos\\frac{\\pi-\\theta}4}\\ \\left(0<\\theta\\leqq\\frac\\pi3\\right),\\qquad u=\\tan\\frac\\theta2\\ \\left(\\frac\\pi3\\leqq\\theta<\\pi\\right)}\\]\n（$\\theta=\\frac\\pi3$ ではどちらも $\\frac1{\\sqrt3}$）．\n\n(1) $\\theta=\\dfrac\\pi2$ では $u=\\tan\\dfrac\\pi4=\\boldsymbol1$．\n\n(3) $0<\\theta\\leqq\\dfrac\\pi3$ では $\\dfrac{\\pi-\\theta}4$ は $\\left[\\dfrac\\pi6,\\dfrac\\pi4\\right)$ で減少し $\\cos\\dfrac{\\pi-\\theta}4$ は増加するので $u$ は減少．$\\dfrac\\pi3\\leqq\\theta<\\pi$ では $\\tan\\dfrac\\theta2$ は増加．よって最小値は $\\theta=\\dfrac\\pi3$ のときの $\\boldsymbol{\\dfrac1{\\sqrt3}}$．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "円板 $K$ 内の点 $\\mathrm P$ と円周上の頂点 $\\mathrm X$ の距離は $\\mathrm{PX}^2=\\mathrm{OP}^2+R^2-2\\,\\mathrm{OP}\\cdot R\\cos\\angle\\mathrm{POX}$．角 $\\angle\\mathrm{POX}$ が小さい頂点ほど近い．$\\mathrm{OP}$ について下に凸な2次式なので，最も遠い点は中心 O か，最も長い弧の中点に限られる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $u$：1\n(2) 場合分け{ 0<θ<=π/3 → 1/(2cos((π-θ)/4)) | π/3<=θ<π → tan(θ/2) }\n(3) 最小値：1/sqrt(3)"
+  },
+  "methods": [],
+  "tags": [
+   "外接円",
+   "余弦定理",
+   "最遠点",
+   "場合分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-TRI-121",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-03",
+  "level": 3,
+  "minutes": 25,
+  "theme": "外接円の半径が1の三角形の鈍角の場合",
+  "topic": "外接円の半径が1の三角形の鈍角の場合",
+  "statement": {
+   "tex": "3辺の長さが $\\sqrt3$，$a$，$b$ である三角形の外接円の半径が1であるとする（鋭角三角形とは限らない）．\n\\begin{enumerate}\n  \\item $a$ のとりうる値の範囲を求め，各 $a$ に対して $b$ のとりうる値をすべて $a$ で表せ．\n  \\item この三角形が鈍角三角形となるための $a$，$b$ の条件を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $0<a\\leqq2$．$b=\\dfrac{a+\\sqrt{12-3a^2}}{2}$，および $a\\neq\\sqrt3,\\ a\\neq2$ のときはさらに $b=\\dfrac{|\\sqrt{12-3a^2}-a|}{2}$　(2) 「$0<a<2,\\ a\\neq\\sqrt3$ かつ $b=\\dfrac{|\\sqrt{12-3a^2}-a|}{2}$」または「$0<a<1$ かつ $b=\\dfrac{a+\\sqrt{12-3a^2}}{2}$」"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "長さ $\\sqrt3$，$a$，$b$ の辺の対角を $\\gamma,\\alpha,\\beta$ とする．正弦定理より $\\sin\\gamma=\\frac{\\sqrt3}2$，$a=2\\sin\\alpha$，$b=2\\sin\\beta$．よって $\\gamma=\\frac\\pi3$ または $\\frac23\\pi$，$0<a\\leqq2$，$\\cos\\alpha=\\pm\\dfrac{\\sqrt{4-a^2}}2$．逆に，和が $\\pi$ の正の3角 $\\alpha,\\beta,\\gamma$ に対し $2\\sin\\alpha,2\\sin\\beta,2\\sin\\gamma$ を辺とする外接円の半径1の三角形がある．$\\sqrt3\\cos\\alpha=\\pm\\dfrac{\\sqrt{12-3a^2}}2$ に注意する．\n\n(1) \\textit{$\\gamma=\\frac\\pi3$．} $\\beta=\\frac23\\pi-\\alpha$（$0<\\alpha<\\frac23\\pi$），$b=2\\sin\\left(\\frac23\\pi-\\alpha\\right)=\\sqrt3\\cos\\alpha+\\sin\\alpha$．\n\\quad $0<\\alpha\\leqq\\frac\\pi2$ のとき（$0<a\\leqq2$）：$b=\\dfrac{a+\\sqrt{12-3a^2}}2$．\n\\quad $\\frac\\pi2<\\alpha<\\frac23\\pi$ のとき（$\\sqrt3<a<2$）：$b=\\dfrac{a-\\sqrt{12-3a^2}}2$．\n\\textit{$\\gamma=\\frac23\\pi$．} $\\beta=\\frac\\pi3-\\alpha$（$0<\\alpha<\\frac\\pi3$，$0<a<\\sqrt3$），$b=\\sqrt3\\cos\\alpha-\\sin\\alpha=\\dfrac{\\sqrt{12-3a^2}-a}2$．\n\nまとめて，$a$ の範囲は $\\boldsymbol{0<a\\leqq2}$ で，$\\boldsymbol{b=\\dfrac{a+\\sqrt{12-3a^2}}2}$，さらに $a\\neq\\sqrt3,\\,a\\neq2$（$0<a<2$）のときは $\\boldsymbol{b=\\dfrac{|\\sqrt{12-3a^2}-a|}2}$ も．$0<a<2$ では $\\sqrt{12-3a^2}>0$ なので2つの値は異なる．$a=\\sqrt3$ のとき $b=\\sqrt3$，$a=2$ のとき $b=1$ のみ．\n\n(2) $\\gamma=\\frac23\\pi$ の三角形は鈍角三角形．$\\gamma=\\frac\\pi3$ のときは，$\\alpha>\\frac\\pi2$（$b=\\frac{a-\\sqrt{12-3a^2}}2$，$\\sqrt3<a<2$）か $\\beta>\\frac\\pi2\\iff\\alpha<\\frac\\pi6\\iff a<1$（$\\alpha\\leqq\\frac\\pi2$ の場合）．よって鈍角三角形となる条件は\n\\[\\boldsymbol{\\text{「}0<a<2,\\ a\\neq\\sqrt3\\text{ かつ }b=\\tfrac{|\\sqrt{12-3a^2}-a|}{2}\\text{」または「}0<a<1\\text{ かつ }b=\\tfrac{a+\\sqrt{12-3a^2}}{2}\\text{」}}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "正弦定理より $\\sqrt3$ の対角は $\\frac\\pi3$ か $\\frac{2\\pi}3$，$a$ の対角 $\\alpha$ は $\\sin\\alpha=\\frac a2$ で，$\\cos\\alpha=\\pm\\frac{\\sqrt{4-a^2}}2$ の2通り．残りの角を加法定理で計算して $b$ を求め，どの角が鈍角になるかで分類する．"
+  },
+  "methods": [],
+  "tags": [
+   "正弦定理",
+   "場合分け",
+   "鈍角三角形"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-TRI-122",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-03",
+  "level": 4,
+  "minutes": 30,
+  "theme": "周の長さと内接円の直径の和が2の三角形",
+  "topic": "周の長さと内接円の直径の和が2の三角形",
+  "statement": {
+   "tex": "3辺の長さの和と内接円の直径の和が2である三角形を考える．内接円の半径を $r$，三角形の面積を $S$ とする．\n\\begin{enumerate}\n  \\item $S$ を $r$ で表せ．\n  \\item $r$ のとりうる値の範囲を求めよ．また，$S$ の最大値を求めよ．\n  \\item 1つの内角が $\\dfrac{2}{3}\\pi$ であるものに限るとき，$S$ の最大値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $S=r(1-r)$　(2) $0<r\\leqq\\dfrac{1}{1+3\\sqrt3}$，最大値 $\\dfrac{42\\sqrt3-27}{338}$　(3) $\\dfrac{9+14\\sqrt3}{338}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "3辺を $a,b,c$，半周長を $s$ とする．\n\n(1) $2s+2r=2$ より $s=1-r$，$S=rs=\\boldsymbol{r(1-r)}$．\n\n(2) $u=s-a$，$v=s-b$，$w=s-c$ とおくと $u,v,w>0$，$u+v+w=s$．2数の相加相乗平均より $uv\\leqq\\left(\\frac{u+v}2\\right)^2=\\frac{(s-w)^2}4$ なので $uvw\\leqq\\varphi(w)=\\frac{w(s-w)^2}4$（$0<w<s$）．$\\varphi'(w)=\\frac{(s-w)(s-3w)}4$ より $\\varphi$ は $0<w<\\frac s3$ で増加，$\\frac s3<w<s$ で減少し，最大値は $\\varphi\\left(\\frac s3\\right)=\\frac{s^3}{27}$．よってヘロンの公式より\n\\[S^2=s\\,uvw\\leqq\\frac{s^4}{27},\\]\n$S\\leqq\\frac{s^2}{3\\sqrt3}$（等号は $u=v$ かつ $w=\\frac s3$，すなわち $u=v=w$ の正三角形）．$rs=S$ より $r\\leqq\\frac{s}{3\\sqrt3}=\\frac{1-r}{3\\sqrt3}$，$r\\leqq\\frac1{1+3\\sqrt3}$．\n\\textit{すべての値をとること．} 底辺2，底角 $\\beta$（$0<\\beta<\\frac\\pi2$）の二等辺三角形で $\\tau=\\tan\\frac\\beta2\\in(0,1)$ とおくと，内心は頂角からの垂線上にあり $r=\\tau$，等辺は $\\frac1{\\cos\\beta}=\\frac{1+\\tau^2}{1-\\tau^2}$，$s=\\frac2{1-\\tau^2}$ で $\\frac rs=\\frac{\\tau(1-\\tau^2)}2$．これは連続で，$\\tau\\to+0$ で $0$，$\\tau=\\frac1{\\sqrt3}$ で $\\frac1{3\\sqrt3}$．中間値の定理より任意の $\\lambda\\in\\left(0,\\frac1{3\\sqrt3}\\right]$ に対し $\\frac rs=\\lambda$ の三角形があり，相似拡大で $s=\\frac1{1+\\lambda}$ にすれば $r=\\frac\\lambda{1+\\lambda}$，$2s+2r=2$．$\\lambda\\mapsto\\frac\\lambda{1+\\lambda}$ は増加で $\\left(0,\\frac1{3\\sqrt3}\\right]$ を $\\left(0,\\frac1{1+3\\sqrt3}\\right]$ に写す．\nよって $\\boldsymbol{0<r\\leqq\\dfrac1{1+3\\sqrt3}}$．$r(1-r)$ は $r<\\frac12$ で増加するので，最大値は $r=\\frac1{1+3\\sqrt3}$ のとき\n\\[\\frac{3\\sqrt3}{(1+3\\sqrt3)^2}=\\frac{3\\sqrt3}{28+6\\sqrt3}=\\frac{3\\sqrt3(28-6\\sqrt3)}{2\\cdot338}=\\boldsymbol{\\frac{42\\sqrt3-27}{338}}.\\]\n\n(3) $\\angle$C$=\\frac23\\pi$ とし，$c$ をその対辺とする．C からの接線の長さは $s-c=\\dfrac{r}{\\tan\\frac\\pi3}=\\dfrac r{\\sqrt3}$．余弦定理と $ab\\leqq\\frac{(a+b)^2}4$ より\n\\[c^2=a^2+b^2+ab=(a+b)^2-ab\\geqq\\tfrac34(a+b)^2,\\quad c\\geqq\\tfrac{\\sqrt3}2(2s-c),\\]\n$c\\geqq\\dfrac{2\\sqrt3}{2+\\sqrt3}s=(4\\sqrt3-6)s$（等号は $a=b$）．$c=s-\\frac r{\\sqrt3}$ を代入して $\\frac r{\\sqrt3}\\leqq(7-4\\sqrt3)s$，$r\\leqq(7\\sqrt3-12)s=(7\\sqrt3-12)(1-r)$．\n\\[r\\leqq\\frac{7\\sqrt3-12}{7\\sqrt3-11}=\\frac{(7\\sqrt3-12)(7\\sqrt3+11)}{26}=\\frac{15-7\\sqrt3}{26}.\\]\n等号は $a=b$ の二等辺三角形（$\\frac rs=7\\sqrt3-12$）を $s=\\frac1{1+(7\\sqrt3-12)}$ に拡大したもので実現する．$\\frac{15-7\\sqrt3}{26}<\\frac12$ なので最大値は\n\\[\\frac{15-7\\sqrt3}{26}\\cdot\\frac{11+7\\sqrt3}{26}=\\frac{18+28\\sqrt3}{676}=\\boldsymbol{\\frac{9+14\\sqrt3}{338}}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "半周長を $s$ とすると $2s+2r=2$ で $s=1-r$，面積は $rs=r(1-r)$ と三角形の形によらない．あとは $r$ の上限（$r\\leqq\\frac{s}{3\\sqrt3}$）が形の制約で決まる．1つの角が $\\frac{2\\pi}3$ のときは $c^2=(a+b)^2-ab\\geqq\\frac34(a+b)^2$ と接線の長さ $s-c=\\frac{r}{\\sqrt3}$ から上限が決まる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $S$：r(1-r)\n(2) 0<r<=1/(1+3sqrt(3)) ; 最大値：(42sqrt(3)-27)/338\n(3) (9+14sqrt(3))/338"
+  },
+  "methods": [],
+  "tags": [
+   "内接円",
+   "ヘロンの公式",
+   "相加相乗平均",
+   "中間値の定理"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "I-TRI-123",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "I-03",
+  "level": 4,
+  "minutes": 30,
+  "theme": "等角な2本の線分が直交するとき",
+  "topic": "等角な2本の線分が直交するとき",
+  "statement": {
+   "tex": "$\\mathrm{AB}=3$，$\\mathrm{AC}=2$，$\\mathrm{BC}=4$ の $\\triangle\\mathrm{ABC}$ がある．$\\angle\\mathrm{BAC}=A$ とし，$0<\\theta<\\dfrac A2$ をみたす $\\theta$ に対して，辺 BC 上の点 P，Q を $\\angle\\mathrm{BAP}=\\angle\\mathrm{CAQ}=\\theta$ となるようにとる．\n\\begin{enumerate}\n  \\item $\\dfrac{\\mathrm{BP}\\cdot\\mathrm{BQ}}{\\mathrm{CP}\\cdot\\mathrm{CQ}}$ は $\\theta$ によらない値であることを示し，その値を求めよ．\n  \\item $\\mathrm{AP}\\perp\\mathrm{AQ}$ となるときの $\\cos\\theta$ の値を求めよ．\n  \\item (2) のとき，線分 PQ の長さを求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $\\dfrac94$（証明）　(2) $\\cos\\theta=\\dfrac{\\sqrt5+\\sqrt3}{4}$　(3) $\\mathrm{PQ}=\\dfrac{48\\sqrt{15}}{61}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "余弦定理より $\\cos A=\\dfrac{3^2+2^2-4^2}{2\\cdot3\\cdot2}=-\\dfrac14$，$\\sin A=\\dfrac{\\sqrt{15}}4$．$0<\\theta<\\frac A2$ より $\\angle\\mathrm{BAP}=\\theta<A-\\theta=\\angle\\mathrm{BAQ}$ なので，辺 BC 上で B，P，Q，C はこの順に並び，$\\angle\\mathrm{PAC}=\\angle\\mathrm{BAQ}=A-\\theta$ である．\n\n(1) $\\triangle\\mathrm{ABP}$ と $\\triangle\\mathrm{APC}$ は底辺を直線 BC 上にもち高さが共通なので\n\\[\n\\frac{\\mathrm{BP}}{\\mathrm{PC}}=\\frac{\\triangle\\mathrm{ABP}}{\\triangle\\mathrm{APC}}=\\frac{\\frac12\\mathrm{AB}\\cdot\\mathrm{AP}\\sin\\theta}{\\frac12\\mathrm{AC}\\cdot\\mathrm{AP}\\sin(A-\\theta)}=\\frac{3\\sin\\theta}{2\\sin(A-\\theta)}.\n\\]\n同様に\n\\[\n\\frac{\\mathrm{BQ}}{\\mathrm{QC}}=\\frac{\\frac12\\mathrm{AB}\\cdot\\mathrm{AQ}\\sin(A-\\theta)}{\\frac12\\mathrm{AC}\\cdot\\mathrm{AQ}\\sin\\theta}=\\frac{3\\sin(A-\\theta)}{2\\sin\\theta}.\n\\]\n辺々かけて $\\dfrac{\\mathrm{BP}\\cdot\\mathrm{BQ}}{\\mathrm{CP}\\cdot\\mathrm{CQ}}=\\boldsymbol{\\dfrac94}$（$\\theta$ によらない）．\\hfill$\\square$\n\n(2) $\\angle\\mathrm{PAQ}=A-2\\theta$ なので，$\\mathrm{AP}\\perp\\mathrm{AQ}\\iff A-2\\theta=90^\\circ$．$A>90^\\circ$（$\\cos A<0$）だから $\\theta=\\frac{A-90^\\circ}{2}$ は $0<\\theta<\\frac A2$ をみたす．このとき\n\\[\n\\cos2\\theta=\\cos(A-90^\\circ)=\\sin A=\\frac{\\sqrt{15}}4,\\qquad\n\\cos^2\\theta=\\frac{1+\\cos2\\theta}{2}=\\frac{4+\\sqrt{15}}{8}.\n\\]\n$\\left(\\frac{\\sqrt5+\\sqrt3}{4}\\right)^2=\\frac{8+2\\sqrt{15}}{16}=\\frac{4+\\sqrt{15}}8$ であり $\\cos\\theta>0$ なので $\\boldsymbol{\\cos\\theta=\\dfrac{\\sqrt5+\\sqrt3}{4}}$．\n\n(3) $\\cos B=\\dfrac{9+16-4}{24}=\\dfrac78$，$\\sin B=\\dfrac{\\sqrt{15}}8$，$\\cos C=\\dfrac{4+16-9}{16}=\\dfrac{11}{16}$，$\\sin C=\\dfrac{3\\sqrt{15}}{16}$．\n\n$\\triangle\\mathrm{ABP}$ の外角より $\\angle\\mathrm{APQ}=\\angle\\mathrm{APC}=B+\\theta$ で，これを $\\varphi$ とおくと，直角三角形 APQ（$\\angle\\mathrm A=90^\\circ$）で $\\angle\\mathrm{AQP}=90^\\circ-\\varphi$，特に $0<\\varphi<90^\\circ$．A から BC に下ろした垂線の足を H，$h=\\mathrm{AH}$ とすると，$\\angle\\mathrm{APQ},\\angle\\mathrm{AQP}$ がともに鋭角なので H は線分 PQ 上にあり\n\\[\n\\mathrm{PQ}=\\mathrm{PH}+\\mathrm{HQ}=\\frac{h\\cos\\varphi}{\\sin\\varphi}+\\frac{h\\sin\\varphi}{\\cos\\varphi}=\\frac{h}{\\sin\\varphi\\cos\\varphi}=\\frac{2h}{\\sin2\\varphi}.\n\\]\nここで $2\\varphi=2B+2\\theta=2B+A-90^\\circ$，$A=180^\\circ-B-C$ より\n\\begin{align*}\n\\sin2\\varphi&=\\sin(2B+A-90^\\circ)=-\\cos(2B+A)=-\\cos(180^\\circ+B-C)=\\cos(B-C)\\\\\n&=\\frac78\\cdot\\frac{11}{16}+\\frac{\\sqrt{15}}8\\cdot\\frac{3\\sqrt{15}}{16}=\\frac{122}{128}=\\frac{61}{64}.\n\\end{align*}\nまた $\\triangle\\mathrm{ABC}=\\frac12\\cdot3\\cdot2\\sin A=\\frac{3\\sqrt{15}}4$ より $h=\\frac{2\\triangle\\mathrm{ABC}}{\\mathrm{BC}}=\\frac{3\\sqrt{15}}8$．よって\n\\[\n\\mathrm{PQ}=2\\cdot\\frac{3\\sqrt{15}}8\\cdot\\frac{64}{61}=\\boldsymbol{\\frac{48\\sqrt{15}}{61}}.\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "$\\angle\\mathrm{BAP}=\\angle\\mathrm{CAQ}$ の2本の線分（等角線）は，面積比で $\\dfrac{\\mathrm{BP}}{\\mathrm{PC}}\\cdot\\dfrac{\\mathrm{BQ}}{\\mathrm{QC}}=\\dfrac{\\mathrm{AB}^2}{\\mathrm{AC}^2}$ をみたす．$\\angle\\mathrm{PAQ}=A-2\\theta$ を直角にすると $\\theta$ が決まり，直角三角形 APQ の斜辺は高さと外角 $B+\\theta$ で表せる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 9/4\n(2) $\\cos\\theta$：(sqrt(5)+sqrt(3))/4\n(3) $\\mathrm{PQ}$：48sqrt(15)/61"
+  },
+  "methods": [],
+  "tags": [
+   "等角線",
+   "面積比",
+   "正弦定理",
+   "2倍角"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
  }
 ]

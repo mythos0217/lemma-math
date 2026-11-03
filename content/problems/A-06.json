@@ -4299,5 +4299,55 @@
    },
    "verified": false
   }
+ },
+ {
+  "id": "A-GEO-093",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "A-06",
+  "level": 5,
+  "minutes": 35,
+  "theme": "球面上の2つの二等辺三角形と四面体の体積の最大",
+  "topic": "球面上の2つの二等辺三角形と四面体の体積の最大",
+  "statement": {
+   "tex": "O を中心とする半径1の球面上の相異なる4点 A，B，C，D が\n\\[\n\\mathrm{AC}=\\mathrm{BC},\\qquad \\mathrm{AD}=\\mathrm{BD},\\qquad \\angle\\mathrm{ACB}=\\angle\\mathrm{ADB}\n\\]\nをみたし，さらに線分 AB の中点 M について $\\mathrm{OM}=\\dfrac16$ であるとする．$\\theta=\\angle\\mathrm{ACB}$ とおく．\n\\begin{enumerate}\n  \\item 4点 A，B，C，D が同一平面上にないような $\\cos\\theta$ のとりうる値の範囲を求めよ．\n  \\item (1) のとき，四面体 ABCD の体積の最大値と，そのときの $\\cos\\theta$ の値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $-\\dfrac16<\\cos\\theta<\\dfrac16$，$\\cos\\theta\\neq0$　(2) 最大値 $\\dfrac{25\\sqrt7}{162}$（$\\cos\\theta=\\dfrac18$）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\mathrm{OA}=\\mathrm{OB}=1$ より O は線分 AB の垂直二等分面 $\\Pi$ 上にあり，M も $\\Pi$ 上にある．$\\mathrm{AC}=\\mathrm{BC}$，$\\mathrm{AD}=\\mathrm{BD}$ より C，D も $\\Pi$ 上にある．$\\Pi$ と球面の交わりは，O を中心とする半径1の円 $\\Gamma$ である．$\\mathrm{OM}\\perp\\mathrm{AB}$ より $\\mathrm{AM}^2=1-\\mathrm{OM}^2=\\frac{35}{36}$，$\\mathrm{AB}^2=\\frac{35}9$．\n\n$\\Pi$ 上に O を原点，$\\mathrm M=\\left(\\frac16,0\\right)$ となる直交座標をとり，$\\mathrm C=(x,y)$（$x^2+y^2=1$）とする．\n\\[\n\\mathrm{CM}^2=\\left(x-\\tfrac16\\right)^2+y^2=\\frac{37}{36}-\\frac x3．\n\\]\n直線 AB は $\\Pi$ に垂直なので $\\mathrm{AM}\\perp\\mathrm{CM}$ で，$\\mathrm{AC}^2=\\mathrm{AM}^2+\\mathrm{CM}^2=2-\\frac x3$．$\\triangle\\mathrm{ABC}$ に余弦定理を用いて\n\\[\n\\cos\\theta=\\frac{2\\mathrm{AC}^2-\\mathrm{AB}^2}{2\\mathrm{AC}^2}=1-\\frac{35/9}{4-\\frac{2x}3}=1-\\frac{35}{36-6x}=\\frac{1-6x}{36-6x}．\n\\]\nこれを $c(x)$ とおくと，$-1\\leqq x\\leqq1$ で $36-6x>0$ は $x$ について減少するから，$c(x)$ は狭義単調減少である．D$=(x',y')$ についても $\\cos\\angle\\mathrm{ADB}=c(x')$ なので，$\\angle\\mathrm{ACB}=\\angle\\mathrm{ADB}\\iff x'=x$．$\\mathrm D\\neq\\mathrm C$ より $\\mathrm D=(x,-y)$，$y\\neq0$，すなわち $-1<x<1$．逆に $-1<x<1$ なら $\\mathrm C=(x,\\sqrt{1-x^2})$，$\\mathrm D=(x,-\\sqrt{1-x^2})$ は条件をみたす（A，B は $\\Pi$ 上にないので C，D と異なる）．\n\nA，B は M を通り $\\Pi$ に垂直な直線上で $\\Pi$ の両側に $\\mathrm{AM}=\\mathrm{BM}$ の距離にあるので，四面体 ABCD は平面 $\\Pi$ で2つの三角錐に分かれ，\n\\[\nV=\\frac13\\triangle\\mathrm{MCD}\\cdot\\mathrm{AM}+\\frac13\\triangle\\mathrm{MCD}\\cdot\\mathrm{BM}=\\frac13\\,\\mathrm{AB}\\cdot\\triangle\\mathrm{MCD},\\qquad\n\\triangle\\mathrm{MCD}=\\frac12\\cdot2|y|\\cdot\\left|x-\\tfrac16\\right|．\n\\]\n4点が同一平面上にある $\\iff$ $V=0$ $\\iff$ $x=\\frac16$．\n\n(1) $x$ は $-1<x<1$，$x\\neq\\frac16$ を動く．$c(1)=-\\frac16$，$c(-1)=\\frac16$，$c\\left(\\frac16\\right)=0$ と $c$ の単調性より\n\\[\n\\boldsymbol{-\\frac16<\\cos\\theta<\\frac16,\\quad\\cos\\theta\\neq0}．\n\\]\n\n(2) $V=\\dfrac{\\sqrt{35}}9\\sqrt{g(x)}$，$g(x)=(1-x^2)\\left(x-\\frac16\\right)^2$ である．\n\\[\ng'(x)=2\\left(x-\\tfrac16\\right)\\left\\{(1-x^2)-x\\left(x-\\tfrac16\\right)\\right\\}=2\\left(x-\\tfrac16\\right)\\left(1+\\tfrac x6-2x^2\\right)=-\\frac13\\left(x-\\tfrac16\\right)(4x-3)(3x+2)．\n\\]\n$-1<x<1$ での符号は，$x<-\\frac23$ で正，$-\\frac23<x<\\frac16$ で負，$\\frac16<x<\\frac34$ で正，$\\frac34<x$ で負．よって $g$ は $x=-\\frac23$，$x=\\frac34$ で極大となり，$x\\to\\pm1$ で $g\\to0$ であるから，最大値は2つの極大値の大きい方である．\n\\[\ng\\left(-\\tfrac23\\right)=\\frac59\\cdot\\frac{25}{36}=\\frac{125}{324},\\qquad g\\left(\\tfrac34\\right)=\\frac7{16}\\cdot\\frac{49}{144}=\\frac{343}{2304}．\n\\]\n$125\\cdot2304=288000>111132=343\\cdot324$ より $g\\left(-\\frac23\\right)$ が最大．このとき\n\\[\nV=\\frac{\\sqrt{35}}9\\cdot\\frac{5\\sqrt5}{18}=\\frac{5\\cdot5\\sqrt7}{162}=\\boldsymbol{\\frac{25\\sqrt7}{162}},\\qquad\n\\cos\\theta=c\\left(-\\tfrac23\\right)=\\frac{1+4}{36+4}=\\boldsymbol{\\frac18}．\n\\]\n（$x=-\\frac23\\neq\\frac16$ なので (1) の範囲内である．）\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$\\mathrm{AC}=\\mathrm{BC}$，$\\mathrm{AD}=\\mathrm{BD}$ より $\\mathrm C$，$\\mathrm D$ は $\\mathrm{AB}$ の垂直二等分面上にあり，この面は球の中心 O と $\\mathrm{AB}$ の中点 M を含む．その面と球面の交わりの単位円上で，$\\angle\\mathrm{ACB}=\\angle\\mathrm{ADB}$ は $\\mathrm{CM}=\\mathrm{DM}$ と同値で，C，D は直線 OM に関して対称．体積は $\\frac13\\mathrm{AB}\\cdot\\triangle\\mathrm{MCD}$ となり，1変数の4次式の最大化に帰着するが，極大は2か所にある．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 最大値：25sqrt(7)/162"
+  },
+  "methods": [],
+  "tags": [
+   "球面",
+   "垂直二等分面",
+   "余弦定理",
+   "四面体の体積",
+   "最大値"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
  }
 ]

@@ -21,8 +21,9 @@ import {
   subjectsWithFields, pool, pickPractice, pickReview, dueEntries, nextReviewTime,
 } from './catalog.js';
 
-const VERSION = '0.7.0';
+const VERSION = '0.9.0';
 const KEY = 'lemma.v2';
+let sync = null, syncApplying = false, syncStatus = null;   // アカウントと同期（initSync で用意）
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
 
@@ -58,8 +59,102 @@ function load() {
   } catch (e) { /* 読めないときは新規 */ }
   return freshState();
 }
+// 設定・選んだ分野などが変わった時刻（端末どうしで食い違ったら新しい方を採る）
+let lwwSig = null;
 function save() {
+  const sig = JSON.stringify([state.settings, state.practice, state.graphExprs, state.graph3Exprs]);
+  if (lwwSig !== null && sig !== lwwSig) state.settingsAt = Date.now();
+  lwwSig = sig;
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 保存できない環境 */ }
+  if (sync && !syncApplying) sync.schedule();
+}
+
+// ---------- アカウントと同期（js/sync.js を読めないときは、この機能なしで動く）
+function initSync() {
+  import('./sync.js').then((M) => {
+    if (M.FILE_VERSION !== VERSION) showBanner(`<b>古いファイルが混ざっています（v${VERSION}）</b>js/sync.js が更新されていません。リポジトリにzipの中身をすべて上書きアップロードしてください。`);
+    if (!M.enabled()) return;
+    sync = M.createSync({
+      getState: () => state,
+      applyState: (merged) => {
+        syncApplying = true;
+        for (const k of Object.keys(merged)) state[k] = merged[k];
+        save();
+        syncApplying = false;
+        // 解いている途中でなければ、画面を描き直して新しい記録を見せる
+        const tab = (location.hash || '#today').slice(1).split('=')[0];
+        if (!session && ['today', 'map', 'settings'].includes(tab) && !document.activeElement?.matches('input, textarea')) route();
+      },
+      onStatus: (s) => { syncStatus = s; const el = $('#acct'); if (el) drawAccount(); },
+    });
+    syncStatus = sync.status();
+    if ((location.hash || '').startsWith('#settings')) renderSettings();
+    if (sync.loggedIn()) sync.syncNow();
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') sync.syncNow(); });
+    window.addEventListener('online', () => sync.syncNow());
+  }).catch(() => { /* 同期なし */ });
+}
+function drawAccount() {
+  const box = $('#acct');
+  if (!box) return;
+  if (!sync) { box.innerHTML = '<p class="muted" style="margin:0">この版では同期を使えません。</p>'; return; }
+  const s = syncStatus || sync.status();
+  if (!sync.loggedIn()) {
+    box.innerHTML = `
+      <p style="margin:0 0 10px">ログインすると、学習記録を複数の端末で使え、サーバーにも保存されます。ログインしなくても、今まで通りこの端末だけで使えます。</p>
+      <div id="acct-step1">
+        <input class="field-in" type="email" id="acct-email" placeholder="メールアドレス" autocomplete="email" inputmode="email">
+        <button class="btn primary block" id="acct-send" style="margin-top:8px">ログイン用のコードを送る</button>
+      </div>
+      <div id="acct-step2" hidden>
+        <p class="muted" style="margin:0 0 6px"><span id="acct-to"></span> に届いたコード（数字）を入れてください（届くまで1分ほどかかることがあります）。</p>
+        <input class="field-in code" type="text" id="acct-code" placeholder="123456" inputmode="numeric" autocomplete="one-time-code" maxlength="10">
+        <button class="btn primary block" id="acct-verify" style="margin-top:8px">ログイン</button>
+        <button class="linkbtn" id="acct-back" style="margin-top:6px">メールアドレスを入れ直す</button>
+      </div>
+      <p class="acct-err" id="acct-err">${s.error ? esc(s.error) : ''}</p>
+      <p class="muted small" style="margin:6px 0 0">保存するのはメールアドレスと学習記録だけです。<a href="privacy.html">プライバシーポリシー</a></p>`;
+    const err = (m) => { $('#acct-err').textContent = m || ''; };
+    $('#acct-send').addEventListener('click', async (ev) => {
+      const email = $('#acct-email').value.trim();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err('メールアドレスを確かめてください。'); return; }
+      ev.target.disabled = true; err('');
+      try {
+        await sync.sendCode(email);
+        $('#acct-step1').hidden = true; $('#acct-step2').hidden = false; $('#acct-to').textContent = email;
+        $('#acct-code').focus();
+      } catch (e) { err(e.message); }
+      ev.target.disabled = false;
+    });
+    $('#acct-email').addEventListener('keydown', (ev) => { if (ev.key === 'Enter') $('#acct-send').click(); });
+    $('#acct-code').addEventListener('keydown', (ev) => { if (ev.key === 'Enter') $('#acct-verify').click(); });
+    $('#acct-back').addEventListener('click', () => { $('#acct-step1').hidden = false; $('#acct-step2').hidden = true; err(''); });
+    $('#acct-verify').addEventListener('click', async (ev) => {
+      ev.target.disabled = true; err('');
+      try { await sync.verify($('#acct-email').value.trim(), $('#acct-code').value); toast('ログインしました'); drawAccount(); }
+      catch (e) { err(e.message); ev.target.disabled = false; }
+    });
+    return;
+  }
+  const when = s.lastSync ? new Date(s.lastSync).toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'まだ';
+  const label = { syncing: '同期しています…', ok: `最後の同期：${when}`, idle: `最後の同期：${when}`, offline: `オフラインのため同期待ち（最後の同期：${when}）`, error: '同期できませんでした' }[s.status] || '';
+  box.innerHTML = `
+    <div class="setting" style="padding-top:0"><span><b>${esc(s.email || '')}</b><br><span class="muted small" id="acct-state">${esc(label)}</span></span>
+      <button class="btn" id="acct-now" ${s.status === 'syncing' ? 'disabled' : ''}>今すぐ同期</button></div>
+    ${s.error && s.status !== 'offline' ? `<p class="acct-err">${esc(s.error)}</p>` : ''}
+    <p class="muted small" style="margin:8px 0">この端末の記録とサーバーの記録は、解答の記録を足し合わせ、復習の予定は新しい方を使って合わせます。</p>
+    <div class="btn-row" style="margin-top:4px"><button class="btn ghost" id="acct-out">ログアウト</button><button class="btn ghost danger" id="acct-del">退会する</button></div>
+    <p class="muted small" style="margin:6px 0 0"><a href="privacy.html">プライバシーポリシー</a></p>`;
+  $('#acct-now').addEventListener('click', () => sync.syncNow());
+  $('#acct-out').addEventListener('click', async () => {
+    if (!confirm('ログアウトします。この端末の記録はそのまま残ります。')) return;
+    await sync.syncNow(); await sync.logout(); toast('ログアウトしました'); drawAccount();
+  });
+  $('#acct-del').addEventListener('click', async () => {
+    if (!confirm('退会すると、アカウントとサーバーに保存した学習記録がすべて消えます（この端末の記録は残ります）。元に戻せません。')) return;
+    try { await sync.deleteAccount(); toast('退会しました'); } catch (e) { toast(e.message); }
+    drawAccount();
+  });
 }
 
 // ---------- 表示ユーティリティ ----------
@@ -157,8 +252,16 @@ function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
 function route() {
   stopTimer();
   if (!ready) { view.innerHTML = '<p class="muted" style="padding:40px 4px">問題データを読み込んでいます…</p>'; return; }
-  const tab = (location.hash || '#today').slice(1);
-  $$('.tabbar a').forEach(a => a.classList.toggle('on', a.dataset.tab === (tab === 'practice' ? 'today' : tab)));
+  let tab = (location.hash || '#today').slice(1);
+  let arg = '';
+  if (tab.includes('=')) { arg = decodeURIComponent(tab.slice(tab.indexOf('=') + 1)); tab = tab.slice(0, tab.indexOf('=')); }
+  // 共有リンク：#set=<問題セットID>、#ids=<問題ID,…>（開いたら「今日」に戻してから出題）
+  if (tab === 'set' || tab === 'ids') {
+    history.replaceState(null, '', '#today');
+    if (tab === 'set') openCollection(arg); else openIds(arg.split(',').map(x => x.trim()).filter(Boolean));
+    return;
+  }
+  $$('.tabbar a').forEach(a => a.classList.toggle('on', a.dataset.tab === (tab === 'practice' || tab === 'search' ? 'today' : tab)));
   document.body.dataset.tab = tab;
   clearGraphs();
   document.body.classList.remove('immersive');
@@ -168,6 +271,7 @@ function route() {
   if (tab === 'map') return renderMap();
   if (tab === 'settings') return renderSettings();
   if (tab === 'practice') return renderPractice();
+  if (tab === 'search') return renderSearch(arg);
   if (tab === 'drill') return renderDrillHome(view, drillCtx);
   // 結果画面を見たあとに「今日」へ戻ったら、ホームを出す
   if (session && session.shown && !session.steps[session.i]) session = null;
@@ -213,6 +317,11 @@ function renderToday() {
         <span>数I〜数C・融合の全${FIELDS.length}分野から ${Math.min(pr.size, all.length)}問。分野を混ぜて出すので、どの解法を使うかを見抜く練習になります。</span>
       </button>
       ${due ? `<button class="btn block" id="review" style="margin-top:10px">復習：忘れかけた問題 ${due}問</button>` : ''}
+      <form class="search" id="sform" role="search">
+        <input type="search" id="sq" placeholder="問題を探す（例：漸化式 確率、回転体）" enterkeyhint="search" autocomplete="off">
+        <button class="btn" type="submit">検索</button>
+      </form>
+      <div id="sets"></div>
       <h2>分野ごとに演習</h2>
       ${subjectsWithFields().map(sub => {
         const subAll = pool({ fields: sub.fields.map(f => f.key), levels: pr.levels });
@@ -251,10 +360,91 @@ function renderToday() {
   $$('.unit-row').forEach(b => b.addEventListener('click', () => go([b.dataset.f])));
   $$('.subj-row').forEach(b => b.addEventListener('click', () => go(FIELDS.filter(f => f.subject === b.dataset.s).map(f => f.key))));
   $('#pick').addEventListener('click', () => { location.hash = '#practice'; });
+  $('#sform').addEventListener('submit', (ev) => { ev.preventDefault(); const q = $('#sq').value.trim(); if (q) location.hash = '#search=' + encodeURIComponent(q); });
+  drawSets();
   $('#review')?.addEventListener('click', () => {
     const st = pickReview(state, { size: pr.size });
     if (st.length) startSession(st, { review: true, size: pr.size });
   });
+}
+
+// ---------- 問題セット・共有リンク・検索 ----------
+const shareURL = (frag) => location.href.split('#')[0] + '#' + frag;
+async function copyLink(url) {
+  try { await navigator.clipboard.writeText(url); toast('リンクをコピーしました'); }
+  catch { toast(url); }
+}
+async function drawSets() {
+  const box = $('#sets');
+  if (!box || !M_CAT.loadCollections) return;
+  const cols = await M_CAT.loadCollections();
+  if (!cols.length || !document.body.contains(box)) return;
+  box.innerHTML = `<h2>問題セット</h2>${cols.map(c => {
+    const done = M_CAT.collectionProgress(state, c), n = c.items.length;
+    return `<div class="set-card">
+      <button class="set-main" data-set="${esc(c.id)}">
+        <span class="set-head"><b>${esc(c.title)}</b><span class="ct">${done} / ${n}問</span></span>
+        ${c.description ? `<span class="muted set-desc">${esc(c.description)}</span>` : ''}
+        <span class="bar"><div style="width:${Math.round(done / n * 100)}%"></div></span>
+      </button>
+      <div class="set-foot"><span class="set-go">${done >= n ? 'もう一周 ›' : done ? '続きから ›' : '始める ›'}</span><button class="linkbtn" data-share="${esc(c.id)}">リンクをコピー</button></div>
+    </div>`;
+  }).join('')}`;
+  $$('[data-set]', box).forEach(b => b.addEventListener('click', () => openCollection(b.dataset.set)));
+  $$('.set-go', box).forEach(x => x.addEventListener('click', () => openCollection(x.closest('.set-card').querySelector('[data-set]').dataset.set)));
+  $$('[data-share]', box).forEach(b => b.addEventListener('click', () => copyLink(shareURL('set=' + b.dataset.share))));
+}
+async function openCollection(id) {
+  const col = (await M_CAT.loadCollections()).find(c => c.id === id);
+  if (!col) { toast('この問題セットは見つかりません'); route(); return; }
+  const steps = M_CAT.pickCollection(state, col, state.practice.size);
+  startSession(steps, { collection: id, size: state.practice.size });
+}
+function openIds(ids) {
+  const ok = ids.filter(id => entryById.has(id)).slice(0, 50);
+  if (!ok.length) { toast('リンクの問題が見つかりません'); route(); return; }
+  startSession(ok.map(pid => ({ kind: 'problem', pid })), { ids: ok, size: ok.length });
+}
+let searchShown = 30;
+async function renderSearch(q) {
+  const pr = state.practice;
+  const bar = levelToolbar(pr, () => renderSearch(q));
+  view.innerHTML = `<div class="fade-in">
+    <div class="kicker">問題を探す</div>
+    <h1>検索</h1>
+    <form class="search" id="sform" role="search">
+      <input type="search" id="sq" value="${esc(q)}" placeholder="例：漸化式 確率、回転体、チェビシェフ" enterkeyhint="search" autocomplete="off">
+      <button class="btn" type="submit">検索</button>
+    </form>
+    ${bar.html}
+    <div id="sres"><p class="muted">探しています…</p></div>
+  </div>`;
+  bar.bind();
+  $('#sform').addEventListener('submit', (ev) => { ev.preventDefault(); const v = $('#sq').value.trim(); searchShown = 30; location.hash = '#search=' + encodeURIComponent(v); });
+  const box = $('#sres');
+  if (!q) { box.innerHTML = '<p class="muted">テーマ・タグ・問題文の言葉で探せます。空白で区切ると、すべてを含む問題を探します。</p>'; return; }
+  let res;
+  try { res = await M_CAT.searchProblems(q, { levels: pr.levels }); }
+  catch (e) { box.innerHTML = `<p class="muted">検索の索引を読めませんでした（${esc(e.message)}）。</p>`; return; }
+  dataWarn();
+  if (!res.length) { box.innerHTML = '<p class="muted">見つかりませんでした。言葉を短くするか、難易度の選択を広げてみてください。</p>'; return; }
+  const fresh = res.filter(e => !state.problems[e.id]);
+  const pickIds = [...fresh, ...res.filter(e => state.problems[e.id])].slice(0, pr.size).map(e => e.id);
+  box.innerHTML = `<p class="sub" style="margin:4px 0 10px">${res.length}問 見つかりました（未着手 ${fresh.length}問）</p>
+    <div class="btn-row" style="margin-top:0"><button class="btn primary" id="sgo">${pickIds.length}問 演習する</button><button class="btn ghost" id="sshare">リンクをコピー</button></div>
+    <div class="results">${res.slice(0, searchShown).map(e => {
+      const f = fieldByKey[e.f] || {};
+      return `<button class="res-row" data-pid="${esc(e.id)}">
+        <span class="nm">${e.th || esc(e.id)}</span>
+        <span class="muted small">${esc(f.subject || '')}・${esc(f.name || '')}　<span class="chip lv${e.lv}">${LEVELS[e.lv]}</span>${state.problems[e.id] ? '　✓ 解いた' : ''}${(e.tg || []).length ? '　' + e.tg.slice(0, 3).map(esc).join('・') : ''}</span>
+      </button>`;
+    }).join('')}</div>
+    ${res.length > searchShown ? `<button class="btn ghost block" id="smore">さらに表示（残り ${res.length - searchShown}問）</button>` : ''}`;
+  math(box);
+  $('#sgo').addEventListener('click', () => startSession(pickIds.map(pid => ({ kind: 'problem', pid })), { ids: pickIds, size: pickIds.length }));
+  $('#sshare').addEventListener('click', () => copyLink(shareURL('search=' + encodeURIComponent(q))));
+  $('#smore')?.addEventListener('click', () => { searchShown += 60; renderSearch(q); });
+  $$('.res-row', box).forEach(b => b.addEventListener('click', () => openIds([b.dataset.pid])));
 }
 
 async function startSession(steps, cfg = null) {
@@ -890,6 +1080,7 @@ function renderWritten(step, e) {
     const autoRes = spec ? a.results.filter(r => r.ok !== null) : [];
     const autoAll = autoRes.length && autoRes.every(r => r.ok);
     const answerKey = spec ? specAnswerHTML() : `<div class="ans qhtml">${b.a}</div>`;
+    const needSelf = !spec || selfParts.length > 0;   // 自己採点がある＝先に解答・解説を見せてから聞く
     fb.innerHTML = `
       ${spec && autoRes.length ? `<div id="autores">${autoBanner()}</div>` : ''}
       <div class="solution fade-in">
@@ -898,13 +1089,24 @@ function renderWritten(step, e) {
         ${spec ? `<details class="orig"><summary>問題管理表の答えの表記</summary><div class="qhtml">${b.a}</div></details>` : ''}
       </div>
       ${spec && autoRes.some(r => !r.ok) ? '<p class="muted dispute-note">自分の答えも正しいはずなのに×のときは、欄の横の「判定がおかしい？」を押してください。記録に残り、テスト記録のCSVにも出ます。</p>' : ''}
-      ${!spec || selfParts.length ? `<div class="label">${spec ? `自己採点の小問（${selfParts.map(n => n ? `(${n})` : '').join('')}）はどうだった？` : '自分の答案はどうだった？'}</div>
+      ${needSelf ? solutionHTML() : ''}
+      ${needSelf ? `<div class="label">${spec ? `解答と見比べて、自己採点の小問（${selfParts.map(n => n ? `(${n})` : '').join('')}）はどうだった？` : '解答と見比べて、自分の答案はどうだった？'}</div>
         <div class="segment self" id="self">${SELF.map(x => `<button data-g="${x.id}">${ICON[x.icon]}<span>${x.label}</span></button>`).join('')}</div>` : ''}
       <div id="after"></div>`;
     math(fb);
     addDisputeButtons();
     $$('#self button').forEach(btn => btn.addEventListener('click', () => grade(btn.dataset.g)));
     if (spec && !selfParts.length) grade(null);
+  }
+
+  function solutionHTML() {
+    return `<div class="solution fade-in" id="solbox">
+        <div class="title">解答・解説</div>
+        <div class="qhtml sol">${formatSolution(b.s) || '（解説なし）'}</div>
+        ${b.k ? `<div class="keypoint"><b>核となるアイデア</b>${b.k}</div>` : ''}
+        ${e.th || e.tg ? `<div class="methods">${e.th ? `<span class="chip plain">${e.th}</span>` : ''}${(e.tg || []).map(t => `<span class="chip plain">${esc(t)}</span>`).join('')}</div>` : ''}
+        ${glossaryHTML(b.q + b.s + b.k)}
+      </div>`;
   }
 
   function specAnswerHTML() {
@@ -990,13 +1192,7 @@ function renderWritten(step, e) {
     const after = $('#after');
     after.innerHTML = `
       <div class="verdict v-${sg} fade-in">${ICON[sg]}<b>${SELF.find(x => x.id === sg).label}</b></div>
-      <div class="solution fade-in">
-        <div class="title">解答・解説</div>
-        <div class="qhtml sol">${formatSolution(b.s) || '（解説なし）'}</div>
-        ${b.k ? `<div class="keypoint"><b>核となるアイデア</b>${b.k}</div>` : ''}
-        ${e.th || e.tg ? `<div class="methods">${e.th ? `<span class="chip plain">${e.th}</span>` : ''}${(e.tg || []).map(t => `<span class="chip plain">${esc(t)}</span>`).join('')}</div>` : ''}
-        ${glossaryHTML(b.q + b.s + b.k)}
-      </div>
+      ${$('#solbox') ? '' : solutionHTML()}
       <div class="label">手応え（任意）</div>
       <div class="feel" id="feel">${FEEL.map(f => `<button data-k="${f.k}"><b>${f.k}</b><span>${f.label}</span></button>`).join('')}</div>
       <div class="label">${sg === 'full' ? 'この問題で最初に気づくべきことを1行で（任意）' : 'どこで詰まった？（任意）'}</div>
@@ -1049,6 +1245,8 @@ function renderSummary() {
   $('#home').addEventListener('click', () => { session = null; route(); });
   $('#more').addEventListener('click', () => {
     const cfg = session.cfg || { size: 8 };
+    if (cfg.collection) { openCollection(cfg.collection); return; }
+    if (cfg.ids) { openIds(cfg.ids); return; }
     const steps = cfg.review ? pickReview(state, cfg) : pickPractice(state, cfg);
     if (!steps.length) { toast('今は出題できる問題がありません'); return; }
     startSession(steps, cfg);
@@ -1181,6 +1379,69 @@ function fieldStats(keys) {
   };
 }
 
+// 得意度：各問題の最新の結果（完答 1・一部やヒント 0.5・解けず 0）を難易度で重みづけした平均。
+// 少ない回数で極端にならないよう 0.5 に2問分寄せる。3問未満は「データ不足」。
+function strength(keys) {
+  const set = new Set(keys);
+  const last = new Map();
+  for (const l of state.log) { const e = entryById.get(l.p); if (e && set.has(e.f)) last.set(l.p, { l, e }); }
+  let sw = 0, ss = 0;
+  for (const { l, e } of last.values()) {
+    const w = 1 + 0.25 * e.lv;
+    const sc = l.g >= 3 ? 1 : l.g === 2 ? 0.5 : 0;
+    sw += w; ss += w * sc;
+  }
+  const n = last.size;
+  return { n, score: n >= 3 ? (ss + 1) / (sw + 2) : null };
+}
+const SUBJ_SHORT = { '数I': 'I', '数A': 'A', '数II': 'II', '数B': 'B', '数III': 'III', '数C': 'C', '融合': '融合' };
+// 得意度 → タイルの色（苦手＝赤系、得意＝緑系、データ不足＝無地）
+function strengthStyle(sc) {
+  if (sc == null) return '';
+  const t = Math.round(Math.min(1, Math.abs(sc - 0.5) * 2) * 55 + 8);
+  return `background:color-mix(in srgb, var(${sc >= 0.5 ? '--good' : '--bad'}) ${t}%, var(--card));`;
+}
+// 科目のレーダー図（SVG）：外側ほど得意。データ不足の科目は中心に点線
+function radarSVG(items) {
+  const N = items.length, R = 104, cx = 150, cy = 136;
+  const pt = (i, r) => { const a = -Math.PI / 2 + i * 2 * Math.PI / N; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; };
+  const ring = (f) => items.map((_, i) => pt(i, R * f).map(v => v.toFixed(1)).join(',')).join(' ');
+  const val = items.map((it, i) => pt(i, R * (it.score ?? 0)).map(v => v.toFixed(1)).join(',')).join(' ');
+  const has = items.some(it => it.score != null);
+  return `<svg class="radar" viewBox="0 0 300 278" role="img" aria-label="科目ごとの得意度">
+    ${[0.25, 0.5, 0.75, 1].map(f => `<polygon points="${ring(f)}" class="rg${f === 0.5 ? ' mid' : ''}"/>`).join('')}
+    ${items.map((_, i) => { const [x, y] = pt(i, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" class="rg"/>`; }).join('')}
+    ${has ? `<polygon points="${val}" class="rv"/>` : ''}
+    ${items.map((it, i) => it.score == null ? '' : (() => { const [x, y] = pt(i, R * it.score); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.5" class="rp"/>`; })()).join('')}
+    ${items.map((it, i) => { const [x, y] = pt(i, R + 20); return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" class="rl${it.score == null ? ' none' : ''}">${esc(it.label)}<tspan class="rs" x="${x.toFixed(1)}" dy="13">${it.score == null ? '—' : Math.round(it.score * 100)}</tspan></text>`; }).join('')}
+    <text x="${cx + 4}" y="${cy - R * 0.5 + 3}" class="rt">50</text>
+  </svg>`;
+}
+function strengthHTML() {
+  const subs = subjectsWithFields();
+  const fs = FIELDS.map(f => ({ f, ...strength([f.key]) }));
+  const judged = fs.filter(x => x.score != null).sort((a, b) => b.score - a.score);
+  const good = judged.filter(x => x.score >= 0.6).slice(0, 3);
+  const weak = judged.filter(x => x.score < 0.5).slice(-3).reverse();
+  const radar = radarSVG(subs.map(s => ({ label: s.name, ...strength(s.fields.map(f => f.key)) })));
+  const name = (x) => `${esc(SUBJ_SHORT[x.f.subject] || x.f.subject)}・${esc(x.f.name)}`;
+  return `
+    <h2>得意・苦手</h2>
+    <div class="panel strength">
+      ${judged.length ? '' : '<p class="muted" style="margin:0 0 8px">1つの分野で3問以上解くと、その分野の得意・苦手が出ます。</p>'}
+      ${radar}
+      <div class="sw-cols">
+        <div><b class="sw-good">得意</b>${good.length ? good.map(x => `<span>${name(x)} <em>${Math.round(x.score * 100)}</em></span>`).join('') : '<span class="muted">まだありません</span>'}</div>
+        <div><b class="sw-weak">苦手</b>${weak.length ? weak.map(x => `<span>${name(x)} <em>${Math.round(x.score * 100)}</em></span>`).join('') : '<span class="muted">まだありません</span>'}</div>
+      </div>
+      <div class="tiles">${subs.map(s => `<div class="tile-row"><span class="tile-sub">${esc(SUBJ_SHORT[s.name] || s.name)}</span><div class="tile-grid">${s.fields.map(f => {
+        const x = fs.find(y => y.f.key === f.key);
+        return `<button class="tile" data-f="${esc(f.key)}" style="${strengthStyle(x.score)}"><span>${esc(f.name)}</span><b>${x.score == null ? (x.n ? `${x.n}問` : '—') : Math.round(x.score * 100)}</b></button>`;
+      }).join('')}</div></div>`).join('')}</div>
+      <p class="muted legend"><i class="lg-weak"></i>苦手<i class="lg-mid"></i>ふつう<i class="lg-good"></i>得意　数字は得意度（0〜100）。最後に解いた結果を難しい問題ほど重く数えます。タップでその分野を演習。</p>
+    </div>`;
+}
+
 function renderMap() {
   const withConf = state.log.filter(l => l.c);
   const high = withConf.filter(l => l.c === 'high');
@@ -1195,6 +1456,7 @@ function renderMap() {
       <div class="kicker">${FIELDS.length}分野・${ENTRIES.length}問</div>
       <h1>定着度</h1>
       <p class="sub">分野ごとの進み具合と、最後に解いたときに完答できた割合です。</p>
+      ${strengthHTML()}
       <h2>自信と結果のズレ</h2>
       <div class="calib">
         <div class="stat"><b>${pct(over, high.length)}</b><span>「確実」で完答できず（過信）</span></div>
@@ -1214,7 +1476,7 @@ function renderMap() {
           </button>`;
         }).join('')}`).join('')}
     </div>`;
-  $$('.card-row').forEach(b => b.addEventListener('click', () => {
+  $$('.card-row, .tile').forEach(b => b.addEventListener('click', () => {
     const f = b.dataset.f;
     const rev = pickReview(state, { fields: [f], size: state.practice.size });
     if (rev.length) { startSession(rev, { review: true, fields: [f], size: state.practice.size }); return; }
@@ -1293,18 +1555,11 @@ function download(name, text, type) {
 function renderSettings() {
   const since = state.csvExportedAt || 0;
   const newCount = state.log.filter(l => l.t > since).length;
-  const gen = META.generated ? new Date(META.generated) : null;
   view.innerHTML = `
     <div class="fade-in">
       <div class="kicker">v${VERSION}</div>
       <h1>設定</h1>
-      <h2>問題データ</h2>
-      <div class="panel">
-        ${META.ok
-          ? `<p style="margin:0">問題管理表の問題 <strong>${META.count}問</strong>＋自動判定つきの内蔵問題 ${ENTRIES.filter(e => e.kind === 'builtin').length}問</p>
-             <p class="muted" style="margin:4px 0 0">${gen ? `${gen.getFullYear()}/${gen.getMonth() + 1}/${gen.getDate()} に` : ''}${esc(META.source || '')} から取り込み</p>`
-          : `<p style="margin:0;color:var(--bad)">問題データを読み込めませんでした（${esc(META.error || '')}）。data フォルダがアップロードされているか確認してください。</p>`}
-      </div>
+      ${sync ? '<h2>アカウントと同期</h2><div class="panel" id="acct"></div>' : ''}
       <h2>表示と音</h2>
       <div class="panel">
         <div class="setting"><span>画面のテーマ</span>
@@ -1340,6 +1595,7 @@ function renderSettings() {
         <p class="muted" style="margin:10px 0 0">復習間隔は FSRS の考え方を簡略化したモデルで推定しています。難関・最難関レベルでの効果は未検証です。</p>
       </div>
     </div>`;
+  drawAccount();
   $$('#theme button').forEach(b => b.addEventListener('click', () => {
     state.settings.theme = b.dataset.t; save(); applyTheme(b.dataset.t); renderSettings();
   }));
@@ -1367,7 +1623,7 @@ function renderSettings() {
     } catch { toast('読み込めないファイルです'); }
   });
   $('#reset').addEventListener('click', () => {
-    if (!confirm('学習記録をすべて消します。元に戻せません。')) return;
+    if (!confirm(sync && sync.loggedIn() ? 'この端末の学習記録を消します（ログイン中なので、次の同期でサーバーの記録が戻ります。サーバーの記録も消すには「退会する」）。' : '学習記録をすべて消します。元に戻せません。')) return;
     state = freshState(); save(); session = null; toast('消去しました'); route();
   });
 }
@@ -1385,6 +1641,7 @@ route();
 loadCatalog().then((meta) => {
   ready = true;
   route();
+  initSync();
   if (meta.ok) dataWarn();
   if (!meta.ok) showBanner(`<b>問題データを読み込めませんでした</b>${esc(meta.error || '')}。リポジトリに data フォルダがアップロードされているか確認してください。内蔵の${ENTRIES.length}問だけで動いています。`);
 });
@@ -1414,6 +1671,6 @@ setTimeout(() => {
 window.addEventListener('error', (e) => showBanner(`<b>エラー</b>${esc(e.message || '')} <small>${esc((e.filename || '').split('/').pop())}:${e.lineno || ''}</small>`));
 window.addEventListener('unhandledrejection', (e) => showBanner(`<b>エラー</b>${esc(String(e.reason && e.reason.message || e.reason))}`));
 
-if ('serviceWorker' in navigator && location.protocol === 'https:' && !/claude|claudeusercontent/.test(location.hostname)) {
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude|claudeusercontent/.test(location.hostname)) {
   navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {});
 }

@@ -9769,5 +9769,1256 @@
    },
    "verified": false
   }
+ },
+ {
+  "id": "II-GEO-217",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "回転と拡大で移る直線たちが囲む多角形",
+  "topic": "回転と拡大で移る直線たちが囲む多角形",
+  "statement": {
+   "tex": "座標平面の点 $(x,y)$ を $(x-y,\\ x+y)$ へ移す移動 $f$ を考え，点 P が移る先を $f(\\mathrm P)$ と表す．$f$ を用いて直線 $l_0,l_1,l_2,\\dots$ を次のように定める．\n\\begin{itemize}\n  \\item $l_0$ は直線 $x=1$ である．\n  \\item 点 P が $l_n$ 上を動くとき，$f(\\mathrm P)$ が描く直線を $l_{n+1}$ とする $(n=0,1,2,\\dots)$．\n\\end{itemize}\n$l_n$ を1次式を用いて $a_nx+b_ny=1$ と表す．\n\\begin{enumerate}\n  \\item $a_{n+1},\\ b_{n+1}$ を $a_n,\\ b_n$ で表せ．また $a_{n+8}=\\dfrac{a_n}{16},\\ b_{n+8}=\\dfrac{b_n}{16}$ を示せ．\n  \\item 不等式 $a_nx+b_ny\\leqq1$ が定める領域を $E_n$ とする．$E_0,E_1,E_2,\\dots$ すべてに含まれる点の範囲を図示し，その面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a_{n+1}=\\dfrac{a_n-b_n}{2}$，$b_{n+1}=\\dfrac{a_n+b_n}{2}$；後半は証明　(2) 7点 $(1,1),(0,2),(-2,2),(-4,0),(-4,-4),(0,-8),(1,-8)$ を頂点とする七角形（周を含む），面積 $\\dfrac{79}{2}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $f$ は1対1で，$(X,Y)=(x-y,\\ x+y)$ を逆に解くと $x=\\dfrac{X+Y}2,\\ y=\\dfrac{Y-X}2$．P$(x,y)$ が直線 $ax+by=1$ 上を動くとき，$f(\\mathrm P)=(X,Y)$ は\n\\[\na\\cdot\\frac{X+Y}2+b\\cdot\\frac{Y-X}2=1,\\qquad\\text{すなわち}\\qquad\\frac{a-b}2X+\\frac{a+b}2Y=1\n\\]\n上を動き，逆にこの直線上の点はすべて像として現れる（$(a,b)\\neq(0,0)$ なら係数も $(0,0)$ でない）．よって\n\\[\n\\boldsymbol{a_{n+1}=\\frac{a_n-b_n}{2},\\qquad b_{n+1}=\\frac{a_n+b_n}{2}}.\n\\]\n2回適用すると $a_{n+2}=\\dfrac{a_{n+1}-b_{n+1}}2=-\\dfrac{b_n}2$，$b_{n+2}=\\dfrac{a_{n+1}+b_{n+1}}2=\\dfrac{a_n}2$．\nさらに $a_{n+4}=-\\dfrac{b_{n+2}}2=-\\dfrac{a_n}4$，$b_{n+4}=\\dfrac{a_{n+2}}2=-\\dfrac{b_n}4$ で，$a_{n+8}=\\dfrac{a_n}{16}$，$b_{n+8}=\\dfrac{b_n}{16}$．\\hfill$\\square$\n\n(2) $E_{n+8}=\\{a_nx+b_ny\\leqq16\\}\\supset E_n$ なので，すべての $E_n$ に含まれる点の集合は $E_0\\cap E_1\\cap\\dots\\cap E_7$ に等しい．$(a_0,b_0)=(1,0)$ から順に\n\\[\n(a_n,b_n)=(1,0),\\ \\left(\\tfrac12,\\tfrac12\\right),\\ \\left(0,\\tfrac12\\right),\\ \\left(-\\tfrac14,\\tfrac14\\right),\\ \\left(-\\tfrac14,0\\right),\\ \\left(-\\tfrac18,-\\tfrac18\\right),\\ \\left(0,-\\tfrac18\\right),\\ \\left(\\tfrac1{16},-\\tfrac1{16}\\right)\n\\]\nなので，\n\\[\n\\begin{aligned}&E_0:x\\leqq1,\\ \\ E_1:x+y\\leqq2,\\ \\ E_2:y\\leqq2,\\ \\ E_3:-x+y\\leqq4,\\\\ &E_4:x\\geqq-4,\\ \\ E_5:x+y\\geqq-8,\\ \\ E_6:y\\geqq-8,\\ \\ E_7:x-y\\leqq16.\\end{aligned}\n\\]\n$E_0,E_2,E_4,E_6$ の共通部分は長方形 $R:-4\\leqq x\\leqq1,\\ -8\\leqq y\\leqq2$．\n$R$ のうち $x+y>2$ の点は $x>0,\\ y>1$ をみたし，角 $(1,2)$ の近くの直角二等辺三角形（頂点 $(1,2),(1,1),(0,2)$，等辺1）に入る．同様に $-x+y>4$ の点は角 $(-4,2)$ の三角形（頂点 $(-4,2),(-2,2),(-4,0)$，等辺2），$x+y<-8$ の点は角 $(-4,-8)$ の三角形（頂点 $(-4,-8),(-4,-4),(0,-8)$，等辺4）に入る．これら3つの三角形は互いに重ならない．\nよって $R\\cap E_1\\cap E_3\\cap E_5$ は7点\n\\[\n(1,1),\\ (0,2),\\ (-2,2),\\ (-4,0),\\ (-4,-4),\\ (0,-8),\\ (1,-8)\n\\]\nを頂点とする七角形（周を含む）で，その点は $x\\leqq1,\\ y\\geqq-8$ より $x-y\\leqq9<16$ をみたすから $E_7$ にも含まれる．求める範囲は\\textbf{この七角形（周を含む）}で，面積は\n\\[\n5\\cdot10-\\frac12\\cdot1^2-\\frac12\\cdot2^2-\\frac12\\cdot4^2=50-\\frac{21}2=\\boldsymbol{\\frac{79}{2}}.\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "移動 $f$ の逆を代入すると直線 $ax+by=1$ の像の係数が漸化式で求まる．$f$ は $45^\\circ$ 回転と $\\sqrt2$ 倍の合成なので，8回で係数は $\\frac1{16}$ 倍になり，半平面 $E_{n+8}$ は $E_n$ を含む．よって効くのは有限個の半平面だけで，共通部分は長方形の角を切り落とした多角形になる．"
+  },
+  "methods": [],
+  "tags": [
+   "点の移動",
+   "直線の像",
+   "漸化式",
+   "周期性",
+   "領域の共通部分"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-218",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "2つの放物線の共通接線の本数と正三角形",
+  "topic": "2つの放物線の共通接線の本数と正三角形",
+  "statement": {
+   "tex": "$k$ を実数とし，座標平面上の2つの放物線\n\\[C:\\ y=x^2+k,\\qquad D:\\ x=y^2+k\\]\nの共通接線を考える．\n\\begin{enumerate}\n  \\item 共通接線の本数を，$k$ の値によって分類して答えよ．\n  \\item 共通接線がちょうど3本あって，それらで囲まれる三角形が正三角形となるような $k$ の値を求めよ．また，そのときの正三角形の面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $k<-\\dfrac34$ または $k>\\dfrac14$ のとき3本，$k=\\dfrac14$ のとき2本，$-\\dfrac34\\leqq k<\\dfrac14$ のとき1本　(2) $k=\\dfrac34$，面積 $\\dfrac{3\\sqrt3}8$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $C$ 上の点 $(\\tau,\\tau^2+k)$ における接線は $y=2\\tau x-\\tau^2+k$，$D$ 上の点 $(\\varsigma^2+k,\\varsigma)$ における接線は $x=2\\varsigma y-\\varsigma^2+k$．$C$ の接線は $y$ 軸に平行でなく，$D$ の接線は $x$ 軸に平行でない．よって共通接線は $y=ax+b$（$a\\neq0$）の形で，\n\\[C\\text{ に接する}\\iff a=2\\tau,\\ b=k-\\tau^2\\iff b=k-\\frac{a^2}4,\\]\n\\[D\\text{ に接する}\\iff x=\\frac ya-\\frac ba\\text{ が }x=2\\varsigma y-\\varsigma^2+k\\text{ と一致}\\iff\\varsigma=\\frac1{2a},\\ b=a\\left(\\frac1{4a^2}-k\\right)=\\frac1{4a}-ak.\\]\nしたがって共通接線は，$k-\\dfrac{a^2}4=\\dfrac1{4a}-ak$，すなわち $4a$ 倍して整理した\n\\[a^3-4ka^2-4ka+1=0\\iff(a+1)\\bigl(a^2-(4k+1)a+1\\bigr)=0\\]\nの実数解 $a$（定数項が1なので $a\\neq0$ は自動的）と1対1に対応する．$g(a)=a^2-(4k+1)a+1$ とすると，判別式は $(4k+1)^2-4=(4k+3)(4k-1)$，$g(-1)=4k+3$．\n\\begin{itemize}\n  \\item $k<-\\frac34$ または $k>\\frac14$：$g$ は異なる2実解をもち，$g(-1)\\neq0$ なので解は3個．\n  \\item $k=\\frac14$：$g=(a-1)^2$ で解は $-1,1$ の2個．\n  \\item $k=-\\frac34$：$g=(a+1)^2$ で解は $-1$ のみ．\n  \\item $-\\frac34<k<\\frac14$：$g$ は実解をもたず，解は $-1$ のみ．\n\\end{itemize}\n答：$\\boldsymbol{k<-\\frac34}$ \\textbf{または} $\\boldsymbol{k>\\frac14}$ \\textbf{で3本，$k=\\frac14$ で2本，$-\\frac34\\leqq k<\\frac14$ で1本．}\n\n(2) 3本のとき，傾きは $-1$ と $g(a)=0$ の2解 $a_1,a_2$（$a_1a_2=1$）．3直線が正三角形を囲むなら，どの2本も $60^\\circ$ の角をなす．傾き $-1$ の直線の向きは $135^\\circ$ なので，他の2本の向き（$0^\\circ$ 以上 $180^\\circ$ 未満）は $75^\\circ$，$15^\\circ$ で，傾きは $\\tan75^\\circ=2+\\sqrt3$，$\\tan15^\\circ=2-\\sqrt3$．これは $a_1a_2=1$ をみたし，$a_1+a_2=4=4k+1$ より $k=\\frac34$．逆に $k=\\frac34$（$>\\frac14$）のとき3本の共通接線は\n\\[y=-x+\\frac12,\\qquad y=(2+\\sqrt3)x-1-\\sqrt3,\\qquad y=(2-\\sqrt3)x-1+\\sqrt3\\]\n（$b=k-\\frac{a^2}4$ による）で，交点は $(1,1)$，$\\left(\\frac{1+\\sqrt3}4,\\frac{1-\\sqrt3}4\\right)$，$\\left(\\frac{1-\\sqrt3}4,\\frac{1+\\sqrt3}4\\right)$ の相異なる3点．どの2本も $60^\\circ$ で交わるので三角形の内角は $60^\\circ$ か $120^\\circ$ で，和が $180^\\circ$ だからすべて $60^\\circ$，正三角形である．1辺は後の2点間で $\\sqrt{\\frac34+\\frac34}=\\frac{\\sqrt6}2$，面積は $\\frac{\\sqrt3}4\\cdot\\frac64$．\n\n答：$\\boldsymbol{k=\\dfrac34}$，面積 $\\boldsymbol{\\dfrac{3\\sqrt3}8}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$C,D$ は直線 $y=x$ に関して対称なので，傾き $-1$ の共通接線が常にあり，3次方程式は $(a+1)(a^2-(4k+1)a+1)=0$ と分解する．残り2本の傾きの積は1．3本が正三角形をなすのは，傾き $-1$（$135^\\circ$）に対し $15^\\circ$，$75^\\circ$ の向きのとき．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) $k$：3/4 ; 面積：3sqrt(3)/8"
+  },
+  "methods": [],
+  "tags": [
+   "共通接線",
+   "3次方程式",
+   "因数分解",
+   "正三角形"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-219",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "放物線上の直角三角形の重心",
+  "topic": "放物線上の直角三角形の重心",
+  "statement": {
+   "tex": "放物線 $y=x^2$ 上の相異なる3点 P$(p,p^2)$，Q$(\\alpha,\\alpha^2)$，R$(\\beta,\\beta^2)$ が $\\angle\\mathrm{QPR}=90^\\circ$ をみたしながら動くとき，$\\triangle$PQR の重心を G$(X,Y)$ とする．\n\\begin{enumerate}\n  \\item $p=\\dfrac12$ に固定するとき，G の軌跡を求めよ．\n  \\item P も放物線上を自由に動くとき，G の存在範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 放物線 $Y=3X^2+\\dfrac56$ から点 $\\left(-\\dfrac16,\\dfrac{11}{12}\\right)$ を除いたもの　(2) 領域 $Y\\geqq3X^2+\\dfrac23$ から点 $(0,1)$ を除いたもの"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "弦 PQ の傾きは $\\frac{\\alpha^2-p^2}{\\alpha-p}=\\alpha+p$，PR の傾きは $\\beta+p$ で，放物線の弦は $y$ 軸に平行でない．よって\n\\[\\angle\\mathrm{QPR}=90^\\circ\\iff(\\alpha+p)(\\beta+p)=-1.\\]\n$u=\\alpha+p$，$v=\\beta+p$ とおくと $uv=-1$（$u\\neq0$）．相異なる条件は $\\alpha\\neq p\\iff u\\neq2p$，$\\beta\\neq p\\iff v\\neq2p$，$\\alpha\\neq\\beta\\iff u\\neq v$（$uv<0$ より自動的）．Q，R の入れかえは同じ三角形なので，三角形は無順序対 $\\{u,-\\frac1u\\}$ と対応する．\n\n$w=u+v=u-\\frac1u$ とおく．$X=\\dfrac{p+\\alpha+\\beta}3=\\dfrac{w-p}3$．また\n\\[\\alpha^2+\\beta^2=(u-p)^2+(v-p)^2=w^2-2uv-2pw+2p^2=w^2+2-2pw+2p^2\\]\nより\n\\[Y=\\frac{p^2+\\alpha^2+\\beta^2}3=\\frac{(w-p)^2+2p^2+2}3=3X^2+\\frac{2p^2+2}3.\\]\n任意の実数 $w$ に対し $u^2-wu-1=0$ は積 $-1$ の2実解 $u,-\\frac1u$ をもつので，$w$ と対 $\\{u,-\\frac1u\\}$ は1対1に対応し，$w$（したがって $X$）は全実数をとる．除くべき対は $2p$ を含むもの：$p\\neq0$ のとき $\\{2p,-\\frac1{2p}\\}$ で $w=2p-\\frac1{2p}$，$X=X_0(p)=\\dfrac13\\left(p-\\dfrac1{2p}\\right)$．$p=0$ のときは $u\\neq0$ なので除く対はない．\n\n(1) $p=\\frac12$：$Y=3X^2+\\frac56$，除く点は $X_0=\\frac13\\left(\\frac12-1\\right)=-\\frac16$，$Y=\\frac1{12}+\\frac56=\\frac{11}{12}$．\n\n答：\\textbf{放物線} $\\boldsymbol{Y=3X^2+\\dfrac56}$ \\textbf{から点} $\\boldsymbol{\\left(-\\dfrac16,\\dfrac{11}{12}\\right)}$ \\textbf{を除いたもの．}\n\n(2) $(X,Y)$ が実現される $\\iff$ ある $p$ で $Y=3X^2+\\frac{2p^2+2}3$ かつ（$p\\neq0$ なら）$X\\neq X_0(p)$．\n\n$2p^2=3Y-9X^2-2\\geqq0$ が必要で，$Y\\geqq3X^2+\\frac23$．$Y=3X^2+\\frac23$ のときは $p=0$ で実現される．$Y>3X^2+\\frac23$ のとき $p=\\pm\\rho$（$\\rho>0$）の2通りがあり，$X_0(-\\rho)=-X_0(\\rho)$．両方とも除外されるのは $X=X_0(\\rho)=-X_0(\\rho)$，すなわち $X_0(\\rho)=0$，$\\rho^2=\\frac12$ のときで，このとき $X=0$，$Y=\\frac{1+2}3=1$．\n\n答：\\textbf{領域} $\\boldsymbol{Y\\geqq3X^2+\\dfrac23}$ \\textbf{から点} $\\boldsymbol{(0,1)}$ \\textbf{を除いたもの．}"
+   }
+  ],
+  "idea": {
+   "tex": "弦 PQ の傾きは $\\alpha+p$．直角条件は $(\\alpha+p)(\\beta+p)=-1$ となり，$u=\\alpha+p$ とおくと重心の $X$ は $u-\\frac1u$ で全実数を動く．ただし Q または R が P と一致する1組だけが抜け，軌跡は1点を除いた放物線．P も動かすと，抜ける点が他の $p$ で埋まるかどうかが問題になる．"
+  },
+  "methods": [],
+  "tags": [
+   "軌跡",
+   "存在範囲",
+   "除外点",
+   "垂直条件"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-220",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 35,
+  "theme": "2点を2直線に移す折り目と3次方程式",
+  "topic": "2点を2直線に移す折り目と3次方程式",
+  "statement": {
+   "tex": "\\begin{enumerate}\n  \\item $a$ を正の実数とする．直線 $l$ に関する対称移動によって，点 A$(0,1)$ が直線 $y=-1$ 上の点に，点 B$(a,0)$ が直線 $x=-a$ 上の点に移るという．このような直線 $l$ はただ1つ存在することを示し，その傾きを $a$ を用いて表せ．\n  \\item $b$ を実数とする．直線 $l$ に関する対称移動によって，点 A$(0,1)$ が直線 $y=-1$ 上の点に，点 B$(1,b)$ が直線 $x=-1$ 上の点に移るような直線 $l$ の本数を，$b$ の値によって分類して答えよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 傾き $-\\sqrt[3]a$　(2) $b>-\\dfrac3{\\sqrt[3]4}$ のとき1本，$b=-\\dfrac3{\\sqrt[3]4}$ のとき2本，$b<-\\dfrac3{\\sqrt[3]4}$ のとき3本"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "対称移動で点 X が X$'\\neq$X に移る $\\iff$ $l$ は線分 XX$'$ の垂直二等分線．X が X 自身に移る $\\iff$ X$\\in l$．\n\nA$(0,1)$ は直線 $y=-1$ 上にないので，像 A$'=(\\sigma,-1)$ は A と異なり，$l$ は A，A$'$ から等距離の点全体：\n\\[x^2+(y-1)^2=(x-\\sigma)^2+(y+1)^2\\iff y=\\frac\\sigma2x-\\frac{\\sigma^2}4.\\]\n$k=\\frac\\sigma2$ とおくと，「A を $y=-1$ 上に移す直線」全体は $\\{y=kx-k^2\\mid k\\text{ は実数}\\}$ であり（$k$ と直線は1対1），特にどれも $y$ 軸に平行でない．\n\n(1) B$(a,0)$ の像を $(-a,\\nu)$（$\\neq$B）とすると，$l$ は\n\\[(x-a)^2+y^2=(x+a)^2+(y-\\nu)^2\\iff 2\\nu y=4ax+\\nu^2.\\]\n$\\nu=0$ なら $l:x=0$ で上の形でない．$\\nu\\neq0$ なら $y=\\frac{2a}\\nu x+\\frac\\nu2$．$y=kx-k^2$ と一致する条件は $k=\\frac{2a}\\nu$，$-k^2=\\frac\\nu2=\\frac ak$，すなわち $k^3=-a$．逆に $k=-\\sqrt[3]a$ なら $\\nu=\\frac{2a}k$ として両条件をみたす．$k^3=-a$ の実数解はただ1つなので，$l$ はただ1つで傾きは $\\boldsymbol{-\\sqrt[3]a}$．\\hfill$\\square$\n\n(2) B$(1,b)$ の像を $(-1,\\nu)$ とすると，$l$ は\n\\[(x-1)^2+(y-b)^2=(x+1)^2+(y-\\nu)^2\\iff 2(\\nu-b)y=4x+\\nu^2-b^2.\\]\n$\\nu=b$ なら $l:x=0$ で不適．$\\nu\\neq b$ なら $y=\\frac2{\\nu-b}x+\\frac{\\nu+b}2$．$y=kx-k^2$ と一致する条件は $k=\\frac2{\\nu-b}$（$\\nu=b+\\frac2k$），$-k^2=b+\\frac1k$，すなわち\n\\[h(k)=k^3+bk+1=0.\\]\n逆に $h(k)=0$ の実数解 $k$（$h(0)=1$ より $k\\neq0$）に対し $\\nu=b+\\frac2k$ とすればよい．よって $l$ の本数は $h(k)=0$ の異なる実数解の個数．\n\n$b\\geqq0$ のとき $h'(k)=3k^2+b\\geqq0$（等号は高々1点）で $h$ は増加，解は1個．$b<0$ のとき $\\mu=\\sqrt{-\\frac b3}$ とすると $h$ は $k=-\\mu$ で極大，$k=\\mu$ で極小で，$\\mu^2+b=\\frac{2b}3$ より\n\\[h(-\\mu)=1-\\mu(\\mu^2+b)=1-\\frac{2b\\mu}3>0,\\qquad h(\\mu)=1+\\frac{2b\\mu}3.\\]\n$h(-\\mu)>0$ と $k\\to-\\infty$ で $h\\to-\\infty$ より $k<-\\mu$ に解が1個．$h(\\mu)>0$ なら他に解はなく，$h(\\mu)=0$ なら $k=\\mu$ が加わり2個，$h(\\mu)<0$ なら $(-\\mu,\\mu)$，$(\\mu,\\infty)$ に1個ずつ加わり3個．\n\\[h(\\mu)<0\\iff-\\frac{2b\\mu}3>1\\iff\\frac{4b^2\\mu^2}9>1\\iff-\\frac{4b^3}{27}>1\\iff b^3<-\\frac{27}4\\iff b<-\\frac3{\\sqrt[3]4}\\]\n（$-\\frac{2b\\mu}3>0$ なので2乗してよい）．等号の場合も同様．\n\n答：$\\boldsymbol{b>-\\dfrac3{\\sqrt[3]4}}$ \\textbf{のとき1本，$b=-\\dfrac3{\\sqrt[3]4}$ のとき2本，$b<-\\dfrac3{\\sqrt[3]4}$ のとき3本．}"
+   }
+  ],
+  "idea": {
+   "tex": "点 A を直線 $y=-1$ 上に移す対称軸は「A と $(s,-1)$ の垂直二等分線」で，$y=kx-k^2$ の形の直線全体．B を直線 $x=-1$ 上に移す条件と合わせると $k^3+bk+1=0$（折り紙による立方根の作図）．本数は3次関数の極値の符号で決まる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 傾き：-a^(1/3)\n(2) 記述"
+  },
+  "methods": [],
+  "tags": [
+   "対称移動",
+   "垂直二等分線",
+   "3次方程式の実数解の個数",
+   "折り紙"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-221",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 35,
+  "theme": "折れ線距離で3点から等距離にある点",
+  "topic": "折れ線距離で3点から等距離にある点",
+  "statement": {
+   "tex": "$xy$ 平面上の2点 P，Q に対し，P と Q を $x$ 軸または $y$ 軸に平行な線分からなる折れ線で結ぶときの経路の長さの最小値を $d(\\mathrm P,\\mathrm Q)$ で表す．O$(0,0)$，A$(4,0)$ とする．\n\\begin{enumerate}\n  \\item B$(1,3)$ のとき，$d(\\mathrm O,\\mathrm P)=d(\\mathrm A,\\mathrm P)=d(\\mathrm B,\\mathrm P)$ をみたす点 P をすべて求めよ．\n  \\item 点 B$(u,v)$ は O，A のいずれとも異なるとする．$d(\\mathrm O,\\mathrm P)=d(\\mathrm A,\\mathrm P)=d(\\mathrm B,\\mathrm P)$ をみたす点 P が無数に存在するような点 B の範囲を求めよ．\n  \\item (2) と同じ B について，そのような点 P が1つも存在しないような点 B の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $\\mathrm P(2,1)$　(2) 直線 $y=x$，$y=-x$ の $x\\leqq2$ の部分と直線 $y=x-4$，$y=-x+4$ の $x\\geqq2$ の部分（O，A を除く）　(3) $|v|<\\bigl|2-|u-2|\\bigr|$ をみたす点 $(u,v)$ 全体"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{$d$ の式．}P$(x_1,y_1)$，Q$(x_2,y_2)$ を結ぶ軸に平行な折れ線では，$x$ 軸に平行な部分の長さの和は $|x_1-x_2|$ 以上，$y$ 軸に平行な部分の和は $|y_1-y_2|$ 以上．L字形の折れ線で等号が成り立つので $d(\\mathrm P,\\mathrm Q)=|x_1-x_2|+|y_1-y_2|$．\n\nP$(x,y)$ について $d(\\mathrm O,\\mathrm P)=d(\\mathrm A,\\mathrm P)\\iff|x|+|y|=|x-4|+|y|\\iff|x|=|x-4|\\iff x=2$．$x=2$ のとき $d(\\mathrm O,\\mathrm P)=2+|y|$，$d(\\mathrm B,\\mathrm P)=|u-2|+|y-v|$ なので，条件は\n\\[g(y)=|y-v|-|y|=h,\\qquad h=2-|u-2|.\\]\n\\textbf{$g$ の性質．}$v>0$ のとき $g(y)=v$（$y\\leqq0$），$v-2y$（$0\\leqq y\\leqq v$），$-v$（$y\\geqq v$）．$v<0$ のとき $g(y)=v$（$y\\leqq v$），$2y-v$（$v\\leqq y\\leqq0$），$-v$（$y\\geqq0$）．$v=0$ なら $g\\equiv0$．よって $v\\neq0$ のとき，$g$ は $\\pm v$ をそれぞれ半直線上の無数の $y$ でとり，$-|v|$ と $|v|$ の間の値をちょうど1回ずつとり，それ以外の値はとらない．\n\n(1) $u=1$，$v=3$，$h=1$．$0\\leqq y\\leqq3$ で $3-2y=1$，$y=1$ のみ．答 $\\boldsymbol{\\mathrm P(2,1)}$．\n\n(2) $h$ と $v$ の関係で分類する．\n\\begin{itemize}\n  \\item $v\\neq0$，$|h|=|v|$：無数．\n  \\item $v\\neq0$，$|h|<|v|$：1個．\n  \\item $v\\neq0$，$|h|>|v|$：なし．\n  \\item $v=0$：$g\\equiv0$ なので $h=0$ なら無数（直線 $x=2$ 全体），$h\\neq0$ ならなし．$h=0\\iff u=0,4$ で B が O または A となり除外．\n\\end{itemize}\nよって無数に存在する $\\iff v\\neq0$ かつ $|v|=|2-|u-2||$．$2-|u-2|$ は $u\\leqq2$ で $u$，$u\\geqq2$ で $4-u$ なので，求める範囲は\n\\[\\boldsymbol{\\text{直線 }y=\\pm x\\text{ の }x\\leqq2\\text{ の部分と，直線 }y=\\pm(x-4)\\text{ の }x\\geqq2\\text{ の部分（O，A を除く）}}.\\]\n\n(3) 上の分類より，存在しない $\\iff$ $|v|<|h|$（$v=0$，$h\\neq0$ の場合も含む）．答：$\\boldsymbol{|v|<\\bigl|2-|u-2|\\bigr|}$ \\textbf{をみたす点 $(u,v)$ 全体}（$|y|<|x|$，$x\\leqq2$ の部分と $|y|<|x-4|$，$x\\geqq2$ の部分を合わせた領域で，境界は含まない）．"
+   }
+  ],
+  "idea": {
+   "tex": "$d(\\mathrm P,\\mathrm Q)=|x_1-x_2|+|y_1-y_2|$．O と A$(4,0)$ から等距離の点は直線 $x=2$．その上で B との条件は $|y-v|-|y|=2-|u-2|$ となり，左辺は「$v$ を半直線上でとり，$-v$ を半直線上でとり，その間の値を1回ずつとる」関数．右辺と $\\pm v$ の大小で 0個・1個・無数 に分かれる．"
+  },
+  "methods": [],
+  "tags": [
+   "折れ線距離",
+   "絶対値",
+   "場合分け",
+   "存在範囲"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-222",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "接線までの距離の平方根の重み付き和と，「$\\leqq1$」で定まる双対領域",
+  "topic": "接線までの距離の平方根の重み付き和と，「$\\leqq1$」で定まる双対領域",
+  "statement": {
+   "tex": "座標平面上に放物線 $C:\\ y=x^2-3x+4$ と領域 $D:\\ y\\geqq x^2-3x+4$ を定める．原点を通り $C$ に接する2直線のうち，傾きの大きい方を $l$，小さい方を $m$ とする．\n\\begin{enumerate}\n  \\item $C$ 上の点 A と直線 $l$，$m$ の距離をそれぞれ $L$，$M$ とする．正の定数 $k$ に対し，A が $C$ 上を動くときの $\\sqrt L+k\\sqrt M$ の最小値を考える．最小値をとる点 A が無数に存在するような $k$ の値を求めよ．また，そのときの最小値と，最小値をとる点 A の $x$ 座標の範囲を求めよ．\n  \\item 次の条件をみたす点 $(p,q)$ の動きうる範囲を求め，図示せよ．\n  \\begin{center}\n  条件：領域 $D$ のすべての点 $(x,y)$ に対して $px+qy\\leqq1$ が成り立つ．\n  \\end{center}\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $k=\\sqrt5$，最小値 $2^{\\frac74}$，$-2\\leqq x\\leqq2$　(2) $q\\leqq0$ かつ $(p-3q)^2\\leqq16q^2-4q$（双曲線 $16\\left(q-\\frac18\\right)^2-(p-3q)^2=\\frac14$ の $q\\leqq0$ の側の枝とその内側，原点を含む）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{接線．} 原点を通る直線 $y=cx$ が $C$ に接する条件は，$x^2-(3+c)x+4=0$ が重解をもつこと，すなわち $(3+c)^2=16$ で，$c=1,-7$．よって $l:\\ y=x$（接点の $x$ 座標は $2$），$m:\\ y=-7x$（接点の $x$ 座標は $-2$）．\n\n(1) A$(t,\\ t^2-3t+4)$ とおく．\n\\[\nL=\\frac{|t-(t^2-3t+4)|}{\\sqrt2}=\\frac{(t-2)^2}{\\sqrt2},\\qquad\nM=\\frac{|7t+t^2-3t+4|}{\\sqrt{50}}=\\frac{(t+2)^2}{5\\sqrt2}\n\\]\nであるから，$\\sqrt L=\\dfrac{|t-2|}{2^{\\frac14}}$，$\\sqrt M=\\dfrac{|t+2|}{\\sqrt5\\cdot2^{\\frac14}}$．$c=\\dfrac k{\\sqrt5}\\ (>0)$ とおくと\n\\[\n\\sqrt L+k\\sqrt M=2^{-\\frac14}G(t),\\qquad G(t)=|t-2|+c|t+2|.\n\\]\n$G$ は連続で，\n\\[\nG(t)=\\begin{cases}-(1+c)t+2-2c&(t\\leqq-2)\\\\(c-1)t+2+2c&(-2\\leqq t\\leqq2)\\\\(1+c)t-2+2c&(t\\geqq2)\\end{cases}\n\\]\n$1+c>0$ より $G$ は $t\\leqq-2$ で狭義減少，$t\\geqq2$ で狭義増加なので，$t<-2$ では $G(t)>G(-2)$，$t>2$ では $G(t)>G(2)$．したがって $G$ の最小値は区間 $-2\\leqq t\\leqq2$ での最小値であり，区間外では最小値をとらない．\n\\begin{itemize}\n  \\item $c\\neq1$ のとき：$-2\\leqq t\\leqq2$ で $G$ は狭義単調な1次関数なので，最小値をとる $t$ は端点のただ1つ．最小値をとる A はただ1つ．\n  \\item $c=1$ のとき：$-2\\leqq t\\leqq2$ で $G(t)=4$（一定）で，区間外では $G>4$．最小値 $4$ をとる $t$ は $-2\\leqq t\\leqq2$ のすべてで，無数にある．\n\\end{itemize}\nよって求める $k$ は $c=1$，すなわち $\\boldsymbol{k=\\sqrt5}$．最小値は $2^{-\\frac14}\\cdot4=\\boldsymbol{2^{\\frac74}}$，最小値をとる A の $x$ 座標の範囲は $\\boldsymbol{-2\\leqq x\\leqq2}$．\n\n(2) 条件を (＊) とする．\n\\begin{itemize}\n  \\item $q>0$ のとき：点 $(0,y)$（$y\\geqq4$）は $D$ に属し，$y>\\max\\left(4,\\frac1q\\right)$ ととると $0\\cdot p+qy>1$．(＊) は成り立たない．\n  \\item $q=0$ のとき：任意の $x$ に対し $(x,\\ x^2-3x+4)\\in D$ なので，(＊) は「すべての実数 $x$ で $px\\leqq1$」．$p\\neq0$ なら $x=\\frac2p$ で $px=2>1$ となるから $p=0$ が必要で，$p=q=0$ なら $0\\leqq1$ で成り立つ．\n  \\item $q<0$ のとき：$x$ を固定すると $px+qy$ は $y$ について減少するので，$D$ 上の $(x,y)$ での最大は $y=x^2-3x+4$ のとき．よって (＊) は\n  \\[\n  \\varphi(x)=qx^2+(p-3q)x+4q\\leqq1\\quad(\\text{すべての実数 }x)\n  \\]\n  と同値．$q<0$ より $\\varphi$ の最大値は $\\varphi\\!\\left(-\\dfrac{p-3q}{2q}\\right)=4q-\\dfrac{(p-3q)^2}{4q}$ で，これが $1$ 以下であることは，両辺に $4q<0$ を掛けて $16q^2-(p-3q)^2\\geqq4q$，すなわち $(p-3q)^2\\leqq16q^2-4q$ と同値．\n\\end{itemize}\n$q=0$ のとき不等式 $(p-3q)^2\\leqq16q^2-4q$ は $p^2\\leqq0$，すなわち $p=0$ となるので，3つの場合をまとめて\n\\[\n\\boldsymbol{q\\leqq0\\ \\text{かつ}\\ (p-3q)^2\\leqq16q^2-4q}.\n\\]\n\\textbf{図示．} $16q^2-4q=16\\left(q-\\frac18\\right)^2-\\frac14$ より，不等式は\n\\[\n16\\left(q-\\frac18\\right)^2-(p-3q)^2\\geqq\\frac14\n\\]\nと書ける．境界は双曲線 $(p-7q)(p+q)=-4q$（$(p-3q)^2-16q^2=(p-7q)(p+q)$ による）で，漸近線は $p-3q=\\pm4\\left(q-\\frac18\\right)$，すなわち $p=7q-\\frac12$ と $p=-q+\\frac12$．上の不等式から $\\left|q-\\frac18\\right|\\geqq\\frac18$，すなわち $q\\leqq0$ または $q\\geqq\\frac14$ なので，双曲線は $q\\leqq0$ の枝と $q\\geqq\\frac14$ の枝に分かれる．求める範囲は $q\\leqq0$ の枝とその内側（2本の漸近線の間に入り込む側）で，境界を含む．この枝は原点を通り，原点では直線 $q=0$（$p$ 軸）に接する（$q=0$ を代入すると $p^2=0$ の重解）．各 $q\\leqq0$ に対し $p$ の範囲は\n\\[\n-3|q|-\\sqrt{16q^2+4|q|}\\ \\leqq\\ p\\ \\leqq\\ -3|q|+\\sqrt{16q^2+4|q|}\n\\]\nである．"
+   }
+  ],
+  "idea": {
+   "tex": "放物線上の点から接線までの距離は（接点の $x$ 座標との差）$^2$ に比例するので，距離の平方根は $|x-x_0|$ の定数倍になり，和は折れ線関数になる．最小点が無数にあるのは，接点の間で傾きが $0$ になるときに限る．「$D$ のすべての点で $px+qy\\leqq1$」は，$q\\leqq0$ のもとで $y$ を放物線上に取ったときの2次関数の最大値の条件に帰着する．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $k$：sqrt(5) ; 最小値：2^(7/4) ; -2<=x<=2\n(2) 記述"
+  },
+  "methods": [],
+  "tags": [
+   "接線",
+   "点と直線の距離",
+   "折れ線関数",
+   "領域",
+   "2次関数の最大",
+   "双曲線"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-223",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "直線の両側に広がる放物線領域と偏角",
+  "topic": "直線の両側に広がる放物線領域と偏角",
+  "statement": {
+   "tex": "O を原点とする座標平面において，点 A$(2,2)$ を通り，線分 OA と垂直な直線を $l$ とする．座標平面上を点 P$(p,q)$ が次の2つの条件をみたしながら動く．\n\\begin{itemize}\n  \\item[条件1：] $4\\leqq\\overrightarrow{\\mathrm{OA}}\\cdot\\overrightarrow{\\mathrm{OP}}\\leqq17$\n  \\item[条件2：] 点 O と直線 $l$ の距離を $c$，点 P と直線 $l$ の距離を $d$ とするとき $cd\\geqq(p-1)^2$\n\\end{itemize}\nP が動く領域を $D$ とする．さらに，$x$ 軸の正の部分と線分 OP のなす角を $\\theta$（$0\\leqq\\theta\\leqq\\pi$）とする．\n\\begin{enumerate}\n  \\item $D$ を図示し，その面積を求めよ．\n  \\item $\\cos\\theta$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $D$ は $4\\leqq p+q\\leqq\\dfrac{17}2$，$q\\geqq\\dfrac{(p-1)^2}2-p+4$ の部分と $2\\leqq p+q\\leqq4$，$q\\leqq-\\dfrac{(p-1)^2}2-p+4$ の部分の和（点 $(1,3)$ で接する），面積 $\\dfrac{70}3$　(2) $-\\dfrac{1}{\\sqrt{10}}\\leqq\\cos\\theta\\leqq1$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\overrightarrow{\\mathrm{OA}}=(2,2)$ に垂直で A を通る直線は $l:\\ x+y=4$．$c=\\frac{4}{\\sqrt2}=2\\sqrt2$，$d=\\frac{|p+q-4|}{\\sqrt2}$ で $cd=2|p+q-4|$．また $\\overrightarrow{\\mathrm{OA}}\\cdot\\overrightarrow{\\mathrm{OP}}=2(p+q)$．よって\n\\[\nD:\\quad 2\\leqq p+q\\leqq\\frac{17}2,\\qquad 2|p+q-4|\\geqq(p-1)^2.\n\\]\n\n(1) $D_1=D\\cap\\{p+q\\geqq4\\}$，$D_2=D\\cap\\{p+q\\leqq4\\}$ に分ける．\n\\begin{itemize}\n  \\item $D_1$：$q\\geqq\\frac{(p-1)^2}2-p+4$ かつ $q\\leqq\\frac{17}2-p$（このとき $p+q\\geqq4$ は自動的に成り立つ）．放物線と直線の上下関係から $\\frac{(p-1)^2}2\\leqq\\frac92$，すなわち $-2\\leqq p\\leqq4$．放物線 $q=\\frac{(p-1)^2}2-p+4$ と直線 $q=\\frac{17}2-p$ ではさまれた部分．\n  \\item $D_2$：$q\\leqq-\\frac{(p-1)^2}2-p+4$ かつ $q\\geqq2-p$（$p+q\\leqq4$ は自動的）．$\\frac{(p-1)^2}2\\leqq2$，すなわち $-1\\leqq p\\leqq3$．放物線 $q=-\\frac{(p-1)^2}2-p+4$ と直線 $q=2-p$ ではさまれた部分．\n\\end{itemize}\n2つの放物線はどちらも点 $(1,3)$ で直線 $l$ に接し，$D_1$ と $D_2$ はこの1点だけを共有する．$D_1$ の頂点は $(-2,\\frac{21}2)$，$(4,\\frac92)$，$D_2$ の頂点は $(-1,3)$，$(3,-1)$ である．面積は\n\\[\n\\int_{-2}^{4}\\Bigl\\{\\frac92-\\frac{(p-1)^2}2\\Bigr\\}dp+\\int_{-1}^{3}\\Bigl\\{2-\\frac{(p-1)^2}2\\Bigr\\}dp\n=(27-9)+\\Bigl(8-\\frac83\\Bigr)=\\boldsymbol{\\frac{70}3}.\n\\]\n\n(2) $D$ は $p+q\\geqq2$ をみたすので O を含まず，$\\cos\\theta=\\dfrac{p}{\\sqrt{p^2+q^2}}$．\n\n\\textbf{$D$ 全体が $3p+q\\geqq0$ をみたすこと．} $D_1$ では $q\\geqq\\frac{(p-1)^2}2-p+4$ より $3p+q\\geqq\\frac{(p-1)^2}2+2p+4=\\frac{(p+1)^2+8}{2}>0$．$D_2$ では $q\\geqq2-p$，$p\\geqq-1$ より $3p+q\\geqq2p+2\\geqq0$．\n\n\\textbf{下限．} $(p,q)\\in D$ とする．$p\\geqq0$ なら $\\cos\\theta\\geqq0$．$p<0$ なら $q\\geqq-3p=3|p|$ なので $p^2+q^2\\geqq10p^2$，$\\cos\\theta=-\\frac{|p|}{\\sqrt{p^2+q^2}}\\geqq-\\frac{|p|}{\\sqrt{10}|p|}=-\\frac1{\\sqrt{10}}$．\nよって常に $\\cos\\theta\\geqq-\\frac1{\\sqrt{10}}$ で，等号は点 $(-1,3)\\in D_2$ で成り立つ．\n\n\\textbf{上限と途中の値．} 点 $(2,0)$ は $p+q=2$，$(p-1)^2=1\\leqq2\\cdot2$ より $D_2$ に属し，$\\cos\\theta=1$．$D_2$ の下側の境界である線分 $p+q=2$（$-1\\leqq p\\leqq3$）は $D_2$ に含まれ，その上の点 $(p,2-p)$（$-1\\leqq p\\leqq2$）は O を通らず，$\\cos\\theta=\\frac{p}{\\sqrt{p^2+(2-p)^2}}$ は $p$ の連続関数で $p=-1$ で $-\\frac1{\\sqrt{10}}$，$p=2$ で $1$．中間値の定理により間のすべての値をとる．\n\nしたがって $\\boldsymbol{-\\dfrac1{\\sqrt{10}}\\leqq\\cos\\theta\\leqq1}$．\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$cd$ は $\\overrightarrow{\\mathrm{OA}}\\cdot\\overrightarrow{\\mathrm{OP}}$ の1次式の絶対値で書け，条件2は直線 $l$ のどちら側にあるかで向きの異なる2つの放物線の条件に分かれる．面積は放物線と直線ではさまれた部分の積分．$\\cos\\theta$ の下限は「領域全体が直線 $3x+y=0$ の片側にある」ことで示し，値の連続性は凸な部分の線分上で確かめる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) -1/sqrt(10)<=cos(θ)<=1"
+  },
+  "methods": [],
+  "tags": [
+   "領域",
+   "絶対値",
+   "放物線",
+   "面積",
+   "ベクトルの内積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-224",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "囲む面積が一定の放物線族の通過範囲",
+  "topic": "囲む面積が一定の放物線族の通過範囲",
+  "statement": {
+   "tex": "$a,\\ b$ を実数とする．座標平面上の放物線\n\\[C:\\ y=x^2+ax+b\\]\nは放物線 $y=-x^2$ と2つの共有点をもち，それらの $x$ 座標はともに $-1<x<1$ を満たす．さらに，$C$ と放物線 $y=-x^2$ で囲まれた部分の面積は $\\dfrac13$ である．\n\\begin{enumerate}\n  \\item 点 $(a,b)$ の描く図形を求めよ．\n  \\item 放物線 $C$ の通りうる範囲を求め，座標平面上に図示せよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 放物線 $b=\\dfrac{a^2}8-\\dfrac12$ の $-2<a<2$ の部分　(2) $|x|<\\dfrac12$ では $-x^2-\\dfrac12\\leqq y<x^2+2|x|$，$|x|\\geqq\\dfrac12$ では $x^2-2|x|<y<x^2+2|x|$ の部分"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$C$ と $y=-x^2$ の共有点の $x$ 座標は $2x^2+ax+b=0$ の実数解．2つの共有点をもつので相異なる2実数解 $\\alpha<\\beta$ をもち，$2x^2+ax+b=2(x-\\alpha)(x-\\beta)$．$\\alpha<x<\\beta$ で $C$ は $y=-x^2$ の下側にあるから，囲まれた部分の面積は\n\\[\\int_\\alpha^\\beta\\{-x^2-(x^2+ax+b)\\}\\,dx=-2\\int_\\alpha^\\beta(x-\\alpha)(x-\\beta)\\,dx=\\frac{2(\\beta-\\alpha)^3}{6}=\\frac{(\\beta-\\alpha)^3}3.\\]\nこれが $\\frac13$ $\\iff$ $\\beta=\\alpha+1$．$-1<\\alpha$ かつ $\\alpha+1<1$ より $-1<\\alpha<0$．逆に $-1<\\alpha<0$ の任意の $\\alpha$ に対し $2(x-\\alpha)(x-\\alpha-1)=2x^2+ax+b$ で $a,b$ を定めればすべての条件を満たす．よって\n\\[a=-2(2\\alpha+1),\\qquad b=2\\alpha(\\alpha+1)\\qquad(-1<\\alpha<0)\\]\nが条件を満たす $(a,b)$ のすべてである．\n\n(1) $a=-2(2\\alpha+1)$ は $\\alpha$ の狭義減少関数で，$-1<\\alpha<0$ のとき $-2<a<2$ を過不足なくとる．$2\\alpha+1=-\\frac a2$ より\n\\[b=2\\alpha^2+2\\alpha=\\frac{(2\\alpha+1)^2-1}2=\\frac{a^2}8-\\frac12.\\]\nよって点 $(a,b)$ の描く図形は，\\textbf{放物線 $\\boldsymbol{b=\\dfrac{a^2}8-\\dfrac12}$ の $\\boldsymbol{-2<a<2}$ の部分}（両端を除く）．\n\n(2) 点 $(X,Y)$ が通りうる $\\iff$ $Y=X^2-2(2\\alpha+1)X+2\\alpha(\\alpha+1)$ を満たす $\\alpha\\in(-1,0)$ が存在する．右辺を $F(\\alpha)$ とおくと\n\\[F(\\alpha)=2\\alpha^2+(2-4X)\\alpha+X^2-2X=2\\left(\\alpha-X+\\frac12\\right)^2-X^2-\\frac12,\\]\n\\[F(-1)=X^2+2X,\\qquad F(0)=X^2-2X.\\]\n$F$ は連続で，軸は $\\alpha=X-\\frac12$．開区間 $-1<\\alpha<0$ での $F$ の値域を求める．\n\\begin{itemize}\n  \\item $-\\frac12<X<\\frac12$（軸が区間内）：$-1<\\alpha\\leqq X-\\frac12$ で $F$ は減少して値域 $\\left[-X^2-\\frac12,\\ F(-1)\\right)$，$X-\\frac12\\leqq\\alpha<0$ で増加して値域 $\\left[-X^2-\\frac12,\\ F(0)\\right)$．合わせて $\\left[-X^2-\\frac12,\\ X^2+2|X|\\right)$．\n  \\item $X\\geqq\\frac12$（軸が $0$ 以上）：$F$ は区間で狭義減少で，値域は $(F(0),F(-1))=(X^2-2X,\\ X^2+2X)$．\n  \\item $X\\leqq-\\frac12$（軸が $-1$ 以下）：$F$ は狭義増加で，値域は $(F(-1),F(0))=(X^2+2X,\\ X^2-2X)$．\n\\end{itemize}\nよって求める範囲は\n\\[\\boldsymbol{|x|<\\frac12\\ \\text{のとき}\\ -x^2-\\frac12\\leqq y<x^2+2|x|,\\qquad |x|\\geqq\\frac12\\ \\text{のとき}\\ x^2-2|x|<y<x^2+2|x|}.\\]\n図示：$y$ 軸に関して対称な領域で，上側の境界は曲線 $y=x^2+2|x|$（境界を含まない），下側の境界は $|x|<\\frac12$ では放物線 $y=-x^2-\\frac12$（境界を含む），$|x|\\geqq\\frac12$ では $y=x^2-2|x|$（境界を含まない）である．下側の2種類の境界は点 $\\left(\\pm\\frac12,-\\frac34\\right)$ で接する（$x=\\frac12$ での傾きはともに $-1$）．点 $\\left(\\pm\\frac12,-\\frac34\\right)$ と原点は含まれない．\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "2つの共有点の $x$ 座標を $\\alpha<\\beta$ とすると，囲まれた部分の面積は $\\dfrac{(\\beta-\\alpha)^3}{3}$．面積一定から $\\beta=\\alpha+1$ となり，2変数の族が $\\alpha$ だけの1パラメータ族になる．$x$ を固定して $y$ を $\\alpha$ の2次関数とみて，開区間での値域を軸の位置で場合分けして求める．"
+  },
+  "methods": [],
+  "tags": [
+   "通過領域",
+   "1パラメータ族",
+   "定積分の1/6公式",
+   "2次関数の値域",
+   "包絡線"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-225",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "放物線の接線が円から切り取る弦",
+  "topic": "放物線の接線が円から切り取る弦",
+  "statement": {
+   "tex": "$a$ を実数とし，座標平面上の点 $(0,a)$ を中心とする半径1の円を $C$ とする．$t\\geqq0$ に対し，放物線 $y=x^2$ 上の点 $(t,t^2)$ における接線を $\\ell_t$ とする．$\\ell_t$ が $C$ と異なる2点で交わるとき，その2交点を結ぶ線分の長さを $L(t)$ とする．\n\\begin{enumerate}\n  \\item $\\ell_t$ が $C$ と異なる2点で交わるような $t\\geqq0$ が存在する $a$ の範囲を求めよ．\n  \\item $\\ell_{t_1}$，$\\ell_{t_2}$ がともに $C$ と異なる2点で交わり，$L(t_1)=L(t_2)$ となるような相異なる $t_1\\geqq0$，$t_2\\geqq0$ が存在する $a$ の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a<\\dfrac54$　(2) $a<0$ または $\\dfrac12<a<\\dfrac54$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$y=x^2$ の $(t,t^2)$ における接線は $y=2tx-t^2$，すなわち $2tx-y-t^2=0$．中心 $(0,a)$ との距離を $d$ とすると\n\\[\nd=\\frac{|-a-t^2|}{\\sqrt{4t^2+1}}=\\frac{|a+t^2|}{\\sqrt{1+4t^2}}．\n\\]\n$\\ell_t$ が $C$ と異なる2点で交わる $\\iff d<1$ で，このとき $L(t)=2\\sqrt{1-d^2}$．\n\n$v=1+4t^2$ とおくと，$t\\geqq0$ と $v\\geqq1$ は狭義単調増加の関係で1対1に対応する．$c=4a-1$ とおけば $a+t^2=\\dfrac{v+c}4$ で\n\\[\nd^2=g(v)=\\frac{(v+c)^2}{16v}=\\frac1{16}\\left(v+2c+\\frac{c^2}v\\right)．\n\\]\n$0<v_1<v_2$ のとき\n\\[\ng(v_2)-g(v_1)=\\frac1{16}\\left\\{(v_2-v_1)+c^2\\left(\\frac1{v_2}-\\frac1{v_1}\\right)\\right\\}=\\frac{(v_2-v_1)(v_1v_2-c^2)}{16v_1v_2}．\\tag{$*$}\n\\]\nまた $v>0$ について $g\\!\\left(\\dfrac{c^2}v\\right)=\\dfrac{(c^2/v+c)^2}{16c^2/v}=\\dfrac{c^2(c+v)^2/v^2}{16c^2/v}=g(v)$（$c\\neq0$）．\n\n(1) $g(v)<1$ となる $v\\geqq1$ が存在する $a$ の範囲を求める．\n\\begin{itemize}\n  \\item $c\\leqq-1$（$a\\leqq0$）：$v=-c\\geqq1$ で $g(v)=0<1$．存在する．\n  \\item $-1<c\\leqq1$（$0<a\\leqq\\frac12$）：$v=1$ で $g(1)=\\frac{(1+c)^2}{16}=a^2\\leqq\\frac14<1$．存在する．\n  \\item $c>1$（$a>\\frac12$）：相加・相乗平均より $v+\\dfrac{c^2}v\\geqq2c$（等号は $v=c\\geqq1$）なので $g(v)\\geqq\\dfrac{4c}{16}=a-\\dfrac14$ で，最小値 $a-\\frac14$ は $v=c$ でとられる．存在する $\\iff a-\\frac14<1\\iff a<\\frac54$．\n\\end{itemize}\n以上より $\\boldsymbol{a<\\dfrac54}$．\n\n(2) $t\\mapsto v$ は1対1で，$L=2\\sqrt{1-g(v)}$ は $g(v)$ について狭義単調減少だから，求める条件は「$g(v_1)=g(v_2)<1$ となる相異なる $v_1,v_2\\geqq1$ が存在する」ことである．\n\\begin{itemize}\n  \\item $|c|\\leqq1$（$0\\leqq a\\leqq\\frac12$）：$1\\leqq v_1<v_2$ なら $v_1v_2>1\\geqq c^2$ で $(*)>0$．$g$ は $v\\geqq1$ で狭義単調増加なので存在しない．\n  \\item $a\\geqq\\frac54$：(1) より $g(v)<1$ となる $v\\geqq1$ がないので存在しない．\n  \\item $|c|>1$ かつ $a<\\frac54$（すなわち $a<0$ または $\\frac12<a<\\frac54$）：$v_0=|c|>1$ とおくと，$c<-1$ なら $g(v_0)=0$，$c>1$ なら $g(v_0)=a-\\frac14<1$ で，いずれも $g(v_0)<1$．$g$ は $v_0$ で連続なので，$1<r<v_0$ かつ $g(rv_0)<1$ をみたす $r$ がとれる．$v_1=rv_0$，$v_2=\\dfrac{v_0}r$ とおくと $v_1\\neq v_2$，$v_1>1$，$v_2>1$ で，$v_1v_2=v_0^2=c^2$ より $g(v_2)=g\\!\\left(\\dfrac{c^2}{v_1}\\right)=g(v_1)<1$．存在する．\n\\end{itemize}\n以上より $\\boldsymbol{a<0\\ \\text{または}\\ \\dfrac12<a<\\dfrac54}$．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "元の問題の「円の接線を放物線が切り取る」を逆にし，「放物線の接線を円が切り取る」弦を考える．弦の長さは中心と接線の距離 $d$ だけで決まり，$v=1+4t^2$ とおくと $d^2=g(v)=\\dfrac{(v+c)^2}{16v}$（$c=4a-1$）．$g(v)=g\\!\\left(\\dfrac{c^2}v\\right)$ という対称性があり，$v\\geqq1$ での単調性は $|c|>1$ か否かで決まる．$a<0$ の側（中心を通る接線がある）を見落とさないこと．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) a<5/4\n(2) a<0 または 1/2<a<5/4"
+  },
+  "methods": [],
+  "tags": [
+   "接線",
+   "点と直線の距離",
+   "弦の長さ",
+   "置き換え",
+   "単射性"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-226",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "原点からの直交2接線と，軸上に中心をもつ2円の共通弦",
+  "topic": "原点からの直交2接線と，軸上に中心をもつ2円の共通弦",
+  "statement": {
+   "tex": "$a,b$ を実数とし，座標平面上の放物線 $y=x^2+ax+b$ を $C$ とする．$C$ は原点で垂直に交わる2本の接線 $\\ell_1$，$\\ell_2$ をもつとする．ただし，$C$ と $\\ell_1$ の接点 $\\mathrm P_1$ の $x$ 座標は，$C$ と $\\ell_2$ の接点 $\\mathrm P_2$ の $x$ 座標より小さいとする．$i=1,2$ に対し，円 $D_i$ を，$C$ の軸上に中心をもち，点 $\\mathrm P_i$ で $\\ell_i$ に接するものと定める．\n\\begin{enumerate}\n  \\item $b$ を $a$ で表せ．\n  \\item $D_1$ と $D_2$ が共有点をもつような $a$ の値の範囲を求めよ．\n  \\item $D_1$ と $D_2$ が異なる2点で交わるとき，その2点を結ぶ線分の長さの最大値と，最大値を与える $a$ の値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $b=\\dfrac{a^2+1}4$　(2) $-\\sqrt{\\dfrac{1+\\sqrt5}2}\\leqq a\\leqq\\sqrt{\\dfrac{1+\\sqrt5}2}$　(3) 最大値 $\\dfrac{\\sqrt5}2$（$a=\\pm\\dfrac{\\sqrt2}2$）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $C$ 上の点 $(s,\\ s^2+as+b)$ における接線は $y=(2s+a)(x-s)+s^2+as+b$，すなわち $y=(2s+a)x-s^2+b$．これが原点を通る条件は $s^2=b$．原点を通る接線が2本あるので $b>0$ で，接点の $x$ 座標は $-\\sqrt b$，$\\sqrt b$，接線の傾きは $a-2\\sqrt b$，$a+2\\sqrt b$．垂直である条件は\n\\[\n(a-2\\sqrt b)(a+2\\sqrt b)=-1\\iff a^2-4b=-1\\iff \\boldsymbol{b=\\dfrac{a^2+1}4}.\n\\]\n逆に，任意の実数 $a$ に対し $b=\\frac{a^2+1}4>0$ とすれば上の議論をさかのぼって条件が満たされる．\n\n\\textbf{座標の平行移動．} $b=\\frac{a^2+1}4$ のとき $y=\\left(x+\\frac a2\\right)^2+\\frac14$．$X=x+\\frac a2$，$Y=y-\\frac14$ とおくと（平行移動なので長さや接する関係は変わらない），$C$ は $Y=X^2$，軸は $X=0$ になる．$\\mathrm P_i$ の $X$ 座標を $s_i$ とすると $s_1=-\\sqrt b+\\frac a2$，$s_2=\\sqrt b+\\frac a2$ で，\n\\[\ns_1+s_2=a,\\qquad s_1s_2=\\frac{a^2}4-b=-\\frac14 .\n\\]\n特に $s_1<0<s_2$ で，$s_i\\neq0$．\n\n\\textbf{円 $D_i$．} $\\ell_i$ の傾きは $2s_i$ で，$D_i$ の中心は $\\mathrm P_i$ を通り $\\ell_i$ に垂直な直線 $(X-s_i)+2s_i(Y-s_i^2)=0$ 上にある．これと軸 $X=0$ の交点は $-s_i+2s_i(Y-s_i^2)=0$，$s_i\\neq0$ より $Y=s_i^2+\\frac12$．半径の2乗は $s_i^2+\\frac14$．$u_i=s_i^2$ とおくと $D_i$ は\n\\[\nX^2+\\left(Y-u_i-\\tfrac12\\right)^2=u_i+\\tfrac14\\iff X^2+Y^2-(2u_i+1)Y+u_i^2=0 \\tag{$*$}\n\\]\n（$(u_i+\\frac12)^2-u_i-\\frac14=u_i^2$ による）．また\n\\[\nu_1u_2=(s_1s_2)^2=\\frac1{16},\\qquad u_1+u_2=(s_1+s_2)^2-2s_1s_2=a^2+\\frac12 .\n\\]\n$u_1=u_2\\iff s_1^2=s_2^2\\iff s_1=-s_2$（$s_1\\neq s_2$ より）$\\iff a=0$．$a=0$ のとき $(*)$ は一致し，$D_1=D_2$ である．\n\n(2) $a=0$ のとき $D_1=D_2$ なので共有点をもつ．以下 $a\\neq0$ とし，$u_1\\neq u_2$．$A=a^2$，$\\sigma=u_1+u_2=A+\\frac12$ とおく．$(X,Y)$ が2円の共有点であることは，$i=1$ の $(*)$ と，2式の差\n\\[\n-2(u_1-u_2)Y+(u_1^2-u_2^2)=0\\iff Y=\\frac\\sigma2\n\\]\nをともに満たすことと同値．$Y=\\frac\\sigma2$ を $i=1$ の $(*)$ に代入すると，$u_1\\sigma-u_1^2=u_1u_2$ を用いて\n\\[\nX^2=-\\frac{\\sigma^2}4+\\frac{(2u_1+1)\\sigma}2-u_1^2=-\\frac{\\sigma^2}4+\\frac\\sigma2+u_1u_2\n=-\\frac{(A+\\frac12)^2}4+\\frac{2A+1}4+\\frac1{16}=\\frac{-A^2+A+1}4 .\n\\]\nよって共有点が存在する $\\iff -A^2+A+1\\geqq0\\iff A\\leqq\\frac{1+\\sqrt5}2$（$A\\geqq0$ なので左側の解は不要）．$a=0$ もこれを満たすので，求める範囲は\n\\[\n\\boldsymbol{-\\sqrt{\\dfrac{1+\\sqrt5}2}\\leqq a\\leqq\\sqrt{\\dfrac{1+\\sqrt5}2}}.\n\\]\n\n(3) 異なる2点で交わるのは $a\\neq0$ かつ $-A^2+A+1>0$ のときで，2交点は $\\left(\\pm\\frac12\\sqrt{-A^2+A+1},\\ \\frac\\sigma2\\right)$．線分の長さは\n\\[\n\\sqrt{-A^2+A+1}=\\sqrt{\\frac54-\\left(A-\\frac12\\right)^2}\\leqq\\frac{\\sqrt5}2\n\\]\nで，等号は $A=\\frac12$ のとき．$A=\\frac12$ は $0<\\frac12<\\frac{1+\\sqrt5}2$ を満たすので実際に2点で交わる．最大値 $\\boldsymbol{\\dfrac{\\sqrt5}2}$，そのとき $\\boldsymbol{a=\\pm\\dfrac{\\sqrt2}2}$．"
+   }
+  ],
+  "idea": {
+   "tex": "原点を通る直交2接線の条件から，放物線の頂点は常に準線が原点を通る位置にくる．頂点を原点に移すと，接点 $X=s_i$ は $s_1s_2=-\\frac14$ をみたし，軸上に中心をもち接点で接線に接する円は $X^2+Y^2-(2u+1)Y+u^2=0$（$u=s_i^2$）という1パラメータの族になる．2円の方程式の差が共通弦（水平線）を与え，共有点の条件と弦の長さは $u_1+u_2=a^2+\\frac12$，$u_1u_2=\\frac1{16}$ だけで決まる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $b$：(a^2+1)/4\n(2) -sqrt((1+sqrt(5))/2)<=a<=sqrt((1+sqrt(5))/2)\n(3) 最大値：sqrt(5)/2"
+  },
+  "methods": [],
+  "tags": [
+   "接線",
+   "放物線",
+   "円の方程式",
+   "2円の共有点",
+   "共通弦",
+   "2次関数の最大"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-227",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 35,
+  "theme": "円に2点で接する放物線の通過領域",
+  "topic": "円に2点で接する放物線の通過領域",
+  "statement": {
+   "tex": "座標平面上で，放物線 $C:y=ax^2+bx+c\\ (a<0)$ が円 $x^2+y^2=1$ と異なる2点 P，Q を共有し，P と Q のそれぞれにおいて円と共通の接線をもつとする．\n\\begin{enumerate}\n  \\item $b=0$ であることを示せ．さらに，P の $y$ 座標を $s$ とするとき，$a,\\ c$ を $s$ で表し，$s$ のとりうる値の範囲を求めよ．\n  \\item 条件をみたす放物線 $C$ 全体が通過する領域を $D$ とする．$D$ を図示せよ．\n  \\item $D$ のうち $0\\leqq y\\leqq1$ をみたす部分の面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明，$a=-\\dfrac{1}{2s}$，$c=\\dfrac{1+s^2}{2s}$，$0<s<1$　(2) $0<|x|<1$ では $y\\geqq\\sqrt{1-x^2}$，$x=0$ では $y>1$，$|x|=1$ では $0<y<\\dfrac12$，$|x|>1$ では $y<1-\\dfrac{x^2}{2}$　(3) $\\dfrac{1+4\\sqrt2}{3}-\\dfrac{\\pi}{2}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $f(x)=ax^2+bx+c$，$g(x)=x^2+\\{f(x)\\}^2-1$ とおく．$g$ は $x^4$ の係数が $a^2\\neq0$ の4次式である．\n\nC 上の点 $(p,f(p))$ について，この点が円上にあることは $g(p)=0$ と同値である．円上の点 $(p,f(p))$ における円の接線はベクトル $(p,f(p))$ に垂直な直線であり，C の接線は方向ベクトル $(1,f'(p))$ の直線である．どちらも点 $(p,f(p))$ を通るから，両者が一致することは\n\\[\n(1,f'(p))\\cdot(p,f(p))=p+f(p)f'(p)=0\n\\]\nと同値である．$g'(x)=2x+2f(x)f'(x)$ より，これは $g'(p)=0$ と同値．したがって「点 $(p,f(p))$ で円と共通の接線をもつ」$\\iff g(p)=g'(p)=0$．\n\nP，Q は C 上の異なる2点なので $x$ 座標 $p,\\ q$ は異なる．$g(p)=g'(p)=0$ より $g(x)$ は $(x-p)^2$ で割り切れ，同様に $(x-q)^2$ でも割り切れる．$p\\neq q$ で $g$ は4次式だから\n\\[\ng(x)=a^2(x-p)^2(x-q)^2 .\n\\]\n左辺は $a^2x^4+2abx^3+(b^2+2ac+1)x^2+2bcx+c^2-1$，右辺は $a^2\\{x^2-(p+q)x+pq\\}^2$ を展開して\n\\[\na^2x^4-2a^2(p+q)x^3+a^2\\{(p+q)^2+2pq\\}x^2-2a^2pq(p+q)x+a^2p^2q^2 .\n\\]\n係数を比べて\n\\[\nb=-a(p+q),\\quad bc=-a^2pq(p+q),\\quad c^2-1=a^2p^2q^2,\\quad b^2+2ac+1=a^2\\{(p+q)^2+2pq\\}.\n\\]\n$p+q\\neq0$ と仮定すると，第2式に第1式を代入して $-a(p+q)c=-a^2pq(p+q)$，よって $c=apq$．すると $c^2=a^2p^2q^2$ となり第3式 $c^2-1=a^2p^2q^2$ に矛盾する．ゆえに $p+q=0$，したがって $\\boldsymbol{b=0}$ である．\n\nこのとき $q=-p$，$p\\neq0$ で，第4式は $2ac+1=-2a^2p^2$，すなわち $2a(c+ap^2)=-1$．P の $y$ 座標は $s=f(p)=ap^2+c$ だから $2as=-1$，\n\\[\n\\boldsymbol{a=-\\frac{1}{2s}},\\qquad \\boldsymbol{c=s-ap^2=s+\\frac{p^2}{2s}=s+\\frac{1-s^2}{2s}=\\frac{1+s^2}{2s}}\n\\]\n（P は円上なので $p^2=1-s^2$）．$a<0$ より $s>0$，$p^2=1-s^2>0$ より $s<1$．\n\n逆に $0<s<1$ のとき，$a=-\\frac1{2s}$，$b=0$，$c=\\frac{1+s^2}{2s}$ とすると\n\\[\ng(x)=x^2+\\left(\\frac{1+s^2-x^2}{2s}\\right)^2-1=\\frac{(1+s^2-x^2)^2-4s^2(1-x^2)}{4s^2}=\\frac{(x^2+s^2-1)^2}{4s^2}\n\\]\n（分子は $X=1-x^2$ とおくと $(s^2+X)^2-4s^2X=(s^2-X)^2$）．よって $g$ は $x=\\pm\\sqrt{1-s^2}$ を重解にもち，C は異なる2点 $(\\pm\\sqrt{1-s^2},\\,s)$ で円と共通の接線をもつ．以上より $s$ のとりうる値の範囲は $\\boldsymbol{0<s<1}$．\n\n(2) 点 $(X,Y)$ が $D$ に属する $\\iff$ $Y=\\dfrac{1+s^2-X^2}{2s}$ となる $s\\ (0<s<1)$ が存在する $\\iff$\n\\[\n\\varphi(s)=s^2-2Ys+1-X^2=0\n\\]\nが $0<s<1$ に解をもつ．$\\varphi(0)=1-X^2$，$\\varphi(1)=2-2Y-X^2$ である．\n\n\\textbf{(ア) $0<|X|<1$ のとき．} 2解の積は $1-X^2$ で $0<1-X^2<1$．$0<s<1$ の解があれば，2解はともに実数で積が正だから同符号，和 $2Y$ は正の解を含むので $Y>0$．逆に $Y>0$ かつ判別式 $Y^2-(1-X^2)\\geqq0$ なら，2解 $s_1\\leqq s_2$ は和も積も正だから正で，$s_1^2\\leqq s_1s_2=1-X^2<1$ より $0<s_1<1$．よって条件は $Y>0$ かつ $Y^2\\geqq1-X^2$，すなわち $Y\\geqq\\sqrt{1-X^2}$．\n\n\\textbf{(イ) $X=0$ のとき．} 2解の積が1．(ア) と同様に $Y>0$ が必要で，2解 $s_1\\leqq s_2$ が正の実数なら $s_1\\leqq1\\leqq s_2$ であり，$s_1<1\\iff s_1\\neq s_2\\iff Y^2>1$．よって条件は $Y>1$．\n\n\\textbf{(ウ) $|X|=1$ のとき．} $\\varphi(s)=s(s-2Y)$ で，解 $s=2Y$ が $0<2Y<1$ となる条件は $0<Y<\\frac12$．\n\n\\textbf{(エ) $|X|>1$ のとき．} $\\varphi(0)<0$ なので $\\varphi$ は正の解をただ1つもち（負の解ももつ），$\\varphi$ は下に凸だから，その正の解が1未満 $\\iff\\varphi(1)>0\\iff Y<1-\\dfrac{X^2}{2}$．\n\n以上より $D$ は\n\\[\n\\begin{gathered}\n\\boldsymbol{0<|x|<1:\\ y\\geqq\\sqrt{1-x^2},\\qquad x=0:\\ y>1,}\\\\\n\\boldsymbol{|x|=1:\\ 0<y<\\tfrac12,\\qquad |x|>1:\\ y<1-\\tfrac{x^2}{2}}\n\\end{gathered}\n\\]\nで表される領域である．図示すると，円 $x^2+y^2=1$ の上半分の弧より上側（$-1<x<1$ の範囲．弧上の点を含む．ただし $y$ 軸上では $y>1$ の部分のみで，点 $(0,1)$ は含まない）と，放物線 $y=1-\\frac{x^2}{2}$ より下側（$|x|>1$ の範囲．放物線上の点は含まない．$x=\\pm1$ 上では $0<y<\\frac12$ の部分のみ）を合わせた部分である．\n\n(3) $0\\leqq y\\leqq1$ の部分は，$-1<x<1$ では $\\sqrt{1-x^2}\\leqq y\\leqq1$（$x=0$ の線分を除くが面積に影響しない），$1<|x|<\\sqrt2$ では $0\\leqq y<1-\\frac{x^2}{2}$，$|x|\\geqq\\sqrt2$ では $1-\\frac{x^2}2\\leqq0$ より空集合である．よって面積は\n\\begin{align*}\n\\left(2-\\frac{\\pi}{2}\\right)+2\\int_1^{\\sqrt2}\\left(1-\\frac{x^2}{2}\\right)dx\n&=2-\\frac{\\pi}{2}+2\\left[(\\sqrt2-1)-\\frac{2\\sqrt2-1}{6}\\right]\\\\\n&=2-\\frac{\\pi}{2}+\\frac{4\\sqrt2-5}{3}\n=\\boldsymbol{\\frac{1+4\\sqrt2}{3}-\\frac{\\pi}{2}}.\n\\end{align*}\nここで $\\int_{-1}^1\\sqrt{1-x^2}\\,dx=\\frac{\\pi}{2}$（半円の面積）を用いた．"
+   }
+  ],
+  "idea": {
+   "tex": "放物線 $y=f(x)$ と円 $x^2+y^2=1$ が $x=p$ の点で共通の接線をもつことは，4次式 $g(x)=x^2+f(x)^2-1$ が $x=p$ を重解にもつことと同値．2点で接するなら $g(x)=a^2(x-p)^2(x-q)^2$ となり，係数比較から対称性 $b=0$ が強制される．通過領域は $s$ についての2次方程式が区間 $(0,1)$ に解をもつ条件として求める．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 記述\n(3) (1+4sqrt(2))/3-π/2"
+  },
+  "methods": [],
+  "tags": [
+   "接する条件",
+   "重解",
+   "係数比較",
+   "通過領域",
+   "面積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-228",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "角の条件が生む接円の半径",
+  "topic": "角の条件が生む接円の半径",
+  "statement": {
+   "tex": "座標平面上に2点 O$(0,0)$，A$(0,1)$ をとる．$x$ 軸上の2点 P$(p,0)$，Q$(q,0)$ が，次の条件 (i)，(ii) をともにみたすとする．\n\\begin{center}\n(i)\\ $0<p<1$ かつ $p<q$\\qquad (ii)\\ 線分 AP の中点を M とするとき，$\\angle\\mathrm{OAP}=\\angle\\mathrm{PMQ}$\n\\end{center}\nさらに，直線 MQ と $y$ 軸の交点を R とする．\n\\begin{enumerate}\n  \\item $q$ を $p$ で表せ．\n  \\item R の座標を $p$ で表せ．また，直線 AP は3点 O，M，R を通る円に点 M で接することを示せ．\n  \\item (2) の円の半径の最小値と，そのときの $p$ の値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $q=\\dfrac{p(3-p^2)}{2(1-p^2)}$　(2) $\\mathrm{R}\\left(0,\\ \\dfrac{3-p^2}{4}\\right)$，証明　(3) 最小値 $\\dfrac{3\\sqrt3}{16}$（$p=\\dfrac{1}{\\sqrt2}$）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $\\alpha=\\angle\\mathrm{OAP}$ とおくと $\\tan\\alpha=p$，$0<p<1$ より $0<\\alpha<\\frac{\\pi}{4}$．P は線分 OQ 上（O，Q と異なる），M は線分 PA の中点だから\n\\[\n\\angle\\mathrm{MPQ}=\\pi-\\angle\\mathrm{APO}=\\pi-\\left(\\frac{\\pi}{2}-\\alpha\\right)=\\frac{\\pi}{2}+\\alpha .\n\\]\n条件 (ii) のもとで $\\triangle\\mathrm{PMQ}$ の内角を考えると $\\angle\\mathrm{PQM}=\\pi-\\left(\\frac{\\pi}2+\\alpha\\right)-\\alpha=\\frac{\\pi}{2}-2\\alpha$．M$\\left(\\frac p2,\\frac12\\right)$ で $q>\\frac p2$ だから $\\tan\\angle\\mathrm{PQM}=\\dfrac{1/2}{q-p/2}$．一方\n\\[\n\\tan\\left(\\frac{\\pi}{2}-2\\alpha\\right)=\\frac{1}{\\tan2\\alpha}=\\frac{1-p^2}{2p}.\n\\]\nよって $q-\\dfrac p2=\\dfrac{p}{1-p^2}$，\n\\[\n\\boldsymbol{q=\\frac{p}{2}+\\frac{p}{1-p^2}=\\frac{p(3-p^2)}{2(1-p^2)}}.\n\\]\n逆にこの $q$ について $q-p=\\dfrac{p(1+p^2)}{2(1-p^2)}>0$ であり，$\\angle\\mathrm{PQM}=\\frac{\\pi}{2}-2\\alpha$ となるから $\\angle\\mathrm{PMQ}=\\pi-\\left(\\frac{\\pi}{2}+\\alpha\\right)-\\left(\\frac{\\pi}2-2\\alpha\\right)=\\alpha$ で，(i)，(ii) をみたす．\n\n(2) 直線 MQ の傾きは $-\\tan\\angle\\mathrm{PQM}=-\\dfrac{1-p^2}{2p}$ で，Q を通るから $y=-\\dfrac{1-p^2}{2p}(x-q)$．$x=0$ とおくと\n\\[\ny=\\frac{1-p^2}{2p}\\cdot\\frac{p(3-p^2)}{2(1-p^2)}=\\frac{3-p^2}{4}.\n\\]\nよって $\\boldsymbol{\\mathrm{R}\\left(0,\\ \\dfrac{3-p^2}{4}\\right)}$．$\\frac{3-p^2}{4}>0$ で M は $y$ 軸上にないから，O，M，R は同一直線上になく，3点を通る円がただ1つ存在する．その中心を $(h,k)$ とする．OR の垂直二等分線上にあるから $k=\\dfrac{3-p^2}{8}$．また O と M から等距離だから\n\\[\nh^2+k^2=\\left(h-\\frac p2\\right)^2+\\left(k-\\frac12\\right)^2\\iff ph=\\frac{p^2+1}{4}-k=\\frac{3p^2-1}{8},\\qquad h=\\frac{3p^2-1}{8p}.\n\\]\nすると\n\\[\n\\overrightarrow{\\mathrm{M}\\,(h,k)}=\\left(\\frac{3p^2-1}{8p}-\\frac p2,\\ \\frac{3-p^2}{8}-\\frac12\\right)=-\\frac{1+p^2}{8p}\\,(1,\\ p).\n\\]\n直線 AP の方向ベクトル $(p,-1)$ との内積は $-\\frac{1+p^2}{8p}(p-p)=0$．よって円の中心と M を結ぶ半径は直線 AP に垂直で，M は円上かつ直線 AP 上の点だから，直線 AP はこの円に M で接する．\\hfill$\\square$\n\n(3) (2) より半径を $\\rho$ とすると\n\\[\n\\rho^2=\\left(\\frac{1+p^2}{8p}\\right)^2(1+p^2)=\\frac{(1+p^2)^3}{64p^2}.\n\\]\n$w=p^2\\ (0<w<1)$ とおくと\n\\[\n(1+w)^3-\\frac{27}{4}w=w^3+3w^2-\\frac{15}{4}w+1=\\left(w-\\frac12\\right)^2(w+4)\\geqq0\n\\]\n（右辺を展開すると $w^3+3w^2-\\frac{15}4w+1$ に一致する）．よって $\\rho^2\\geqq\\dfrac{27}{4}\\cdot\\dfrac{1}{64}=\\dfrac{27}{256}$，等号は $w=\\frac12$，すなわち $p=\\frac1{\\sqrt2}$（$0<p<1$ をみたす）のとき．したがって半径の最小値は $\\boldsymbol{\\dfrac{3\\sqrt3}{16}}$，そのとき $\\boldsymbol{p=\\dfrac{1}{\\sqrt2}}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$\\angle\\mathrm{OAP}=\\alpha$ とおくと，$\\triangle\\mathrm{PMQ}$ の内角は $\\frac{\\pi}{2}+\\alpha,\\ \\alpha,\\ \\frac{\\pi}{2}-2\\alpha$ と決まり，直線 MQ の傾きが $\\tan2\\alpha$ で表せる．直線 MQ の $y$ 切片は $\\frac{3-p^2}{4}$ という簡単な形になり，3点 O，M，R を通る円の中心を求めると，中心と M を結ぶ向きが AP に垂直になる．半径の最小は3次式の因数分解 $(1+w)^3-\\frac{27}{4}w=(w-\\frac12)^2(w+4)$ で示す．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $q$：p(3-p^2)/(2(1-p^2))\n(2) 記述\n(3) 最小値：3sqrt(3)/16"
+  },
+  "methods": [],
+  "tags": [
+   "三角形の内角",
+   "tanの2倍角",
+   "円の方程式",
+   "接線",
+   "相加相乗"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-229",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 35,
+  "theme": "放物線に接し $x$ 軸上に中心をもつ円との共有点",
+  "topic": "放物線に接し $x$ 軸上に中心をもつ円との共有点",
+  "statement": {
+   "tex": "$f(x)=-\\dfrac{\\sqrt2}{4}x^2+4\\sqrt2$ とおく．$0<t<4$ をみたす実数 $t$ に対し，座標平面上の点 $(t,f(t))$ を通り，この点において放物線 $y=f(x)$ と共通の接線をもち，$x$ 軸上に中心をもつ円を $C_t$ とする．\n\\begin{enumerate}\n  \\item $C_t$ と放物線 $y=f(x)$ の共有点の $x$ 座標をすべて $t$ で表せ．\n  \\item $C_t$ と放物線 $y=f(x)$ の共有点の個数を，$t$ の値によって分類して答えよ．\n  \\item $2<t<2\\sqrt3$ のとき，$C_t$ と放物線 $y=f(x)$ の3個の共有点を頂点とする三角形の面積の最大値と，そのときの $t$ の値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $0<t\\leqq2\\sqrt3$ のとき $x=t,\\ -t\\pm\\sqrt{24-2t^2}$，$2\\sqrt3<t<4$ のとき $x=t$ のみ　(2) $0<t<2$ および $2<t<2\\sqrt3$ のとき3個，$t=2,\\ 2\\sqrt3$ のとき2個，$2\\sqrt3<t<4$ のとき1個　(3) 最大値 $\\dfrac{32\\sqrt6}{3}$（$t=\\dfrac{2\\sqrt{21}}{3}$）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) 円 $C_t$ の中心を $(c,0)$ とする．$C_t$ の点 $(t,f(t))$ における接線は半径の向き $(t-c,\\ f(t))$ に垂直で，放物線の接線の方向は $(1,f'(t))$．共通の接線をもつ条件は $(t-c)+f(t)f'(t)=0$．$f'(t)=-\\frac{\\sqrt2}{2}t$ より $f(t)f'(t)=-\\frac{\\sqrt2}{2}t\\cdot\\frac{\\sqrt2}{4}(16-t^2)=-4t+\\frac{t^3}4$，よって\n\\[\nc=\\frac{t^3}{4}-3t,\\qquad r^2=(t-c)^2+f(t)^2\\quad(r\\text{ は半径}).\n\\]\n共有点は，$(x-c)^2+f(x)^2-r^2=0$ をみたす実数 $x$ と1対1に対応する（$y=f(x)$ を代入）．$f(x)^2=\\frac18(16-x^2)^2=\\frac{x^4}{8}-4x^2+32$ と，$(x-c)^2-r^2=x^2-2cx-t^2+2tc-f(t)^2$ より\n\\[\n(x-c)^2+f(x)^2-r^2=\\frac{x^4}{8}-3x^2+\\left(6t-\\frac{t^3}{2}\\right)x+\\left(32-t^2+2tc-f(t)^2\\right).\n\\]\n定数項は $32-t^2+\\frac{t^4}{2}-6t^2-\\left(32-4t^2+\\frac{t^4}{8}\\right)=\\frac{3t^4}{8}-3t^2$．一方\n\\[\n\\frac18(x-t)^2(x^2+2tx+3t^2-24)=\\frac18\\left\\{x^4-24x^2+(48t-4t^3)x+3t^4-24t^2\\right\\}\n\\]\nで両者は一致する．よって共有点の $x$ 座標は $x=t$ と，$x^2+2tx+3t^2-24=0$ の実数解 $x=-t\\pm\\sqrt{24-2t^2}$（$24-2t^2\\geqq0$，すなわち $t\\leqq2\\sqrt3$ のとき）である．\n\n答：$\\boldsymbol{0<t\\leqq2\\sqrt3}$ のとき $\\boldsymbol{x=t,\\ -t+\\sqrt{24-2t^2},\\ -t-\\sqrt{24-2t^2}}$，$\\boldsymbol{2\\sqrt3<t<4}$ のとき $\\boldsymbol{x=t}$ のみ．\n\n(2) $\\delta=\\sqrt{24-2t^2}$ とおく．$0<t<2\\sqrt3$ では $\\delta>0$ で $-t+\\delta\\neq-t-\\delta$．$-t-\\delta<0<t$ なので $-t-\\delta\\neq t$．$-t+\\delta=t\\iff\\delta=2t\\iff24-2t^2=4t^2\\iff t=2$．$t=2\\sqrt3$ では $\\delta=0$ で2解は $-t$ に重なる（$\\neq t$）．以上より\n\\[\n\\boldsymbol{0<t<2,\\ 2<t<2\\sqrt3\\ \\text{で3個},\\quad t=2,\\ 2\\sqrt3\\ \\text{で2個},\\quad 2\\sqrt3<t<4\\ \\text{で1個}}.\n\\]\n\n(3) 放物線上の3点 $(x_i,f(x_i))\\ (i=1,2,3)$ を頂点とする三角形の面積は，$f(x_j)-f(x_1)=-\\frac{\\sqrt2}{4}(x_j-x_1)(x_j+x_1)$ を用いて\n\\[\n\\frac12\\left|(x_2-x_1)\\{f(x_3)-f(x_1)\\}-(x_3-x_1)\\{f(x_2)-f(x_1)\\}\\right|=\\frac{\\sqrt2}{8}\\left|(x_2-x_1)(x_3-x_1)(x_2-x_3)\\right|.\n\\]\n$x_1=t$，$x_{2},x_3=-t\\pm\\delta$ とすると $|x_2-x_3|=2\\delta$，$(x_2-t)(x_3-t)=(-2t+\\delta)(-2t-\\delta)=4t^2-\\delta^2=6(t^2-4)$．$2<t<2\\sqrt3$ で面積を $S$ とすると\n\\[\nS=\\frac{\\sqrt2}{8}\\cdot2\\delta\\cdot6(t^2-4)=\\frac{3\\sqrt2}{2}(t^2-4)\\sqrt{24-2t^2},\\qquad S^2=9(12-v)(v-4)^2\\quad(v=t^2,\\ 4<v<12).\n\\]\n$\\varphi(v)=(12-v)(v-4)^2$ とおくと $\\varphi'(v)=-(v-4)^2+2(12-v)(v-4)=(v-4)(28-3v)$ で，$4<v<12$ における増減から $\\varphi$ は $v=\\frac{28}{3}$ で最大値 $\\frac83\\cdot\\left(\\frac{16}{3}\\right)^2=\\frac{2048}{27}$ をとる．このとき $S^2=\\frac{2048}{3}$，$S=\\frac{32\\sqrt2}{\\sqrt3}$．\n\nよって最大値 $\\boldsymbol{\\dfrac{32\\sqrt6}{3}}$，そのとき $\\boldsymbol{t=\\sqrt{\\dfrac{28}{3}}=\\dfrac{2\\sqrt{21}}{3}}$（$2<\\frac{2\\sqrt{21}}3<2\\sqrt3$ をみたす）．"
+   }
+  ],
+  "idea": {
+   "tex": "中心 $(c,0)$ と接点を結ぶ向きが接線に垂直なので $c(t)=\\frac{t^3}{4}-3t$．円の方程式に $y=f(x)$ を代入した4次式は $(x-t)^2$ を因数にもち，残りの2次式 $x^2+2tx+3t^2-24$ が他の共有点を与える．放物線上の3点を頂点とする三角形の面積は $x$ 座標の差の積で表せる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 記述\n(3) 最大値：32sqrt(6)/3"
+  },
+  "methods": [],
+  "tags": [
+   "接する円",
+   "法線",
+   "4次式の因数分解",
+   "共有点の個数",
+   "三角形の面積",
+   "微分"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-230",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "$\\angle A=\\dfrac{\\pi}{3}$ の三角形の外心・垂心・内心",
+  "topic": "$\\angle A=\\dfrac{\\pi}{3}$ の三角形の外心・垂心・内心",
+  "statement": {
+   "tex": "$\\triangle$ABC は鋭角三角形で，$\\angle A=\\dfrac{\\pi}{3}$，外接円の半径は1であるとする．$\\triangle$ABC の外心を O，垂心を H，内心を I とする．\n\\begin{enumerate}\n  \\item 5点 B，C，O，H，I は同一円周上にあることを示し，その円の半径を求めよ．\n  \\item OI$=$IH であることを示せ．\n  \\item 3点 O，H，I が三角形の3頂点となるとき，$\\triangle$OHI の面積 $S$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 半径 $1$（証明）　(2) 証明　(3) $0<S<\\dfrac{2-\\sqrt3}{4}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "O を原点とし，外接円を単位円とする．$\\angle$BOC$=2\\angle$A$=\\dfrac{2\\pi}3$ なので，B$\\left(-\\dfrac{\\sqrt3}2,-\\dfrac12\\right)$，C$\\left(\\dfrac{\\sqrt3}2,-\\dfrac12\\right)$，A$(\\cos\\varphi,\\sin\\varphi)$ とおける．$\\angle$A$=\\frac\\pi3$ より A は弦 BC に関して O と同じ側（$y>-\\frac12$ の側）の弧上にある．\n$\\overrightarrow{\\mathrm{BC}}=(\\sqrt3,0)$ を用いると，$\\angle$B が鋭角 $\\iff\\overrightarrow{\\mathrm{BA}}\\cdot\\overrightarrow{\\mathrm{BC}}=\\sqrt3\\left(\\cos\\varphi+\\frac{\\sqrt3}2\\right)>0$，$\\angle$C が鋭角 $\\iff\\overrightarrow{\\mathrm{CA}}\\cdot\\overrightarrow{\\mathrm{CB}}=-\\sqrt3\\left(\\cos\\varphi-\\frac{\\sqrt3}2\\right)>0$．よって $-\\frac{\\sqrt3}2<\\cos\\varphi<\\frac{\\sqrt3}2$ で，$\\sin\\varphi>-\\frac12$ と合わせて $\\dfrac\\pi6<\\varphi<\\dfrac56\\pi$ としてよい．\n\n(1) M$(0,-1)$ とおく．MB$=$MC$=\\sqrt{\\frac34+\\frac14}=1$，MO$=1$．\n\nH：$\\vec h=\\vec a+\\vec b+\\vec c$ とすると $(\\vec h-\\vec a)\\cdot(\\vec c-\\vec b)=|\\vec c|^2-|\\vec b|^2=0$，同様に $(\\vec h-\\vec b)\\cdot(\\vec a-\\vec c)=0$ なので，これが垂心で H$(\\cos\\varphi,\\sin\\varphi-1)$．$|\\overrightarrow{\\mathrm{MH}}|=|(\\cos\\varphi,\\sin\\varphi)|=1$．\n\nI：M は弧 BC（A を含まない方）の中点なので $\\angle$BAM$=\\angle$MAC，すなわち I は線分 AM 上にある．また\n$\\angle$MBI$=\\angle$MBC$+\\angle$CBI$=\\angle$MAC$+\\dfrac B2=\\dfrac A2+\\dfrac B2$（$\\angle$MBC と $\\angle$MAC は弧 MC の円周角），\n$\\angle$MIB$=\\angle$IAB$+\\angle$IBA$=\\dfrac A2+\\dfrac B2$（$\\triangle$ABI の I における外角）．よって $\\triangle$MBI は二等辺で MI$=$MB$=1$．\n\n以上より B，C，O，H，I はすべて M を中心とする半径 $\\boldsymbol{1}$ の円 $\\Gamma$ 上にある．\n\n(2) M から見た各点の向きを調べる．$\\overrightarrow{\\mathrm{MO}}=(\\cos\\frac\\pi2,\\sin\\frac\\pi2)$，$\\overrightarrow{\\mathrm{MH}}=(\\cos\\varphi,\\sin\\varphi)$．\n$\\overrightarrow{\\mathrm{MA}}=(\\cos\\varphi,1+\\sin\\varphi)$ で，$\\psi=\\dfrac\\varphi2+\\dfrac\\pi4$ とおくと $\\cos\\varphi=\\sin\\left(\\varphi+\\frac\\pi2\\right)=2\\sin\\psi\\cos\\psi$，$1+\\sin\\varphi=1-\\cos\\left(\\varphi+\\frac\\pi2\\right)=2\\sin^2\\psi$ だから\n\\[\\overrightarrow{\\mathrm{MA}}=2\\sin\\psi\\,(\\cos\\psi,\\sin\\psi),\\qquad \\sin\\psi>0\\ \\left(\\tfrac\\pi3<\\psi<\\tfrac{2\\pi}3\\right).\\]\nI は線分 MA 上で MI$=1$ なので $\\overrightarrow{\\mathrm{MI}}=(\\cos\\psi,\\sin\\psi)$．$\\psi=\\dfrac12\\left(\\varphi+\\dfrac\\pi2\\right)$ は O，H の向きの角 $\\frac\\pi2,\\varphi$ のちょうど中間である．\n$\\delta=\\dfrac{\\pi/2-\\varphi}{2}$ とおくと $\\dfrac\\pi2-\\psi=\\delta$，$\\psi-\\varphi=\\delta$．M を中心とする半径1の円周上の2点で向きの角が $\\alpha,\\beta$ のものの距離は $2\\left|\\sin\\dfrac{\\alpha-\\beta}2\\right|$ なので，\nOI$=2\\left|\\sin\\frac{\\delta}{2}\\right|=$IH．\\hfill$\\square$\n\n(3) $\\delta=\\dfrac{\\pi/2-\\varphi}{2}$ の範囲は $-\\dfrac\\pi6<\\delta<\\dfrac\\pi6$．O，I，H は $\\Gamma$ 上で向きの角 $\\psi+\\delta,\\ \\psi,\\ \\psi-\\delta$ の点で，三角形をなす $\\iff\\delta\\neq0$．$d=|\\delta|\\in\\left(0,\\frac\\pi6\\right)$ とおく．\nO と H を結ぶ弦は向き $\\psi$ に垂直で，M からの距離は $\\cos d$，長さは $2\\sin d$．I は向き $\\psi$ の方向に M から距離1の点なので，I から弦 OH までの距離は $1-\\cos d$．よって\n\\[S=\\frac12\\cdot2\\sin d\\cdot(1-\\cos d)=\\sin d\\,(1-\\cos d).\\]\n$0<d<\\frac\\pi6$ で $\\sin d$，$1-\\cos d$ はともに正で増加するので $S$ は $d$ の連続な増加関数で，$d\\to+0$ で $0$，$d\\to\\frac\\pi6$ で $\\frac12\\left(1-\\frac{\\sqrt3}2\\right)=\\frac{2-\\sqrt3}4$ に近づく．各 $d$ は $\\varphi=\\frac\\pi2\\pm2d\\in\\left(\\frac\\pi6,\\frac56\\pi\\right)$ で実現されるので\n\\[\\boldsymbol{0<S<\\frac{2-\\sqrt3}{4}}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "$\\angle A=\\frac\\pi3$ のとき $\\angle BOC=\\angle BHC=\\angle BIC=\\frac{2\\pi}3$ で，5点 B，C，O，H，I は弧 BC の中点 M を中心とする円周上にある．外接円を単位円とし，M から見た O，H，I の方向角を調べると，I の方向角は O と H の方向角のちょうど中間になる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 半径：1\n(2) 証明\n(3) 0<S<(2-sqrt(3))/4"
+  },
+  "methods": [],
+  "tags": [
+   "外心",
+   "垂心",
+   "内心",
+   "同一円周上",
+   "座標設定"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-231",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "正多角形の45°と，遠い点が見込む角",
+  "topic": "正多角形の45°と，遠い点が見込む角",
+  "statement": {
+   "tex": "次の命題 (p)，(q) のそれぞれについて，正しいかどうか答えよ．正しければ証明し，正しくなければ反例を挙げよ．\n\\begin{enumerate}\n  \\item[(p)] 正 $n$ 角形の頂点から3点を選んで，内角の1つが $45^\\circ$ である直角三角形でない三角形を作ることができるならば，$n$ は8の倍数である．\n  \\item[(q)] 平面上に $\\triangle$ABC と $\\triangle$ABD があり，C，D は直線 AB に関して同じ側にあって，$\\angle$CAB と $\\angle$CBA はともに鋭角であるとする．このとき，AC$<$AD かつ BC$<$BD ならば $\\angle$ACB$>\\angle$ADB である．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(p) 正しくない（反例：$n=12$，内角 $45^\\circ,60^\\circ,75^\\circ$）　(q) 正しい（証明）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{(p) 正しくない．} 正12角形の頂点を順に P$_0,\\dots,$P$_{11}$ とし，$\\triangle$P$_0$P$_3$P$_7$ を考える．外接円上で弧 P$_0$P$_3$，P$_3$P$_7$，P$_7$P$_0$（他の頂点を含まない方）の中心角は $90^\\circ,120^\\circ,150^\\circ$ なので，円周角の定理より内角は $\\angle$P$_7=45^\\circ$，$\\angle$P$_0=60^\\circ$，$\\angle$P$_3=75^\\circ$．$45^\\circ$ を含み直角三角形でないが，12は8の倍数でない．\n\n\\textbf{(q) 正しい．} $\\triangle$ABC の外接円を $\\Gamma$（半径 $R$）とし，弦 AB と，$\\Gamma$ の C を含む弧 AB で囲まれた閉じた部分を $K$ とする．円周角の定理とその逆により，直線 AB に関して C と同じ側の点 X について\n\\[\\angle\\mathrm{AXB}\\geqq\\angle\\mathrm{ACB}\\iff X\\in K.\\]\nよって次を示せばよい：\\textbf{$K$ の点 X は AX$\\leqq$AC または BX$\\leqq$BC をみたす}．（これが言えれば，AD$>$AC かつ BD$>$BC の D は $K$ に属さず $\\angle$ADB$<\\angle$ACB．）\n\n$K$ は，$\\triangle$ABC（周を含む），弦 AC と弧 AC（B を含まない方）で囲まれた部分 $K_1$，弦 CB と弧 CB（A を含まない方）で囲まれた部分 $K_2$ の和である．\n\n\\textit{$K_1$ の点．} 弧 AC 上の点 P について，半直線 BP は $\\angle$ABC の内部（周を含む）にあるので $\\angle$ABP$\\leqq\\angle$ABC$<90^\\circ$．正弦定理より AP$=2R\\sin\\angle$ABP$\\leqq2R\\sin\\angle$ABC$=$AC．$K_1$ は円板と半平面の共通部分で凸．X$\\in K_1$，X$\\neq$A のとき，X が線分 AC 上なら AX$\\leqq$AC．そうでなければ半直線 AX は線分 AC とは A でしか交わらないので，$K_1$ から弧 AC 上の点 P で出ていき，AX$\\leqq$AP$\\leqq$AC．\n\n\\textit{$K_2$ の点．} $\\angle$BAC$<90^\\circ$ を用いて同様に BX$\\leqq$BC．\n\n\\textit{$\\triangle$ABC の点．} X$\\neq$C が三角形内（周を含む）にあり，AX$>$AC かつ BX$>$BC と仮定する．直線 CX と辺 AB の交点を Y とすると X は線分 CY 上にある．A を中心とする半径 $\\max(\\mathrm{AC},\\mathrm{AY})$ の円板は凸で C，Y を含むので AX$\\leqq\\max(\\mathrm{AC},\\mathrm{AY})$，AX$>$AC より AY$\\geqq$AX$>$AC．同様に BY$>$BC．すると AB$=$AY$+$YB$>$AC$+$BC となり三角不等式に反する．\n\n以上で示された．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "正 $n$ 角形の頂点で作る三角形の内角は $\\dfrac{k\\pi}{n}$（$k$ は自然数で3つの和が $n$）．(q) は $\\angle$ACB の円周角の領域（弦 AB と弧で囲まれた部分）が，「A からの距離が AC 以下」の部分と「B からの距離が BC 以下」の部分で覆われることを，$\\angle$A，$\\angle$B が鋭角であることと三角不等式から示す．"
+  },
+  "methods": [],
+  "tags": [
+   "命題の真偽",
+   "反例",
+   "円周角",
+   "三角不等式"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-232",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "動く線分を見込む角の最大値",
+  "topic": "動く線分を見込む角の最大値",
+  "statement": {
+   "tex": "$t$ を正の実数とし，座標平面上に2点 A$(0,t)$，B$(0,t+1)$ をとる．正の実数 $x$ に対して点 P$(x,x)$ をとる．\n\\begin{enumerate}\n  \\item $x$ が正の実数全体を動くとき，$\\angle$APB の最大値 $\\theta(t)$ が存在することを示せ．また，$\\theta(t)\\geqq\\dfrac{\\pi}{2}$ となる $t$ の範囲を求めよ．\n  \\item $t$ が正の実数全体を動くとき，$\\theta(t)$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明，$0<t\\leqq\\dfrac{\\sqrt2-1}{2}$　(2) $0<\\theta(t)<\\dfrac{3}{4}\\pi$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $\\overrightarrow{\\mathrm{PA}}=(-x,t-x)$，$\\overrightarrow{\\mathrm{PB}}=(-x,t+1-x)$．$\\theta=\\angle$APB とおく（$x>0$ より P は直線 AB 上になく $0<\\theta<\\pi$）．\n\\[|\\overrightarrow{\\mathrm{PA}}||\\overrightarrow{\\mathrm{PB}}|\\sin\\theta=|(-x)(t+1-x)-(t-x)(-x)|=x,\\]\n\\[|\\overrightarrow{\\mathrm{PA}}||\\overrightarrow{\\mathrm{PB}}|\\cos\\theta=x^2+(t-x)(t+1-x)=2x^2-(2t+1)x+t(t+1).\\]\nよって $\\dfrac{\\cos\\theta}{\\sin\\theta}=F(x)=2x+\\dfrac{t(t+1)}x-(2t+1)$．\n$0<\\alpha<\\beta<\\pi$ のとき $\\dfrac{\\cos\\alpha}{\\sin\\alpha}-\\dfrac{\\cos\\beta}{\\sin\\beta}=\\dfrac{\\sin(\\beta-\\alpha)}{\\sin\\alpha\\sin\\beta}>0$ なので，$\\theta\\mapsto\\frac{\\cos\\theta}{\\sin\\theta}$ は $(0,\\pi)$ で減少し，$\\theta$ 最大 $\\iff F(x)$ 最小．相加相乗平均より\n\\[F(x)\\geqq2\\sqrt{2t(t+1)}-(2t+1)=k(t),\\]\n等号は $x=\\sqrt{\\frac{t(t+1)}2}$ で成立．よって最大値 $\\theta(t)$ は存在し，$\\dfrac{\\cos\\theta(t)}{\\sin\\theta(t)}=k(t)$．\n$\\theta(t)\\geqq\\frac\\pi2\\iff k(t)\\leqq0\\iff8t(t+1)\\leqq(2t+1)^2$（両辺正）$\\iff4t^2+4t-1\\leqq0$．$t>0$ より $\\boldsymbol{0<t\\leqq\\dfrac{\\sqrt2-1}{2}}$．\n\n(2) $0<t_1<t_2$ のとき，$g(t)=\\sqrt{2t(t+1)}$ について $g(t_2)-g(t_1)=\\dfrac{2(t_2-t_1)(t_1+t_2+1)}{g(t_2)+g(t_1)}$．$t(t+1)<\\left(t+\\frac12\\right)^2$ より $g(t)<\\sqrt2\\left(t+\\frac12\\right)$ なので $g(t_1)+g(t_2)<\\sqrt2(t_1+t_2+1)$．よって\n\\[k(t_2)-k(t_1)=2(t_2-t_1)\\left\\{\\frac{2(t_1+t_2+1)}{g(t_1)+g(t_2)}-1\\right\\}>2(t_2-t_1)(\\sqrt2-1)>0\\]\nで $k$ は増加．また $k$ は連続で，$t\\to+0$ で $k\\to-1$，$k(t)>2\\sqrt2t-2t-1\\to\\infty$（$t\\to\\infty$）．中間値の定理より $k(t)$ の値域は $(-1,\\infty)$．$\\frac{\\cos\\theta}{\\sin\\theta}$ は $(0,\\pi)$ で減少し，$\\theta=\\frac34\\pi$ で $-1$ なので，$\\frac{\\cos\\theta}{\\sin\\theta}>-1\\iff0<\\theta<\\frac34\\pi$．よって $\\boldsymbol{0<\\theta(t)<\\dfrac34\\pi}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$\\overrightarrow{\\mathrm{PA}}$，$\\overrightarrow{\\mathrm{PB}}$ の内積と成分の「たすきがけ」から $\\dfrac{\\cos\\angle\\mathrm{APB}}{\\sin\\angle\\mathrm{APB}}$ が $x$ の簡単な式になる．$\\dfrac{\\cos\\theta}{\\sin\\theta}$ は $(0,\\pi)$ で減少なので，最大角は相加相乗平均で決まる．その値の $t$ についての単調性と極限を調べる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 0<θt<(3/4)π"
+  },
+  "methods": [],
+  "tags": [
+   "見込む角",
+   "内積",
+   "相加相乗平均",
+   "単調性"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-233",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 5,
+  "minutes": 35,
+  "theme": "3つの外心がつくる三角形が元の三角形と相似になる点",
+  "topic": "3つの外心がつくる三角形が元の三角形と相似になる点",
+  "statement": {
+   "tex": "鋭角三角形 ABC の内部（辺や頂点は含まない）に点 P をとり，$\\triangle$PBC，$\\triangle$PCA，$\\triangle$PAB の外心をそれぞれ A$'$，B$'$，C$'$ とする．\n\\begin{enumerate}\n  \\item A$'$，B$'$，C$'$ は三角形の3頂点となり，直線 B$'$C$'$ は直線 PA に垂直であることを示せ．\n  \\item $\\triangle$A$'$B$'$C$'$ と $\\triangle$ABC が，A$'$，B$'$，C$'$ がそれぞれ A，B，C に対応して相似となるための必要十分条件は，P が $\\triangle$ABC の垂心であることを示せ．\n  \\item P が $\\triangle$ABC の垂心であるとき，$\\triangle$A$'$B$'$C$'$ と $\\triangle$ABC は合同であることを示せ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) 証明　(3) 証明"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "PA，PB，PC の垂直二等分線を $\\ell_A,\\ell_B,\\ell_C$ とする．A$'$ は P，B，C から等距離なので A$'\\in\\ell_B\\cap\\ell_C$．同様に B$'\\in\\ell_C\\cap\\ell_A$，C$'\\in\\ell_A\\cap\\ell_B$．\n\n(1) P は三角形の内部にあるので，どの2つの直線 PA，PB，PC も一致せず，$\\ell_A,\\ell_B,\\ell_C$ はどの2本も平行でない．3本が1点で交わるとすると，その点は P，A，B，C から等距離で，A，B，C，P が同一円周上にあることになるが，三角形の内部は外接円の内部に含まれるので矛盾．よって A$'=\\ell_B\\cap\\ell_C$，B$'=\\ell_C\\cap\\ell_A$，C$'=\\ell_A\\cap\\ell_B$ は三角形の3頂点で，直線 B$'$C$'=\\ell_A\\perp$PA．\\hfill$\\square$\n\n(2) \\textbf{補題1．} 直線 A$'$B$'=\\ell_C\\perp$PC，A$'$C$'=\\ell_B\\perp$PB なので，$\\angle$B$'$A$'$C$'$ は $\\angle$BPC または $\\pi-\\angle$BPC（2直線のなす角は，それぞれに垂直な2直線のなす角に等しい）．同様に $\\angle$C$'$B$'$A$'$ は $\\angle$CPA または $\\pi-\\angle$CPA．\n\n\\textbf{補題2．} P が内部にあれば $\\angle$BPC$>\\angle$A．直線 BP と辺 CA の交点を Q とすると，$\\angle$BPC$=\\angle$PQC$+\\angle$PCQ$>\\angle$PQC$=\\angle$QAB$+\\angle$ABQ$>\\angle$A．\n\n\\textbf{補題3．} 垂心 H は鋭角三角形の内部にあり，$\\angle$BHC$=\\pi-\\angle$A．B，C から対辺への垂線の足を E，F とすると，四角形 AFHE は $\\angle$E$=\\angle$F$=\\frac\\pi2$ なので $\\angle$FHE$=\\pi-\\angle$A，$\\angle$BHC は $\\angle$FHE の対頂角．同様に $\\angle$CHA$=\\pi-\\angle$B．\n\n\\textit{必要性．} 相似なら $\\angle$B$'$A$'$C$'=\\angle$A．補題2より $\\angle$BPC$\\neq\\angle$A なので，補題1より $\\angle$BPC$=\\pi-\\angle$A．同様に $\\angle$CPA$=\\pi-\\angle$B．\n直線 BC に関して A と同じ側で $\\angle$BXC$=\\pi-\\angle$A となる点 X の全体は，B，C を通るある円 $\\Gamma_a$ の弧であり，直線 CA に関して B と同じ側で $\\angle$CXA$=\\pi-\\angle$B となる点の全体は C，A を通る円 $\\Gamma_b$ の弧である．P も H（補題3）もこの両方に属する．$\\Gamma_a=\\Gamma_b$ なら A$\\in\\Gamma_a$ で，A は BC に関して A の側にあるから $\\angle$A$=\\pi-\\angle$A，$\\angle$A$=\\frac\\pi2$ となり鋭角三角形に反する．異なる2円の共有点は高々2個で，そのうち1つは C．P$\\neq$C，H$\\neq$C より P$=$H．\n\n\\textit{十分性と (3)．} P$=$H とし，外心 O を始点とする位置ベクトルを $\\vec a,\\vec b,\\vec c$（$|\\vec a|=|\\vec b|=|\\vec c|=R$）とすると，$\\vec h=\\vec a+\\vec b+\\vec c$ は垂心である（$(\\vec h-\\vec a)\\cdot(\\vec b-\\vec c)=|\\vec b|^2-|\\vec c|^2=0$ など）．点 $\\vec b+\\vec c$ は\n\\[|\\vec b+\\vec c-\\vec b|=R,\\quad|\\vec b+\\vec c-\\vec c|=R,\\quad|\\vec b+\\vec c-\\vec h|=|\\vec a|=R\\]\nをみたすので，H，B，C（同一直線上にない）から等距離な唯一の点，すなわち A$'=\\vec b+\\vec c$．同様に B$'=\\vec c+\\vec a$，C$'=\\vec a+\\vec b$．$\\vec g=\\frac12(\\vec a+\\vec b+\\vec c)$ とおくと A$'=2\\vec g-\\vec a$ などで，$\\triangle$A$'$B$'$C$'$ は $\\triangle$ABC を点 $\\vec g$ に関して点対称移動したもの．よって A$\\to$A$'$，B$\\to$B$'$，C$\\to$C$'$ の対応で合同，特に相似である．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "A$'$ と B$'$ はともに P と C から等距離なので，直線 A$'$B$'$ は PC の垂直二等分線．よって $\\triangle$A$'$B$'$C$'$ の角は $\\angle$BPC などかその補角．内部の点では $\\angle$BPC$>\\angle$A なので，相似の条件は $\\angle$BPC$=\\pi-\\angle$A などとなり，これをみたす内部の点は垂心だけ．垂心のときは外心を原点として A$'=\\vec b+\\vec c$ などと書ける．"
+  },
+  "methods": [],
+  "tags": [
+   "外心",
+   "垂直二等分線",
+   "垂心",
+   "円周角",
+   "ベクトル"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-234",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "角の二等分の条件と外接円の中心の軌跡",
+  "topic": "角の二等分の条件と外接円の中心の軌跡",
+  "statement": {
+   "tex": "AB$=$AC$=1$，$\\angle$BAC$=\\theta$（$0<\\theta<\\pi$）の二等辺三角形 ABC がある．辺 AB 上に A，B と異なる点 M をとり，辺 AB を B の側に延長した半直線上（B を除く）に点 N を $\\angle$BCM$=\\angle$BCN となるようにとる．\n\\begin{enumerate}\n  \\item このような点 N はただ1つ存在し，AM$\\cdot$AN$=1$ であることを示せ．\n  \\item $\\triangle$CMN の外接円は直線 AC に点 C で接することを示せ．\n  \\item M が辺 AB 上（A，B を除く）を動くとき，$\\triangle$CMN の外接円の中心の軌跡を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) 証明　(3) C を通り AC に垂直な直線を $\\ell$，B を通り AB に垂直な直線と $\\ell$ の交点を T とするとき，$\\ell$ 上の T から C と反対側にのびる半直線（T を除く）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) \\textit{存在．} AM$=m$（$0<m<1$）とし，半直線 AB 上に AN$_0=\\frac1m>1$ となる点 N$_0$ をとる（B の先にある）．AM:AC$=m:1=$AC:AN$_0$，$\\angle$A 共通より $\\triangle$AMC$\\sim\\triangle$ACN$_0$ で，$\\angle$ACM$=\\angle$AN$_0$C．$\\triangle$BCN$_0$ の B における外角より $\\angle$ABC$=\\angle$BCN$_0+\\angle$BN$_0$C だから\n\\[\\angle\\mathrm{BCN_0}=\\angle\\mathrm{ABC}-\\angle\\mathrm{AN_0C}=\\angle\\mathrm{ACB}-\\angle\\mathrm{ACM}=\\angle\\mathrm{BCM}\\]\n（M は辺 AB 上なので $\\angle$ACB$=\\angle$ACM$+\\angle$MCB）．\n\\textit{一意性．} 半直線上で B に近い順に N$_1$，N$_2$ をとると，半直線 CN$_1$ は $\\angle$BCN$_2$ の内部にあるので $\\angle$BCN$_1<\\angle$BCN$_2$．よって $\\angle$BCN は N が B から遠ざかると増加し，条件をみたす N はただ1つで N$=$N$_0$，AM$\\cdot$AN$=1$．\\hfill$\\square$\n\n(2) $\\triangle$CMN の外接円を $\\Gamma$ とする．直線 AC が $\\Gamma$ と C 以外の点 C$'$ でも交わると仮定する．A は直線 MN 上で線分 MN の外側にある（M，N はともに A から見て同じ向き）ので，方べきの定理より AM$\\cdot$AN$=$AC$\\cdot$AC$'$ で，C，C$'$ は A に関して同じ側にある．AM$\\cdot$AN$=1=$AC$^2$ より AC$'=$AC，よって C$'=$C となり矛盾．したがって直線 AC と $\\Gamma$ の共有点は C のみで，AC は $\\Gamma$ に C で接する．\\hfill$\\square$\n\n(3) A を原点，B$(1,0)$，C$(\\cos\\theta,\\sin\\theta)$，M$(m,0)$，N$\\left(\\frac1m,0\\right)$ とする．中心 Q は MN の垂直二等分線 $x=X$，$X=\\dfrac12\\left(m+\\dfrac1m\\right)$ 上にあり，(2) より半径 QC は AC に垂直なので Q は C を通り AC に垂直な直線 $\\ell:x\\cos\\theta+y\\sin\\theta=1$ 上にある．$\\sin\\theta\\neq0$ より $\\ell$ は $y$ 軸に平行でなく，Q$=\\left(X,\\dfrac{1-X\\cos\\theta}{\\sin\\theta}\\right)$．\n$m+\\frac1m$ は $0<m<1$ で連続かつ減少し，$m\\to+0$ で $\\infty$，$m\\to1$ で $2$ に近づくので，$X$ は $(1,\\infty)$ のすべての値をちょうど1回ずつとる．よって軌跡は $\\ell$ の $x>1$ の部分．$\\ell$ と直線 $x=1$（B を通り AB に垂直）の交点を T とすると，$\\ell$ 上で $x$ 座標は単調で，C の $x$ 座標は $\\cos\\theta<1$．\n答えは \\textbf{$\\ell$ 上の，T から見て C と反対側にのびる半直線（T を除く）}．"
+   }
+  ],
+  "idea": {
+   "tex": "$\\mathrm{AM}\\cdot\\mathrm{AN}=\\mathrm{AC}^2$ なら $\\triangle$AMC$\\sim\\triangle$ACN で $\\angle$ACM$=\\angle$ANC，外角の関係から $\\angle$BCM$=\\angle$BCN．方べきの定理の逆向きの議論で，$\\triangle$CMN の外接円は AC に C で接する．中心は C における AC の垂線上にあり，MN の垂直二等分線との交点として動く．"
+  },
+  "methods": [],
+  "tags": [
+   "相似",
+   "方べきの定理",
+   "接線",
+   "軌跡"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-235",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "積が一定の延長と原点からの距離",
+  "topic": "積が一定の延長と原点からの距離",
+  "statement": {
+   "tex": "座標平面上の単位円 $C:x^2+y^2=1$ 上に点 P をとり，定点 A$(-2,0)$ から P へ線分を引く．$k$ を正の定数とし，線分 AP の P の側の延長上に点 Q を AP$\\cdot$PQ$=k$ となるようにとる．$s=\\mathrm{AP}$，$t=\\mathrm{OQ}$（O は原点）とおく．\n\\begin{enumerate}\n  \\item $t^2$ を $s$ と $k$ で表せ．\n  \\item P が $C$ 上を動くとき，Q がつねに1つの円周上にあるような $k$ の値を求め，そのときの Q の軌跡を求めよ．\n  \\item $k=1$ のとき，$t$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $t^2=4+(k-3)\\left(1+\\dfrac{k}{s^2}\\right)$　(2) $k=3$，軌跡は円 $x^2+y^2=4$ の $x\\geqq1$ の部分　(3) $0\\leqq t\\leqq\\dfrac43$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) P$(\\cos\\varphi,\\sin\\varphi)$，$\\vec v=\\overrightarrow{\\mathrm{AP}}$ とすると $s^2=|\\vec v|^2=5+4\\cos\\varphi$．AQ$=s+\\frac ks$ より $\\overrightarrow{\\mathrm{OQ}}=\\vec A+\\left(1+\\frac k{s^2}\\right)\\vec v$（$\\vec A=(-2,0)$）．\n$\\vec A\\cdot\\vec v=-2\\cos\\varphi-4=-\\frac{s^2+3}2$ なので\n\\[t^2=4-\\left(1+\\tfrac k{s^2}\\right)(s^2+3)+\\left(1+\\tfrac k{s^2}\\right)^2s^2=4+\\left(1+\\tfrac k{s^2}\\right)(s^2+k-s^2-3)=\\boldsymbol{4+(k-3)\\left(1+\\frac k{s^2}\\right)}.\\]\n\n(2) $u=s^2$ は $[1,9]$ のすべての値をとる．Q の $x$ 座標は，$\\cos\\varphi+2=\\frac{u+3}4$ より $X=-2+\\dfrac{(u+k)(u+3)}{4u}$．\n\\textit{必要性．} すべての Q が中心 $(\\alpha,\\beta)$ の円周上にあるとする．$\\varphi$ を $-\\varphi$ にかえると Q は $x$ 軸に関して対称な点にうつるので，すべての Q は中心 $(\\alpha,-\\beta)$ の同じ半径の円周上にもある．Q は無数にある（$X$ は $u$ の値によって無数の値をとる）ので，$\\beta\\neq0$ なら2円の共有点が無数となり矛盾．$\\beta=0$ で，$|\\mathrm{Q}-(\\alpha,0)|^2=t^2-2\\alpha X+\\alpha^2$ が一定：\n\\[4+(k-3)\\left(1+\\tfrac ku\\right)+4\\alpha-\\tfrac\\alpha2\\left(u+k+3+\\tfrac{3k}u\\right)+\\alpha^2\\]\nが $u\\in[1,9]$ で一定．$u$ 倍すると $u$ の2次以下の多項式が無数の $u$ で一定値の $u$ 倍に等しいので，係数比較により $u^2$ の係数 $-\\frac\\alpha2=0$，定数項 $(k-3)k-\\frac{3k\\alpha}2=(k-3)k=0$．$k>0$ より $\\boldsymbol{k=3}$．\n\\textit{十分性と軌跡．} $k=3$ のとき $t=2$．$c=\\cos\\varphi$ として $X=\\dfrac{4c^2+8c+6}{4c+5}$，$X-1=\\dfrac{(2c+1)^2}{4c+5}\\geqq0$，$X$ は $c=-1,1$ で2，$c=-\\frac12$ で1．$X$ は $c$ の連続関数なので中間値の定理より $[-\\frac12,1)$ の $c$ で $[1,2)$ のすべての値をとり，そのとき $\\sin\\varphi$ の符号はどちらも選べる．よって軌跡は円 $\\boldsymbol{x^2+y^2=4}$ \\textbf{の $\\boldsymbol{x\\geqq1}$ の部分}．\n\n(3) $k=1$ のとき $t^2=2-\\frac2{s^2}$，$s\\in[1,3]$ で増加なので $t^2\\in\\left[0,\\frac{16}9\\right]$，$\\boldsymbol{0\\leqq t\\leqq\\dfrac43}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$\\overrightarrow{\\mathrm{AQ}}=\\left(1+\\frac{k}{s^2}\\right)\\overrightarrow{\\mathrm{AP}}$ と $\\vec{\\mathrm{A}}\\cdot\\overrightarrow{\\mathrm{AP}}=-\\frac{s^2+3}2$ から $t^2$ は $s^2$ の分数式．$k=3$（A の方べき）のときだけ $t$ が一定．円になるかどうかは，$x$ 軸に関する対称性で中心を $x$ 軸上に限り，$s^2$ の恒等式として係数比較する．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 記述\n(3) 0<=t<=4/3"
+  },
+  "methods": [],
+  "tags": [
+   "軌跡",
+   "内積",
+   "方べきの定理",
+   "恒等式"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-236",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 5,
+  "minutes": 35,
+  "theme": "底が動く対数方程式のグラフの通過領域",
+  "topic": "底が動く対数方程式のグラフの通過領域",
+  "statement": {
+   "tex": "$t$ を $t>0$，$t\\neq1$ を満たす定数とする．$xy$ 平面上において\n\\[\n\\log_t(y-t)=2\\log_t(x-t)\n\\]\nで表される図形を $l_t$ とする．$t$ が $t>0$，$t\\neq1$ の範囲を動くとき，$l_t$ が通過する領域を求め，図示せよ（図示は境界と除外部分を言葉で明示すればよい）．"
+  },
+  "answer": {
+   "tex": "$0<x\\leqq\\frac12$ のとき $x^2<y<x$，$\\frac12<x<1$ のとき $x-\\frac14\\leqq y<x$，$x\\geqq1$ のとき $x-\\frac14\\leqq y<x^2$ の部分から，点 $\\left(\\frac32,\\frac54\\right)$ と曲線 $y=x^2-2x+2$（$x\\geqq2$）を除いた部分"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "底の条件 $t>0,\\ t\\neq1$ のもとで，真数条件は $y>t,\\ x>t$．対数関数は1対1なので，方程式は $y-t=(x-t)^2$ と同値であり，$x>t$ ならこの右辺は正なので $y>t$ は自動的にみたされる．よって\n\\[\nl_t:\\ y=(x-t)^2+t\\quad(x>t).\n\\]\n点 $(x,y)$ が通過領域に属する $\\iff$ $t$ の2次方程式\n\\[\nt^2-(2x-1)t+x^2-y=0\\quad\\cdots(*)\n\\]\nが $0<t<x$，$t\\neq1$ をみたす解をもつ．$x\\leqq0$ ならそのような $t$ はないので $x>0$ とする．\n\n\\textbf{$t\\neq1$ を無視した条件．}$(*)$ が実数解をもつ $\\iff$ $(2x-1)^2-4(x^2-y)=4y-4x+1\\geqq0\\iff y\\geqq x-\\frac14$．このとき $s=\\sqrt{y-x+\\frac14}\\ (\\geqq0)$ とおくと解は $t_\\pm=x-\\frac12\\pm s$．\n\\begin{itemize}\n  \\item $t_+<x\\iff s<\\frac12\\iff y<x$．$t_+>0\\iff s>\\frac12-x$．\n  \\item $t_-\\leqq x-\\frac12<x$ は常に成り立つ．$t_->0\\iff s<x-\\frac12$．\n\\end{itemize}\n(i) $0<x\\leqq\\frac12$ のとき：$t_->0$ は $s<x-\\frac12\\leqq0$ となり不可能．$t_+$ が適するのは $y<x$ かつ $s>\\frac12-x\\ (\\geqq0)$，後者は $y-x+\\frac14>\\left(\\frac12-x\\right)^2$，すなわち $y>x^2$．$x^2\\geqq x-\\frac14$ なので，条件は $x^2<y<x$．\n\n(ii) $x>\\frac12$ のとき：$s\\geqq0>\\frac12-x$ なので $t_+>0$ は常に成り立ち，$t_+$ が適する $\\iff x-\\frac14\\leqq y<x$．$t_-$ が適する $\\iff y-x+\\frac14<\\left(x-\\frac12\\right)^2\\iff y<x^2$（かつ $y\\geqq x-\\frac14$）．よって条件は $x-\\frac14\\leqq y<\\max(x,x^2)$，すなわち\n$\\frac12<x<1$ では $x-\\frac14\\leqq y<x$，$x\\geqq1$ では $x-\\frac14\\leqq y<x^2$．\n\n\\textbf{$t\\neq1$ による除外．}上の点のうち，$(0,x)$ 内の解が $t=1$ だけであるものが除かれる．$t=1$ が $(*)$ の $0<t<x$ をみたす解となるのは $y=(x-1)^2+1$，$x>1$ の点で，解と係数の関係より他方の解は $t'=(2x-1)-1=2x-2$．この点が領域に残る $\\iff$ $0<t'<x$ かつ $t'\\neq1$ $\\iff 1<x<2$ かつ $x\\neq\\frac32$．\nよって除かれるのは，点 $\\left(\\frac32,\\frac54\\right)$（$t'=1$ の重解）と曲線 $y=x^2-2x+2$ の $x\\geqq2$ の部分である．\n\n\\textbf{答．}求める領域は\n\\[\n\\boldsymbol{\\begin{cases}0<x\\leqq\\frac12:& x^2<y<x\\\\[2pt] \\frac12<x<1:& x-\\frac14\\leqq y<x\\\\[2pt] x\\geqq1:& x-\\frac14\\leqq y<x^2\\end{cases}}\n\\]\nの部分から，\\textbf{点 $\\left(\\frac32,\\frac54\\right)$ と曲線 $y=x^2-2x+2\\ (x\\geqq2)$ を除いたもの}．\n\n図示：放物線 $y=x^2$ と直線 $y=x$ で挟まれた部分（$0<x<1$）と，直線 $y=x-\\frac14$（$y=x^2$ に点 $\\left(\\frac12,\\frac14\\right)$ で接する）と放物線 $y=x^2$ で挟まれた部分（$x>\\frac12$）の和集合．境界は，直線 $y=x-\\frac14$ の $x>\\frac12$ の部分のみ含み（ただし点 $\\left(\\frac32,\\frac54\\right)$ は除く），$y=x^2$，$y=x$ の境界と点 $\\left(\\frac12,\\frac14\\right)$，原点は含まない．さらに内部を通る放物線 $y=x^2-2x+2$（直線 $y=x-\\frac14$ に点 $\\left(\\frac32,\\frac54\\right)$ で接する）の $x\\geqq2$ の部分が抜けている．"
+   }
+  ],
+  "idea": {
+   "tex": "対数の真数条件と底の条件をそのまま残して $y=(x-t)^2+t$（$x>t$）に直し，「$t$ の2次方程式が $0<t<x$，$t\\neq1$ に解をもつ」条件を解の公式で直接調べる．$t=1$ でしか実現しない点（放物線 $t=1$ のうち他の解が範囲外になる部分と，接点）が抜ける．"
+  },
+  "methods": [],
+  "tags": [
+   "通過領域",
+   "解の配置",
+   "対数の底",
+   "除外点"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-237",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 5,
+  "minutes": 40,
+  "theme": "放物線上の共円4点と直交する対角線",
+  "topic": "放物線上の共円4点と直交する対角線",
+  "statement": {
+   "tex": "放物線 $y=x^2$ と円 $K$ が異なる4点で交わっている．この4点を $K$ 上で順に A，B，C，D とすると，対角線 AC と BD が直交しているとする．\n\\begin{enumerate}\n  \\item 直線 AC，BD の傾きを求めよ．\n  \\item 対角線 AC，BD の交点 P の存在範囲を求めよ．\n  \\item 円 $K$ の中心の存在範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 一方が $1$，他方が $-1$　(2) $y>x^2$ をみたす点全体　(3) $y>x^2+1$ をみたす点全体"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{準備．}放物線上の4点の $x$ 座標を $x_1<x_2<x_3<x_4$ とする．\n\\begin{itemize}\n  \\item[(a)] 円 $x^2+y^2+lx+my+n=0$ と $y=x^2$ の交点の $x$ 座標は $x^4+(1+m)x^2+lx+n=0$ の解．4次方程式の実数解は高々4個なので，4点が円上にあれば $x_1,\\dots,x_4$ がちょうどその4解で，$x^3$ の係数が0だから $x_1+x_2+x_3+x_4=0$．\n  \\item[(b)] 逆に相異なる実数 $x_1,\\dots,x_4$ の和が0なら，$(x-x_1)\\cdots(x-x_4)=x^4+e_2x^2-e_3x+e_4$ と書けるので $m=e_2-1,\\ l=-e_3,\\ n=e_4$ とおくと，方程式 $x^2+y^2+lx+my+n=0$ は4点 $(x_i,x_i^2)$ を通る．これは $\\left(x+\\frac l2\\right)^2+\\left(y+\\frac m2\\right)^2=\\frac{l^2+m^2}4-n$ で，相異なる4点を含むから右辺は正であり，円を表す．\n  \\item[(c)] 2点 $(p,p^2),(q,q^2)$ を結ぶ直線の傾きは $p+q$．\n  \\item[(d)] 円上の4点 A，B，C，D（円周上の順）がつくる四角形は円に内接する凸四角形で，対角線 AC，BD は交わる．一方，放物線上の4点では，$x_1x_2$ と $x_3x_4$ を結ぶ線分は直線 $x=\\frac{x_2+x_3}2$ の両側にあって交わらず，$x_2,x_3$ に対応する2点は $x_1,x_4$ に対応する2点を結ぶ弦の下側（$y=x^2$ は下に凸）にあるので，この2つの線分も交わらない．よって対角線は「$x_1$ と $x_3$」「$x_2$ と $x_4$」を結ぶものである．\n\\end{itemize}\n\n(1) 対角線の両端の $x$ 座標の和を $\\sigma_1=x_1+x_3$，$\\sigma_2=x_2+x_4$ とすると，(a) より $\\sigma_1+\\sigma_2=0$，(c) と直交条件より $\\sigma_1\\sigma_2=-1$．よって $\\sigma_1^2=1$ で，対角線の傾きは\\textbf{一方が $\\boldsymbol1$，他方が $\\boldsymbol{-1}$}．\n\n(2) 傾き $1$ の対角線の両端の $x$ 座標を $\\frac{1-u}2<\\frac{1+u}2$（$u>0$），傾き $-1$ の対角線の両端を $\\frac{-1-v}2<\\frac{-1+v}2$（$v>0$）と書ける．(d) より両者の $x$ 座標は交互に並ぶ．\n\\begin{itemize}\n  \\item $\\frac{1-u}2<\\frac{-1-v}2$ で始まる場合，$\\frac{1-u}2<\\frac{-1-v}2\\iff u-v>2$，次に $\\frac{1+u}2<\\frac{-1+v}2\\iff v-u>2$ が必要で矛盾．\n  \\item $\\frac{-1-v}2<\\frac{1-u}2<\\frac{-1+v}2<\\frac{1+u}2\\iff u-v<2,\\ u+v>2,\\ v-u<2$．\n\\end{itemize}\nよって条件は $u+v>2$ かつ $|u-v|<2$ であり，逆にこのとき4数は相異なり和は0なので (b) より円 $K$ が存在し，対角線は直交する．\n$\\pi_1=\\frac{1-u^2}4$，$\\pi_2=\\frac{1-v^2}4$（各対角線の両端の $x$ 座標の積）とすると，対角線は $y=x-\\pi_1$，$y=-x-\\pi_2$ で，交点 P$(X,Y)$ は\n\\[\nX=\\frac{\\pi_1-\\pi_2}2=\\frac{v^2-u^2}8,\\qquad Y=-\\frac{\\pi_1+\\pi_2}2=\\frac{u^2+v^2-2}8.\n\\]\n$\\sigma=u+v,\\ \\delta=v-u$ とおくと，条件は $\\sigma>2,\\ |\\delta|<2$（このとき $u=\\frac{\\sigma-\\delta}2>0,\\ v=\\frac{\\sigma+\\delta}2>0$），また $X=\\frac{\\sigma\\delta}8$，$Y=\\frac{\\sigma^2+\\delta^2}{16}-\\frac14$．\n\n\\textbf{必要性．}$Y-X^2=\\dfrac{4\\sigma^2+4\\delta^2-16-\\sigma^2\\delta^2}{64}=\\dfrac{(\\sigma^2-4)(4-\\delta^2)}{64}>0$．\n\n\\textbf{十分性．}$Y>X^2$ をみたす $(X,Y)$ を任意にとる．$z$ の2次式 $h(z)=z^2-(16Y+4)z+64X^2$ は $h(4)=64(X^2-Y)<0$ なので，$4$ をはさむ2つの実数解 $z_1<4<z_2$ をもち，$z_1z_2=64X^2\\geqq0$，$z_1+z_2=16Y+4>0$ より $0\\leqq z_1$．$\\sigma=\\sqrt{z_2}\\,(>2)$，$\\delta=\\frac{8X}{\\sigma}$ とおくと $\\delta^2=\\frac{64X^2}{z_2}=z_1<4$，$\\sigma\\delta=8X$，$\\sigma^2+\\delta^2=16Y+4$ となり，この $\\sigma,\\delta$ から作った4点で P$=(X,Y)$ が実現する．\n\nよって P の存在範囲は $\\boldsymbol{y>x^2}$ \\textbf{をみたす点全体}（放物線の内側，境界を含まない）．\n\n(3) 4点の $x$ 座標を解とする多項式は\n\\[\n(x^2-x+\\pi_1)(x^2+x+\\pi_2)=x^4+(\\pi_1+\\pi_2-1)x^2+(\\pi_1-\\pi_2)x+\\pi_1\\pi_2\n\\]\nなので (b) の記号で $m=\\pi_1+\\pi_2-2$，$l=\\pi_1-\\pi_2$，中心は $\\left(-\\frac l2,-\\frac m2\\right)=\\left(\\frac{\\pi_2-\\pi_1}2,\\ 1-\\frac{\\pi_1+\\pi_2}2\\right)=(-X,\\ Y+1)$．\n$(X,Y)$ が $Y>X^2$ 全体を動くとき，$(-X,Y+1)$ は $y-1>x^2$ 全体を動く．よって中心の存在範囲は $\\boldsymbol{y>x^2+1}$ \\textbf{をみたす点全体}．"
+   }
+  ],
+  "idea": {
+   "tex": "放物線 $y=x^2$ 上の4点が同一円周上 $\\iff$ $x$ 座標の和が0．弦の傾きは両端の $x$ 座標の和なので，対角線の直交は $(a+c)(b+d)=-1$，すなわち傾き $\\pm1$．交点を2つの積 $p,q$ で表し，対角線になる（$x$ 座標が交互に並ぶ）条件を $\\sigma>2,\\ |\\delta|<2$ と表すと，$Y-X^2=\\frac{(\\sigma^2-4)(4-\\delta^2)}{64}$ が現れる．"
+  },
+  "methods": [],
+  "tags": [
+   "共円条件",
+   "解と係数",
+   "存在範囲",
+   "交点の軌跡"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-238",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "双曲線と放物線の3交点がつくる三角形の形",
+  "topic": "双曲線と放物線の3交点がつくる三角形の形",
+  "statement": {
+   "tex": "$xy$ 平面上で $y=x^2+a$ と $y=\\dfrac1x$ が異なる3つの交点をもつとき，3交点を $x$ 座標の小さい方から順に A，B，C とする．\n\\begin{enumerate}\n  \\item 異なる3交点をもつような $a$ の範囲を求めよ．\n  \\item $\\triangle\\mathrm{ABC}$ が鋭角三角形，直角三角形，鈍角三角形となる $a$ の範囲をそれぞれ求め，直角・鈍角となる角がどれかも答えよ．\n  \\item $\\triangle\\mathrm{ABC}$ が直角三角形のとき，その面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $a<-\\dfrac{3}{\\sqrt[3]4}$　(2) 鋭角：$a<-2$，直角：$a=-2$（$\\angle\\mathrm A=90^\\circ$），鈍角：$-2<a<-\\dfrac3{\\sqrt[3]4}$（$\\angle\\mathrm A$ が鈍角）　(3) $\\dfrac{\\sqrt5}{2}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "交点の $x$ 座標は $x^2+a=\\frac1x$，すなわち $f(x)=x^3+ax-1=0$ の実数解（$x=0$ は解でない）．\n\n(1) $a\\geqq0$ なら $f'(x)=3x^2+a\\geqq0$ で $f$ は単調増加，実数解は1個．$a<0$ のとき $m=\\sqrt{-a/3}$ とおくと $f$ は $x=-m$ で極大，$x=m$ で極小をとり，$a=-3m^2$ より\n\\[\nf(-m)=-m^3+3m^3-1=2m^3-1,\\qquad f(m)=m^3-3m^3-1=-2m^3-1<0.\n\\]\n3次関数が異なる3実数解をもつのは極大値が正かつ極小値が負のときで，$f(m)<0$ は常に成り立つから，異なる3実数解をもつ $\\iff f(-m)>0\\iff m^3>\\frac12\\iff -\\frac a3>2^{-\\frac23}\\iff \\boldsymbol{a<-\\dfrac{3}{\\sqrt[3]4}}$．\n\n(2) 3解を $x_1<x_2<x_3$ とすると，解と係数の関係より $x_1+x_2+x_3=0$，$x_1x_2x_3=1$．積が正で和が0なので，負の解がちょうど2個：$x_1<x_2<0<x_3$．\nさらに $x_2>-1$：もし $x_2\\leqq-1$ なら $x_1<-1$ で $x_1x_2>1$，$x_3=\\frac1{x_1x_2}<1$ だが $x_3=-(x_1+x_2)>2$ となり矛盾．\n\n$y=\\frac1x$ 上の2点 $X_i=(x_i,\\frac1{x_i})$，$X_j$ について\n\\[\n\\overrightarrow{X_iX_j}=\\left(x_j-x_i,\\ \\frac{x_i-x_j}{x_ix_j}\\right)=(x_j-x_i)\\left(1,\\ -\\frac1{x_ix_j}\\right).\n\\]\nよって頂点 $X_i$ での内積は，$\\{i,j,k\\}=\\{1,2,3\\}$ として $x_ix_jx_k=1$ より\n\\[\n\\overrightarrow{X_iX_j}\\cdot\\overrightarrow{X_iX_k}=(x_j-x_i)(x_k-x_i)\\left(1+\\frac{1}{x_i^2x_jx_k}\\right)=(x_j-x_i)(x_k-x_i)\\left(1+\\frac1{x_i}\\right).\n\\]\n\\begin{itemize}\n  \\item 頂点 C：$(x_1-x_3)(x_2-x_3)>0$，$1+\\frac1{x_3}>0$ で内積 $>0$，$\\angle\\mathrm C$ は鋭角．\n  \\item 頂点 B：$(x_1-x_2)(x_3-x_2)<0$，$-1<x_2<0$ より $1+\\frac1{x_2}<0$ で内積 $>0$，$\\angle\\mathrm B$ は鋭角．\n  \\item 頂点 A：$(x_2-x_1)(x_3-x_1)>0$ なので，$\\angle\\mathrm A$ は $x_1<-1$ で鋭角，$x_1=-1$ で直角，$-1<x_1<0$ で鈍角．\n\\end{itemize}\n$x_1$ と $-1$ の大小を $a$ で表す．$f(-1)=-a-2$．\n\\begin{itemize}\n  \\item $a<-2$：$f(-1)>0$，$\\lim_{x\\to-\\infty}f(x)=-\\infty$ より $(-\\infty,-1)$ に解があり，$x_1<-1$．\n  \\item $a=-2$：$f(x)=(x+1)(x^2-x-1)$，解は $-1,\\frac{1\\pm\\sqrt5}2$ で最小は $-1$，$x_1=-1$．\n  \\item $-2<a<-\\frac3{\\sqrt[3]4}$：$m^2=-\\frac a3<\\frac23<1$ より $-1<-m$，$f$ は $x\\leqq-m$ で増加するので $x\\leqq-1$ で $f(x)\\leqq f(-1)<0$，よって $x_1>-1$．\n\\end{itemize}\n以上より\n\\begin{itemize}\n  \\item \\textbf{鋭角三角形}：$\\boldsymbol{a<-2}$\n  \\item \\textbf{直角三角形}：$\\boldsymbol{a=-2}$（$\\angle\\mathrm A=90^\\circ$）\n  \\item \\textbf{鈍角三角形}：$\\boldsymbol{-2<a<-\\frac3{\\sqrt[3]4}}$（$\\angle\\mathrm A$ が鈍角）\n\\end{itemize}\n\n(3) $a=-2$ のとき A$(-1,-1)$，$x_2=\\frac{1-\\sqrt5}2$，$x_3=\\frac{1+\\sqrt5}2$ で，$x_2x_3=-1$，$x_1x_2=-x_2$，$x_1x_3=-x_3$．\n$x_2^2=x_2+1$ より $(x_2+1)^2=x_2^4$ なので\n\\[\n\\mathrm{AB}^2=(x_2+1)^2\\left(1+\\frac1{x_2^2}\\right)=\\frac{x_2^4(x_2^2+1)}{x_2^2}=x_2^2(x_2^2+1)=(x_2+1)(x_2^2+1).\n\\]\n$x_2+1=x_2^2=\\frac{3-\\sqrt5}2$ を代入して $\\mathrm{AB}^2=\\frac{3-\\sqrt5}2\\cdot\\frac{5-\\sqrt5}2=\\frac{20-8\\sqrt5}{4}=5-2\\sqrt5$．同様に $x_3+1=x_3^2=\\frac{3+\\sqrt5}2$ より $\\mathrm{AC}^2=(x_3+1)(x_3^2+1)=\\frac{3+\\sqrt5}2\\cdot\\frac{5+\\sqrt5}2=5+2\\sqrt5$．\n$\\angle\\mathrm A=90^\\circ$ なので面積は\n\\[\n\\frac12\\mathrm{AB}\\cdot\\mathrm{AC}=\\frac12\\sqrt{(5-2\\sqrt5)(5+2\\sqrt5)}=\\frac12\\sqrt{5}=\\boldsymbol{\\frac{\\sqrt5}2}.\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "交点の $x$ 座標は $x^3+ax-1=0$ の3解で，和0・積1．$y=\\frac1x$ 上の2点を結ぶベクトルは $(x_j-x_i)\\bigl(1,-\\frac1{x_ix_j}\\bigr)$ と因数分解でき，頂点での内積の符号は $1+\\frac1{x_i}$ だけで決まる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) a<-3/4^(1/3)\n(2) 記述\n(3) sqrt(5)/2"
+  },
+  "methods": [],
+  "tags": [
+   "3次方程式",
+   "解と係数",
+   "内積",
+   "鈍角判定"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-239",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "3次関数のグラフの弧を含む最小の円",
+  "topic": "3次関数のグラフの弧を含む最小の円",
+  "statement": {
+   "tex": "$f(x)=x^3-x$ とし，$0<r\\leqq1$ に対して，曲線 $y=f(x)$ の $1-r\\leqq x\\leqq1+r$ の部分を $C_r$ とする．また $p=1-r$，$q=1+r$ とし，$C_r$ の両端を $\\mathrm P(p,f(p))$，$\\mathrm Q(q,f(q))$ とする．\n\\begin{enumerate}\n  \\item すべての実数 $x$ に対して，次の等式が成り立つことを示せ．\n  \\begin{align*}\n  &(x-p)(x-q)+\\{f(x)-f(p)\\}\\{f(x)-f(q)\\}\\\\\n  &\\qquad=(x-p)(x-q)\\left\\{1+(x^2+px+p^2-1)(x^2+qx+q^2-1)\\right\\}\n  \\end{align*}\n  \\item $0<r\\leqq\\dfrac25$ のとき，$C_r$ を内部または周上に含む円の半径の最小値 $R(r)$ を $r$ で表せ．\n  \\item $r=1$ のとき，線分 PQ を直径とする円の内部および周上に $C_1$ は含まれないことを示せ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) $R(r)=r\\sqrt{r^4+4r^2+5}$　(3) 証明"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $f(x)-f(p)=(x^3-p^3)-(x-p)=(x-p)(x^2+px+p^2-1)$，同様に $f(x)-f(q)=(x-q)(x^2+qx+q^2-1)$．これを左辺に代入して $(x-p)(x-q)$ でくくれば右辺になる．\\hfill$\\square$\n\n(2) \\textbf{直径の円．}線分 PQ の中点を $\\mathrm M\\left(\\dfrac{p+q}2,\\dfrac{f(p)+f(q)}2\\right)$ とすると，任意の点 $(X,Y)$ について\n\\[\n(X-p)(X-q)+\\{Y-f(p)\\}\\{Y-f(q)\\}=\\left(X-\\frac{p+q}2\\right)^2+\\left(Y-\\frac{f(p)+f(q)}2\\right)^2-\\left(\\frac{\\mathrm{PQ}}2\\right)^2\n\\]\n（$(X-p)(X-q)=\\left(X-\\frac{p+q}2\\right)^2-\\left(\\frac{q-p}2\\right)^2$，$Y$ についても同様）．右辺の初めの2項の和は点 $(X,Y)$ と M の距離の2乗である．よって PQ を直径とする円の内部または周上 $\\iff$ 左辺 $\\leqq0$．\n\n\\textbf{$C_r$ はこの円に含まれる．}$x=p,q$ では左辺は0．$p<x<q$ のとき $(x-p)(x-q)<0$．また $p=1-r\\geqq\\dfrac35$ で $x>p>0$ だから\n\\[\nx^2+px+p^2-1>3p^2-1\\geqq\\frac{27}{25}-1>0,\\qquad x^2+qx+q^2-1>3p^2-1>0\n\\]\n（$q>p$ を用いた）．よって (1) の右辺の $\\{\\ \\}$ 内は正で，左辺 $<0$．ゆえに $C_r$ は PQ を直径とする円の内部または周上にある．\n\n\\textbf{最小性．}中心 O$'$，半径 $\\rho$ の円が P，Q を内部または周上に含めば，$\\mathrm{PQ}\\leqq\\mathrm{PO'}+\\mathrm{O'Q}\\leqq2\\rho$．よって $C_r$ を含む円の半径は $\\dfrac{\\mathrm{PQ}}2$ 以上で，PQ を直径とする円で等号が成り立つ．$R(r)=\\dfrac{\\mathrm{PQ}}2$．\n\n\\textbf{計算．}$q-p=2r$，$f(q)-f(p)=(q-p)(q^2+pq+p^2-1)$ で\n\\[\nq^2+pq+p^2-1=(1+r)^2+(1-r^2)+(1-r)^2-1=r^2+2\n\\]\nより $\\mathrm{PQ}^2=4r^2+4r^2(r^2+2)^2=4r^2(r^4+4r^2+5)$．したがって\n\\[\n\\boldsymbol{R(r)=r\\sqrt{r^4+4r^2+5}}\\qquad\\left(0<r\\leqq\\frac25\\right).\n\\]\n\n(3) $r=1$ のとき $p=0$，$q=2$．$x=\\dfrac9{10}$ とすると $(x-p)(x-q)=\\dfrac9{10}\\cdot\\left(-\\dfrac{11}{10}\\right)<0$ であり，\n\\[\nx^2+px+p^2-1=\\frac{81}{100}-1=-\\frac{19}{100},\\qquad x^2+qx+q^2-1=\\frac{81}{100}+\\frac{180}{100}+3=\\frac{561}{100},\n\\]\n\\[\n1+\\left(-\\frac{19}{100}\\right)\\cdot\\frac{561}{100}=1-\\frac{10659}{10000}=-\\frac{659}{10000}<0 .\n\\]\nよって (1) の左辺は正となり，点 $\\left(\\dfrac9{10},f\\!\\left(\\dfrac9{10}\\right)\\right)\\in C_1$ は PQ を直径とする円の外部にある．\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "線分 PQ を直径とする円の内部・周上は $(X-p)(X-q)+(Y-y_P)(Y-y_Q)\\leqq0$．曲線上の点 $(x,f(x))$ を代入すると，$f(x)-f(p)=(x-p)\\times(\\text{弦の傾き})$ により $(x-p)(x-q)\\{1+(\\text{XP の傾き})(\\text{XQ の傾き})\\}$ と因数分解でき，2つの傾きが同符号なら弧は円に含まれる．P，Q を含む円の直径は PQ 以上なので，これが最小の円になる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 証明\n(2) $R(r)$：r sqrt(r^4+4r^2+5)\n(3) 証明"
+  },
+  "methods": [],
+  "tags": [
+   "直径の円の内部",
+   "因数分解",
+   "弦の傾き",
+   "最小の円"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-240",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 4,
+  "minutes": 30,
+  "theme": "放物線族で測る分数式と $u+\\frac1u$ の最大・最小",
+  "topic": "放物線族で測る分数式と $u+\\frac1u$ の最大・最小",
+  "statement": {
+   "tex": "実数 $x$，$y$ が3つの不等式\n\\[\n(x-4)^2+y^2\\leqq5,\\qquad y\\geqq0,\\qquad x\\leqq5\n\\]\nをみたしながら動くとする．\n\\begin{enumerate}\n  \\item $k=\\dfrac{y+1}{x^2}$ の最大値と最小値，およびそれらを与える点 $(x,y)$ を求めよ．\n  \\item $F=\\dfrac{4(y+1)}{x^2}+\\dfrac{x^2}{4(y+1)}$ の最大値と最小値を求めよ．また，最大値を与える点 $(x,y)$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 最大値 $\\dfrac12$（$(x,y)=(2,1)$），最小値 $\\dfrac1{25}$（$(x,y)=(5,0)$）　(2) 最大値 $\\dfrac{641}{100}$（$(x,y)=(5,0)$），最小値 $2$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{領域の確認．}領域を $D$ とする．$D$ の点は $(x-4)^2\\leqq5$ をみたすから $x\\geqq4-\\sqrt5>0$ であり，$k$，$F$ の分母は正（$y+1\\geqq1$）である．\n\n(1) \\textbf{最大値．}まず $4-\\sqrt5>\\sqrt2$ を示す：$4>\\sqrt5+\\sqrt2\\iff16>7+2\\sqrt{10}\\iff9>2\\sqrt{10}\\iff81>40$ で正しい．したがって $D$ の点では $x>\\sqrt2$，つまり $\\dfrac{x^2}2-1>0$．\n\n$D$ の点 $(x,y)$ では $y\\geqq0$，$y^2\\leqq5-(x-4)^2$ だから $0\\leqq y\\leqq\\sqrt{5-(x-4)^2}$（このとき $5-(x-4)^2\\geqq0$）．一方\n\\[\n\\left(\\frac{x^2}2-1\\right)^2-\\bigl\\{5-(x-4)^2\\bigr\\}=\\frac{x^4}4-8x+12=\\frac14(x-2)^2(x^2+4x+12)\\geqq0\n\\]\n（$x^2+4x+12=(x+2)^2+8>0$）．両辺とも0以上なので $\\sqrt{5-(x-4)^2}\\leqq\\dfrac{x^2}2-1$，よって\n\\[\ny\\leqq\\frac{x^2}2-1,\\qquad\\text{すなわち}\\qquad k=\\frac{y+1}{x^2}\\leqq\\frac12 .\n\\]\n等号は $x=2$ かつ $y=\\sqrt{5-4}=1$ のときに限る．点 $(2,1)$ は $(2-4)^2+1^2=5$，$y\\geqq0$，$x\\leqq5$ をみたし $D$ に属する．よって最大値は $\\boldsymbol{\\dfrac12}$（$\\boldsymbol{(x,y)=(2,1)}$）．\n\n（図形的には，放物線 $y=\\dfrac12x^2-1$ が円 $(x-4)^2+y^2=5$ に点 $(2,1)$ で接し，$D$ がこの放物線の下側にあることを示したことになる．）\n\n\\textbf{最小値．}$D$ では $y+1\\geqq1$，$0<x\\leqq5$ より $x^2\\leqq25$．よって $k\\geqq\\dfrac1{25}$ で，等号は $y=0$，$x=5$ のとき．点 $(5,0)$ は $(5-4)^2+0=1\\leqq5$ をみたし $D$ に属する．最小値は $\\boldsymbol{\\dfrac1{25}}$（$\\boldsymbol{(x,y)=(5,0)}$）．\n\n(2) $u=4k=\\dfrac{4(y+1)}{x^2}$ とおくと $F=u+\\dfrac1u$，(1) より $\\dfrac4{25}\\leqq u\\leqq2$．\n\n\\textbf{最小値．}$u>0$ より $F=u+\\dfrac1u\\geqq2\\sqrt{u\\cdot\\dfrac1u}=2$，等号は $u=1$．$u=1$ となる $D$ の点として $(2,0)$ がある（$(2-4)^2=4\\leqq5$，$k=\\dfrac14$）．よって最小値は $\\boldsymbol{2}$．\n\n\\textbf{最大値．}$\\dfrac4{25}\\leqq u\\leqq2<\\dfrac{25}4$ であるから $(u-\\tfrac4{25})(u-\\tfrac{25}4)\\leqq0$，すなわち $u^2-\\dfrac{641}{100}u+1\\leqq0$．$u>0$ で割って\n\\[\nF=u+\\frac1u\\leqq\\frac{641}{100},\n\\]\n等号は $u=\\dfrac4{25}$，すなわち $k=\\dfrac1{25}$ のときで，(1) よりそれは $(x,y)=(5,0)$．よって最大値は $\\boldsymbol{\\dfrac{641}{100}}$（$\\boldsymbol{(x,y)=(5,0)}$）．"
+   }
+  ],
+  "idea": {
+   "tex": "$\\dfrac{y+1}{x^2}=k$ は頂点 $(0,-1)$ の放物線 $y=kx^2-1$ の族．$k$ の最大は放物線が円弧に接するときで，接することは「円の上半分 $y=\\sqrt{5-(x-4)^2}$ と放物線の差」を2乗して得る4次式が $(x-2)^2$ を因数にもつことで確かめる．最小は $y\\geqq0$，$x\\leqq5$ から端点で決まる．続いて $u=4k$ の範囲が1をまたぐので，$u+\\dfrac1u$ の最小は相加相乗平均（$u=1$ となる点の存在を確認），最大は区間の端の比較．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 最大値：1/2 ; 最小値：1/25\n(2) 最大値：641/100 ; 最小値：2"
+  },
+  "methods": [],
+  "tags": [
+   "領域と最大最小",
+   "放物線の族",
+   "円と放物線の接触",
+   "4次式の因数分解",
+   "相加相乗平均"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-241",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 5,
+  "minutes": 35,
+  "theme": "放物線に内接し円に外接する三角形が閉じる条件",
+  "topic": "放物線に内接し円に外接する三角形が閉じる条件",
+  "statement": {
+   "tex": "$r>0$，$k$ を実数の定数とし，円 $C:x^2+y^2=r^2$ と放物線 $D:y=x^2-k$ を考える．\n\\begin{enumerate}\n  \\item $b\\neq c$ のとき，$D$ 上の2点 $(b,b^2-k)$，$(c,c^2-k)$ を通る直線が $C$ に接するための必要十分条件は $(bc+k)^2=r^2\\{(b+c)^2+1\\}$ であることを示せ．\n  \\item $D$ 上の点 $\\mathrm P(a,a^2-k)$ が $C$ の外部にあり，$a^2\\neq r^2$ であるとき，P を「よい点」とよぶ．よい点 P から $C$ に引いた2本の接線は，それぞれ $D$ と P 以外の点でただ1回交わるか，P で $D$ に接する．前者の場合はその交点を，後者の場合は P 自身を考え，2本の接線について得られる $D$ 上の点を Q，R とする．このとき Q $\\neq$ R であることを示せ．さらに，すべてのよい点 P について直線 QR が $C$ に接するような $k$ を，$r$ を用いてすべて求めよ．\n  \\item $r=1$，$k=2$，$\\mathrm P(2,2)$ のとき，直線 QR の方程式を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) $\\mathrm Q\\neq\\mathrm R$ は証明，$k=r^2+r$ または $k=r^2-r$　(3) $4x+3y+5=0$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{(1)} 2点を通る直線の傾きは $\\dfrac{(b^2-k)-(c^2-k)}{b-c}=b+c$ で，方程式は $y=(b+c)x-bc-k$（$x=b$ で $b^2-k$ となる）．$C$ に接する $\\iff$ 原点との距離が $r$ $\\iff\\dfrac{|bc+k|}{\\sqrt{(b+c)^2+1}}=r\\iff(bc+k)^2=r^2\\{(b+c)^2+1\\}$．\\hfill$\\square$\n\n\\textbf{(2)} P をよい点とする．P を通る鉛直線 $x=a$ は $|a|\\neq r$ より $C$ に接しないので，接線は傾き $\\mu$ をもち $y=\\mu(x-a)+a^2-k$．$D$ との交点は $x^2-k=\\mu(x-a)+a^2-k\\iff(x-a)(x+a-\\mu)=0$ より $x=a$，$\\mu-a$．$b=\\mu-a$ とおくと，$b\\neq a$ なら P 以外のただ1つの交点，$b=a$ なら P で接する場合で，いずれも問題の点の $x$ 座標は $b$，接線は $y=(a+b)x-ab-k$ と書ける．(1) と同様に，これが $C$ に接する条件は\n\\[\n(ab+k)^2=r^2\\{(a+b)^2+1\\}\\iff(a^2-r^2)b^2+2a(k-r^2)b+k^2-r^2a^2-r^2=0.\\tag{$*$}\n\\]\n逆に $(*)$ の実数解 $b$ ごとに，傾き $a+b$ の P を通る $C$ の接線が1本定まり，異なる $b$ は異なる接線を与える．P は $C$ の外部にあるので接線はちょうど2本で傾きが異なる．$a^2\\neq r^2$ より $(*)$ は2次方程式で，その2解 $b\\neq c$ が Q，R の $x$ 座標である．よって Q $\\neq$ R．\n\n$s=b+c=-\\dfrac{2a(k-r^2)}{a^2-r^2}$，$t=bc=\\dfrac{k^2-r^2a^2-r^2}{a^2-r^2}$ で，(1) より QR が $C$ に接する $\\iff(t+k)^2=r^2(s^2+1)$．\n\\[\nt+k=\\frac{(k-r^2)a^2+k^2-kr^2-r^2}{a^2-r^2},\\qquad s^2+1=\\frac{4a^2(k-r^2)^2+(a^2-r^2)^2}{(a^2-r^2)^2}\n\\]\nを代入して分母を払うと，条件は $E(a)=0$，\n\\[\nE(a)=\\{(k-r^2)a^2+k^2-kr^2-r^2\\}^2-r^2\\{4a^2(k-r^2)^2+(a^2-r^2)^2\\}.\n\\]\n展開して整理すると\n\\[\nE(a)=(k-r^2-r)(k-r^2+r)\\{a^4+2(k-2r^2)a^2+k^2-r^2\\}\n\\]\nである（両辺の $a^4,a^2,a^0$ の係数がそれぞれ $(k-r^2)^2-r^2$，$2(k-r^2)(k^2-kr^2-r^2)-4r^2(k-r^2)^2+2r^4$，$(k^2-kr^2-r^2)^2-r^6$ で一致することを確かめる）．\n\n$k=r^2\\pm r$ ならすべての $a$ で $E(a)=0$ なので，すべてのよい点で QR は $C$ に接する．逆に $k\\neq r^2\\pm r$ なら，$E(a)=0$ となる $a$ は4次方程式 $a^4+2(k-2r^2)a^2+k^2-r^2=0$ の解で高々4個．一方 $|a|$ が十分大きい点（たとえば $a^2>r^2+|k|$ なら $a^2+(a^2-k)^2>r^2$ で $C$ の外部，$a^2\\neq r^2$）はすべてよい点で無数にあるので，QR が接しないよい点が存在する．以上より $\\boldsymbol{k=r^2+r,\\ r^2-r}$．\n\n\\textbf{(3)} $r=1$，$k=2=r^2+r$，$a=2$ で $(*)$ は $3b^2+4b-1=0$．$s=-\\frac43$，$t=-\\frac13$ で，直線 QR は $y=sx-t-k=-\\frac43x+\\frac13-2$，すなわち $\\boldsymbol{4x+3y+5=0}$．（原点との距離 $\\frac5{\\sqrt{16+9}}=1$ で接している．）"
+   }
+  ],
+  "idea": {
+   "tex": "放物線 $y=x^2-k$ 上の2点 $x=b,c$ を結ぶ直線は $y=(b+c)x-bc-k$ で，円 $x^2+y^2=r^2$ に接する条件は $(bc+k)^2=r^2\\{(b+c)^2+1\\}$．放物線上の点 P から引いた2接線の他方の交点 Q，R の $x$ 座標は2次方程式の2解なので，第3辺 QR の接する条件を $b+c$，$bc$ で表せる．原題は特定の放物線と円で「三角形が閉じる」ことを示すものだったが，ここでは $r,k$ を文字にし，P の位置によらず閉じるための $(r,k)$ の条件（ポンスレの閉形定理が成り立つ場合）を，$a$ の恒等式の問題として決定させる．"
+  },
+  "methods": [],
+  "tags": [
+   "ポンスレの閉形定理",
+   "接線",
+   "点と直線の距離",
+   "解と係数の関係",
+   "恒等式"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "II-GEO-242",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "II-09",
+  "level": 5,
+  "minutes": 40,
+  "theme": "共有点の間隔を制限した放物線族の通過領域",
+  "topic": "共有点の間隔を制限した放物線族の通過領域",
+  "statement": {
+   "tex": "$a,\\ b$ を実数とする．座標平面上の放物線\n\\[\nC:\\ y=x^2+ax+b\n\\]\nは放物線 $y=-x^2$ と2つの共有点をもち，一方の共有点の $x$ 座標は $-1<x<0$ を満たし，他方の共有点の $x$ 座標は $0<x<1$ を満たす．さらに，2つの共有点の $x$ 座標の差は $1$ より小さい．\n\\begin{enumerate}\n  \\item 点 $(a,b)$ のとりうる範囲を座標平面上に図示せよ．\n  \\item 放物線 $C$ の通りうる範囲を $D$ とする．$D$ を座標平面上に図示せよ．\n  \\item $D$ のうち $y\\leqq0$ を満たす部分の面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $\\dfrac{a^2}{8}-\\dfrac12<b<0$（放物線 $b=\\dfrac{a^2}8-\\dfrac12$ と $a$ 軸で挟まれた部分，境界を含まない）　(2) $|x|<\\dfrac12$ では $-x^2-\\dfrac12<y<x^2+2|x|$，$|x|\\geqq\\dfrac12$ では $x^2-2|x|<y<x^2+2|x|$（境界を含まない）　(3) $\\dfrac{17}{6}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $C$ と $y=-x^2$ の共有点の $x$ 座標は，$x^2+ax+b=-x^2$，すなわち\n\\[\nf(x)=2x^2+ax+b=0\n\\]\nの実数解である．条件は「$f(x)=0$ が2つの実数解 $p<q$ をもち，$-1<p<0<q<1$ かつ $q-p<1$」である．これが\n\\[\nf(-1)>0,\\quad f(0)<0,\\quad f(1)>0,\\quad a^2-8b<4 \\qquad\\cdots\\cdots(*)\n\\]\nと同値であることを示す．\n\n条件が成り立つとする．$f(x)=2(x-p)(x-q)$ であり，$p<x<q$ で $f(x)<0$，$x<p$ または $x>q$ で $f(x)>0$ である．$p<0<q$ より $f(0)<0$，$-1<p$ より $f(-1)>0$，$1>q$ より $f(1)>0$．また解と係数の関係より $p+q=-\\frac a2$，$pq=\\frac b2$ なので\n\\[\n(q-p)^2=(p+q)^2-4pq=\\frac{a^2}4-2b,\n\\]\n$0<q-p<1$ より $\\frac{a^2}4-2b<1$，すなわち $a^2-8b<4$．\n\n逆に $(*)$ が成り立つとする．$f(0)<0$ で $x^2$ の係数が正なので，$f(x)=0$ は異なる2つの実数解 $p<q$ をもち，$p<0<q$．$f(-1)>0$ より $-1$ は区間 $[p,q]$ の外にあり，$-1<0<q$ だから $-1<p$．同様に $f(1)>0$ と $p<0<1$ から $q<1$．さらに $(q-p)^2=\\frac{a^2}4-2b<1$ と $q-p>0$ から $q-p<1$．\n\nよって条件は\n\\[\n2-a+b>0,\\quad b<0,\\quad 2+a+b>0,\\quad b>\\frac{a^2}8-\\frac12 .\n\\]\nここで「$\\frac{a^2}8-\\frac12<b<0$」だけで残りの2つが従うことを示す．このとき $\\frac{a^2}8-\\frac12<0$ より $-2<a<2$ であり，\n\\[\nb-(a-2)>\\frac{a^2-4}8-(a-2)=\\frac{(a-2)(a-6)}8>0\\quad(a<2<6\\ \\text{より}),\n\\]\n\\[\nb-(-a-2)>\\frac{a^2-4}8+(a+2)=\\frac{(a+2)(a+6)}8>0\\quad(a>-2\\ \\text{より}).\n\\]\nしたがって求める範囲は\n\\[\n\\boldsymbol{\\frac{a^2}8-\\frac12<b<0}\n\\]\nで，放物線 $b=\\frac{a^2}8-\\frac12$（頂点 $\\left(0,-\\frac12\\right)$，$a$ 軸と $(\\pm2,0)$ で交わる）と $a$ 軸で挟まれた部分である（\\textbf{境界を含まない}）．この範囲を $R$ とする．\n\n\\begin{center}\n\\begin{tikzpicture}[scale=1.3]\n  \\fill[gray!25] (-2,0) -- plot[domain=-2:2,samples=60] (\\x,{\\x*\\x/8-0.5}) -- cycle;\n  \\draw[->] (-2.6,0) -- (2.6,0) node[right] {$a$};\n  \\draw[->] (0,-0.9) -- (0,0.6) node[above] {$b$};\n  \\draw[thick,dashed] plot[domain=-2:2,samples=60] (\\x,{\\x*\\x/8-0.5});\n  \\draw[thick,dashed] (-2,0) -- (2,0);\n  \\fill[white] (-2,0) circle (1.5pt); \\draw (-2,0) circle (1.5pt);\n  \\fill[white] (2,0) circle (1.5pt); \\draw (2,0) circle (1.5pt);\n  \\node[above] at (-2,0) {$-2$}; \\node[above] at (2,0) {$2$};\n  \\node[left] at (0,-0.55) {$-\\frac12$};\n  \\node at (1.5,-0.75) {$b=\\frac{a^2}8-\\frac12$};\n\\end{tikzpicture}\n\\end{center}\n\n(2) 点 $(X,Y)$ が $D$ に属する $\\iff$ $Y=X^2+aX+b$ となる $(a,b)\\in R$ が存在する $\\iff$ $Y-X^2\\in I(X)$．ただし\n\\[\nI(X)=\\{\\,aX+b\\mid (a,b)\\in R\\,\\}\n\\]\nとする．まず $X$ を固定して $I(X)$ を求め，次に $X$ を動かす．\n\n\\textbf{$I(X)$ は区間であること．}$P_1(a_1,b_1)$，$P_2(a_2,b_2)$ が $R$ の点で，$0\\leqq t\\leqq1$ とし，$a_t=(1-t)a_1+ta_2$，$b_t=(1-t)b_1+tb_2$ とおく．$b_t<0$ は明らかで，\n\\[\n(1-t)a_1^2+ta_2^2-a_t^2=t(1-t)(a_1-a_2)^2\\geqq0\n\\]\nより\n\\[\nb_t>(1-t)\\left(\\frac{a_1^2}8-\\frac12\\right)+t\\left(\\frac{a_2^2}8-\\frac12\\right)\\geqq\\frac{a_t^2}8-\\frac12 .\n\\]\nよって $(a_t,b_t)\\in R$．このときの値 $a_tX+b_t=(1-t)(a_1X+b_1)+t(a_2X+b_2)$ は $t$ の1次式なので，$t$ を $0$ から $1$ まで動かすと $a_1X+b_1$ と $a_2X+b_2$ の間のすべての値をとる．したがって，$v_1<v<v_2$ で $v_1,v_2\\in I(X)$ ならば $v\\in I(X)$．\n\n\\textbf{対称性．}$(a,b)\\in R\\iff(-a,b)\\in R$ であり，$aX+b=(-a)(-X)+b$ なので $I(-X)=I(X)$．よって $D$ は $y$ 軸に関して対称で，以下 $X\\geqq0$ とする．\n\n\\textbf{上端．}$(a,b)\\in R$ のとき $|a|<2$，$b<0$ だから，$X>0$ なら $aX+b<aX<2X$，$X=0$ なら $aX+b=b<0=2X$．いずれも $aX+b<2X$．一方，$0<s<1$ に対し $(a,b)=\\left(2s,\\ -\\frac{1-s^2}4\\right)$ は $-\\frac{1-s^2}2<-\\frac{1-s^2}4<0$ より $R$ の点で，値は\n\\[\n2sX-\\frac{1-s^2}4\\ \\longrightarrow\\ 2X\\qquad(s\\to1).\n\\]\nよって $2X$ より小さいどんな値 $v$ に対しても，$v$ より大きい $I(X)$ の値がある．\n\n\\textbf{下端．}$(a,b)\\in R$ のとき\n\\[\naX+b>aX+\\frac{a^2}8-\\frac12=\\frac{(a+4X)^2}8-2X^2-\\frac12 \\qquad\\cdots\\cdots(\\dagger)\n\\]\n\\begin{itemize}\n  \\item $0\\leqq X<\\frac12$ のとき：$(\\dagger)$ より $aX+b>-2X^2-\\frac12$．一方 $a=-4X\\in(-2,0]$，$b=2X^2-\\frac12+\\varepsilon$（$0<\\varepsilon<\\frac12-2X^2$）とおくと $b<0$，$b>\\frac{a^2}8-\\frac12$ で $(a,b)\\in R$，値は $-2X^2-\\frac12+\\varepsilon$．$\\varepsilon$ はいくらでも小さくとれる．よって下端は $m(X)=-2X^2-\\frac12$．\n  \\item $X\\geqq\\frac12$ のとき：$-2<a<2$ より $a+4X>4X-2\\geqq0$，よって $(a+4X)^2>(4X-2)^2$ で，$(\\dagger)$ より\n  \\[\n  aX+b>\\frac{(4X-2)^2}8-2X^2-\\frac12=-2X .\n  \\]\n  一方 $0<s<1$ に対し $(a,b)=\\left(-2s,\\ -\\frac{1-s^2}4\\right)\\in R$ で，値 $-2sX-\\frac{1-s^2}4\\to-2X$（$s\\to1$）．よって下端は $m(X)=-2X$．\n\\end{itemize}\n\n以上から，$I(X)$ のすべての値は $m(X)<v<2X$ を満たし（$m(X)<2X$ である），逆に $m(X)<v<2X$ を満たす任意の $v$ に対して，$m(X)$ と $v$ の間の値をとる点と，$v$ と $2X$ の間の値をとる点が $R$ 内にあるので，区間であることから $v\\in I(X)$．すなわち\n\\[\nI(X)=\\bigl(m(X),\\ 2X\\bigr)\\quad(\\text{両端を含まない}).\n\\]\n$Y-X^2\\in I(X)$ を書き直し，対称性で $X<0$ に戻すと，$D$ は\n\\[\n\\boldsymbol{|x|<\\tfrac12\\ \\text{のとき}\\ -x^2-\\tfrac12<y<x^2+2|x|,\\qquad |x|\\geqq\\tfrac12\\ \\text{のとき}\\ x^2-2|x|<y<x^2+2|x|}\n\\]\nで表される（\\textbf{境界を含まない}）．\n\n下側の境界について，$x=\\frac12$ で $-x^2-\\frac12$ と $x^2-2x$ はともに値 $-\\frac34$，微分係数 $-1$ をとるので，2つの曲線はそこで接してなめらかにつながる（$x=-\\frac12$ でも同様）．また $\\left(-x^2-\\frac12\\right)-(x^2-2|x|)=-2\\left(|x|-\\frac12\\right)^2\\leqq0$ なので，$|x|<\\frac12$ で包絡線 $y=-x^2-\\frac12$ は $y=x^2-2|x|$ より下にある．上側の境界 $y=x^2+2|x|$ は原点 $(0,0)$ で折れる．\n\n\\begin{center}\n\\begin{tikzpicture}[scale=1.0]\n  \\begin{scope}\n  \\clip (-3,-1.3) rectangle (3,3.6);\n  \\fill[gray!25] plot[domain=-3:0,samples=60] (\\x,{\\x*\\x-2*\\x}) -- plot[domain=0:3,samples=60] (\\x,{\\x*\\x+2*\\x})\n     -- plot[domain=3:0.5,samples=60] (\\x,{\\x*\\x-2*\\x}) -- plot[domain=0.5:-0.5,samples=40] (\\x,{-\\x*\\x-0.5})\n     -- plot[domain=-0.5:-3,samples=60] (\\x,{\\x*\\x+2*\\x}) -- cycle;\n  \\draw[thick,dashed] plot[domain=-3:0,samples=60] (\\x,{\\x*\\x-2*\\x});\n  \\draw[thick,dashed] plot[domain=0:3,samples=60] (\\x,{\\x*\\x+2*\\x});\n  \\draw[thick,dashed] plot[domain=0.5:3,samples=60] (\\x,{\\x*\\x-2*\\x});\n  \\draw[thick,dashed] plot[domain=-3:-0.5,samples=60] (\\x,{\\x*\\x+2*\\x});\n  \\draw[thick,dashed] plot[domain=-0.5:0.5,samples=40] (\\x,{-\\x*\\x-0.5});\n  \\end{scope}\n  \\draw[->] (-3.2,0) -- (3.3,0) node[right] {$x$};\n  \\draw[->] (0,-1.4) -- (0,3.8) node[above] {$y$};\n  \\node[below right] at (2,0) {$2$}; \\node[below left] at (-2,0) {$-2$};\n  \\node[left] at (0,-0.5) {$-\\frac12$};\n  \\draw[dotted] (0.5,0) -- (0.5,-0.75); \\node[above] at (0.5,0) {$\\frac12$};\n  \\node[right] at (1.1,3.41) {$y=x^2+2x$};\n  \\node[right] at (2.4,0.96) {$y=x^2-2x$};\n  \\node at (1.6,-1.15) {$y=-x^2-\\frac12$};\n\\end{tikzpicture}\n\\end{center}\n図の灰色部分（境界を含まない）．\n\n(3) $|x|>2$ のとき $x^2-2|x|=|x|(|x|-2)>0$ なので，$D$ には $y\\leqq0$ の点がない．$|x|\\leqq2$ のとき，上側の境界 $x^2+2|x|\\geqq0$ であり，下側の境界は $|x|<\\frac12$ で $-x^2-\\frac12<0$，$\\frac12\\leqq|x|\\leqq2$ で $x^2-2|x|\\leqq0$．よって $D$ の $y\\leqq0$ の部分の，直線 $x=t$ による切り口の長さは（端点の有無は面積に影響しない）下側の境界の値の $-1$ 倍である．$y$ 軸対称性から，求める面積は\n\\[\n2\\left\\{\\int_0^{\\frac12}\\left(x^2+\\frac12\\right)dx+\\int_{\\frac12}^{2}\\left(2x-x^2\\right)dx\\right\\}.\n\\]\nここで\n\\[\n\\int_0^{\\frac12}\\left(x^2+\\frac12\\right)dx=\\frac1{24}+\\frac14=\\frac7{24},\n\\]\n\\[\n\\int_{\\frac12}^{2}(2x-x^2)\\,dx=\\left[x^2-\\frac{x^3}3\\right]_{\\frac12}^{2}=\\left(4-\\frac83\\right)-\\left(\\frac14-\\frac1{24}\\right)=\\frac43-\\frac5{24}=\\frac{27}{24}.\n\\]\nよって面積は\n\\[\n2\\left(\\frac7{24}+\\frac{27}{24}\\right)=\\frac{34}{12}=\\boldsymbol{\\frac{17}6}.\n\\]\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "共有点の $x$ 座標の差の条件 $(q-p)^2=\\frac{a^2}4-2b<1$ が加わると，点 $(a,b)$ の範囲は多角形ではなく放物線 $b=\\frac{a^2}8-\\frac12$ と $a$ 軸で挟まれた凸領域になり，解の配置の1次不等式は不要になる．$x$ を固定すると $y-x^2=ax+b$ は $(a,b)$ の1次式なので，その値域は凸領域上の1次式の値域：上端は角 $(\\pm2,0)$ で決まるが，下端は $|x|<\\frac12$ では直線 $ax+b=k$ が境界の放物線に接するときで決まり（平方完成 $\\frac{(a+4x)^2}8-2x^2-\\frac12$），$|x|\\geqq\\frac12$ では角で決まる．下側の境界に包絡線 $y=-x^2-\\frac12$ が現れ，$y=x^2-2|x|$ と $x=\\pm\\frac12$ で接してつながる．値域が区間であることは領域の凸性（線分上で1次式が連続に動く）で保証する．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 記述\n(3) 17/6"
+  },
+  "methods": [],
+  "tags": [
+   "通過領域",
+   "順像法",
+   "解の配置",
+   "凸領域上の1次式",
+   "包絡線"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
  }
 ]

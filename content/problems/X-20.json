@@ -1360,5 +1360,578 @@
    },
    "verified": false
   }
+ },
+ {
+  "id": "X-MIX-035",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 5,
+  "minutes": 40,
+  "theme": "円周上を回る点光源による正方形の板の影",
+  "topic": "円周上を回る点光源による正方形の板の影",
+  "statement": {
+   "tex": "$xyz$ 空間において，$|x|\\leqq1$，$|y|\\leqq1$，$z=1$ をみたす点 $(x,y,z)$ からなる正方形の板 $W$ を考える．$r$ を正の数とし，点光源 P が平面 $z=2$ 上の円\n\\[\nx^2+y^2=r^2,\\qquad z=2\n\\]\nの上を一周する．光が板 $W$ にさえぎられて $xy$ 平面上にできる影（$xy$ 平面上の点 X で，線分 PX が $W$ と共有点をもつもの全体）が通過する部分を $F$ とする．\n\\begin{enumerate}\n  \\item 原点 $(0,0,0)$ が $F$ に含まれないような $r$ の範囲を求めよ．\n  \\item $r=4$ のとき，$F$ を図示し，その面積を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $r>2\\sqrt2$　(2) $64+16\\sqrt3+\\dfrac{32\\pi}3$（外周は1辺4の正方形 $|x|\\leqq2,\\ |y|\\leqq2$ を距離4だけ太らせた角の丸い正方形，内側に4点 $(\\pm2,\\pm2)$ を中心とする半径4の4本の円弧で囲まれた穴がある．境界は $F$ に含む）"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{影の形．}P$(p,q,2)$ と $xy$ 平面上の点 X$(X_1,X_2,0)$ について，線分 PX 上で $z=1$ となるのは中点 $\\left(\\frac{p+X_1}2,\\frac{q+X_2}2,1\\right)$ のみ．これが $W$ に属する条件は $|p+X_1|\\leqq2$，$|q+X_2|\\leqq2$．$K=\\{(s,t)\\mid|s|\\leqq2,|t|\\leqq2\\}$ とおくと，X が影に含まれる $\\iff$ X$+(p,q)\\in K$．\n$(p,q)$ が円 $x^2+y^2=r^2$ を一周するとき X$+(p,q)$ は X を中心とする半径 $r$ の円 $\\Gamma_{\\mathrm X}$ を描くから\n\\[\n\\mathrm X\\in F\\iff\\Gamma_{\\mathrm X}\\ \\text{と}\\ K\\ \\text{が共有点をもつ}.\n\\]\nX から $K$ の点までの距離の最小値を $m(\\mathrm X)$，最大値を $M(\\mathrm X)$ とする．$|\\mathrm X-\\mathrm Y|^2=(X_1-s)^2+(X_2-t)^2$ は $s,t\\in[-2,2]$ ごとに端点で最大となるので，$M(\\mathrm X)$ は4頂点 $(\\pm2,\\pm2)$ までの距離の最大値である．\n\n\\textbf{主張．}$\\mathrm X\\in F\\iff m(\\mathrm X)\\leqq r\\leqq M(\\mathrm X)$．\n$\\Rightarrow$ は明白．$\\Leftarrow$：$m$，$M$ を与える $K$ の点 $\\mathrm Y_1,\\mathrm Y_2$ を結ぶ線分は $K$ に含まれ（$K$ は長方形），その上で X からの距離は連続に $m$ から $M$ まで変わるので，中間値の定理より距離がちょうど $r$ の点がある．\n\n(1) $m(\\mathrm O)=0$，$M(\\mathrm O)=2\\sqrt2$ なので O$\\notin F\\iff\\boldsymbol{r>2\\sqrt2}$．\n\n(2) $r=4$ のとき $F=A\\setminus B$，$A=\\{m(\\mathrm X)\\leqq4\\}$，$B=\\{M(\\mathrm X)<4\\}$（$m\\leqq M$ より $B\\subset A$）．\n\n$A$ は $K$ から距離4以内の点全体で，$K$（面積16），$K$ の4辺の外側に接する $4\\times4$ の正方形4個（面積64），4頂点を中心とする半径4の四分円4個（面積 $16\\pi$）に分かれ，面積 $80+16\\pi$．外周は直線 $x=\\pm6$，$y=\\pm6$ の長さ4の部分と，四分円の弧からなる．\n\n$B$：$x\\geqq0$，$y\\geqq0$ の点では，$(-2,-2)$ までの距離の2乗から $(2,-2)$，$(-2,2)$，$(2,2)$ までの距離の2乗を引くとそれぞれ $8x$，$8y$，$8x+8y$ で $\\geqq0$．よって最遠頂点は $(-2,-2)$ で\n\\[\nB\\cap\\{x\\geqq0,y\\geqq0\\}=\\{x\\geqq0,\\ y\\geqq0,\\ (x+2)^2+(y+2)^2<16\\}.\n\\]\n円 $(x+2)^2+(y+2)^2=16$ は $y=0$ と $x=2\\sqrt3-2$ で交わるので，この部分の面積は\n\\[\n\\int_0^{2\\sqrt3-2}\\left(\\sqrt{16-(x+2)^2}-2\\right)dx=\\int_2^{2\\sqrt3}\\sqrt{16-u^2}\\,du-2(2\\sqrt3-2).\n\\]\n$u=4\\sin\\theta$（$\\frac\\pi6\\leqq\\theta\\leqq\\frac\\pi3$）とおくと\n\\[\n\\int_2^{2\\sqrt3}\\sqrt{16-u^2}\\,du=\\int_{\\pi/6}^{\\pi/3}16\\cos^2\\theta\\,d\\theta=8\\left[\\theta+\\frac{\\sin2\\theta}2\\right]_{\\pi/6}^{\\pi/3}=\\frac{4\\pi}3 .\n\\]\nよって $\\frac{4\\pi}3-4\\sqrt3+4$．対称性から $B$ の面積は $\\frac{16\\pi}3-16\\sqrt3+16$．$B$ は4頂点 $(\\pm2,\\pm2)$ を中心とする半径4の4本の弧で囲まれ，$(\\pm(2\\sqrt3-2),0)$，$(0,\\pm(2\\sqrt3-2))$ を角とする「ふくらんだ正方形」である（弧の上の点は $M=4$ で $F$ に含まれる）．\n\n$F$ は $A$ からこの穴 $B$ を除いた部分で，面積は\n\\[\n80+16\\pi-\\left(\\frac{16\\pi}3-16\\sqrt3+16\\right)=\\boldsymbol{64+16\\sqrt3+\\frac{32\\pi}3}.\n\\]\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "光源の高さが板の2倍なので影は「板を2倍に拡大して $-\\overrightarrow{\\mathrm{OP}}$ だけ平行移動した正方形」．通過領域は「X を中心とする半径 $r$ の円が正方形と交わる点 X」で，正方形への最短距離 $\\leqq r\\leqq$ 最遠距離 と同値（中間値の定理）．$r$ が大きいと最遠距離 $<r$ の「穴」が生じる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) r>2sqrt(2)\n(2) 記述"
+  },
+  "methods": [],
+  "tags": [
+   "影",
+   "通過領域",
+   "中間値の定理",
+   "扇形",
+   "面積"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-036",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 4,
+  "minutes": 30,
+  "theme": "定義から周期を決める",
+  "topic": "定義から周期を決める",
+  "statement": {
+   "tex": "\\begin{enumerate}\n  \\item 一般角 $\\theta$ に対して $\\sin\\theta$，$\\cos\\theta$ の定義を述べよ．\n  \\item (1) の定義にもとづき，実数 $T$ について「すべての実数 $\\theta$ に対して $\\sin(\\theta+T)=\\sin\\theta$」が成り立つための必要十分条件は，$T$ が $2\\pi$ の整数倍であることを示せ．また，$\\cos$ についても同じことが成り立つことを示せ．\n  \\item $f(x)=\\sin x+\\sin\\sqrt2x$ は周期関数でない，すなわち，すべての実数 $x$ に対して $f(x+T)=f(x)$ となる正の数 $T$ は存在しないことを示せ．\n  \\item $g(x)=\\sin2x+\\cos3x$ の正の周期のうち最小のものを求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 単位円周上で点 $(1,0)$ を原点のまわりに角 $\\theta$ だけ回転した点の座標を $(\\cos\\theta,\\sin\\theta)$ と定める　(2) 証明　(3) 証明　(4) $2\\pi$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) 座標平面で，原点 O を中心とする半径1の円（単位円）を考える．$x$ 軸の正の部分を始線とし，動径が一般角 $\\theta$ を表すとき，その動径と単位円との交点を $\\mathrm P(\\theta)$ とする．$\\mathrm P(\\theta)$ の座標を $(\\cos\\theta,\\sin\\theta)$ と定める．すなわち，点 $(1,0)$ を原点のまわりに角 $\\theta$ だけ回転した点の $x$ 座標が $\\cos\\theta$，$y$ 座標が $\\sin\\theta$ である．一般角の定め方から，$\\mathrm P(\\theta)=\\mathrm P(\\theta')$ となるのは $\\theta-\\theta'$ が $2\\pi$ の整数倍であるとき，かつそのときに限る．\n\n(2) $T=2n\\pi$（$n$ は整数）ならば，$\\mathrm P(\\theta+T)=\\mathrm P(\\theta)$ なので $\\sin(\\theta+T)=\\sin\\theta$．逆に，すべての $\\theta$ で $\\sin(\\theta+T)=\\sin\\theta$ とする．$\\theta=\\frac\\pi2$ とすると $\\sin\\left(\\frac\\pi2+T\\right)=1$．点 $\\mathrm P\\left(\\frac\\pi2+T\\right)=(u,1)$ は単位円上にあるので $u^2+1=1$，$u=0$．よって $\\mathrm P\\left(\\frac\\pi2+T\\right)=(0,1)=\\mathrm P\\left(\\frac\\pi2\\right)$ となり，$T$ は $2\\pi$ の整数倍．\n$\\cos$ について：十分性は同じ．逆に $\\theta=0$ とすると $\\cos T=1$ で，$\\mathrm P(T)=(1,v)$ から $v=0$，$\\mathrm P(T)=\\mathrm P(0)$．よって $T$ は $2\\pi$ の整数倍．\n\n(3) 正の数 $T$ がすべての $x$ で $f(x+T)=f(x)$ をみたすと仮定する．両辺を $x$ で2回微分すると $f''(x+T)=f''(x)$．$f''(x)=-\\sin x-2\\sin\\sqrt2x$ だから\n\\[2f(x)+f''(x)=\\sin x,\\qquad f(x)+f''(x)=-\\sin\\sqrt2x\\]\nもそれぞれ $x$ を $x+T$ にしても値が変わらない．よってすべての $x$ で $\\sin(x+T)=\\sin x$ となり，(2) から $T=2m\\pi$（$m$ は正の整数）．また $\\sin(\\sqrt2x+\\sqrt2T)=\\sin\\sqrt2x$ がすべての $x$ で成り立ち，$\\sqrt2x$ はすべての実数をとるので，(2) から $\\sqrt2T=2n\\pi$（$n$ は正の整数）．すると $\\sqrt2=\\frac{\\sqrt2T}{T}=\\frac nm$ は有理数となる．しかし，$\\sqrt2=\\frac nm$（既約分数）とすると $n^2=2m^2$ から $n$ は偶数，$n=2n'$ として $m^2=2n'^2$ から $m$ も偶数となり矛盾する．よって $f$ は周期関数でない．\n\n(4) $g''(x)=-4\\sin2x-9\\cos3x$ より\n\\[g''(x)+9g(x)=5\\sin2x,\\qquad g''(x)+4g(x)=-5\\cos3x.\\]\n$T>0$ が $g$ の周期ならば，(3) と同様に $\\sin(2x+2T)=\\sin2x$，$\\cos(3x+3T)=\\cos3x$ がすべての $x$ で成り立つ．$2x$，$3x$ はすべての実数をとるので，(2) より $2T=2m\\pi$，$3T=2n\\pi$（$m,n$ は正の整数）．$T=m\\pi$ を代入して $3m=2n$ となり $m$ は偶数，よって $T\\geqq2\\pi$．逆に $T=2\\pi$ は $\\sin2x$，$\\cos3x$ の周期なので $g$ の周期である．最小の正の周期は $\\boldsymbol{2\\pi}$．\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "一般角の定義（単位円周上の点の座標）から「$\\sin(\\theta+T)=\\sin\\theta$ がすべての $\\theta$ で成り立つ $\\iff$ $T$ は $2\\pi$ の整数倍」を導く．和の関数の周期は，2回微分してもとの関数と組み合わせると各成分の周期の問題に分離できる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) 証明\n(3) 証明\n(4) 2π"
+  },
+  "methods": [],
+  "tags": [
+   "三角関数の定義",
+   "周期",
+   "無理数",
+   "微分"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-037",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 4,
+  "minutes": 35,
+  "theme": "回転角を変えた直方体の通過領域",
+  "topic": "回転角を変えた直方体の通過領域",
+  "statement": {
+   "tex": "3辺の長さが $a$，$b$，$c$ の直方体を，長さ $b$ の1辺を回転軸として角 $\\theta$（$0<\\theta\\leqq\\pi$）だけ回転させるとき，直方体が通過する点全体がつくる立体を $V$ とする．\n\\begin{enumerate}\n  \\item $V$ の体積を $a$，$b$，$c$，$\\theta$ を用いて表せ．\n  \\item $a+b+c=1$ のとき，$V$ の体積のとりうる値の範囲を，$\\theta$ の値によって場合分けして求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $b\\left\\{ac+\\dfrac\\theta2(a^2+c^2)\\right\\}$　(2) $0<\\theta\\leqq1$ のとき $0<V\\leqq\\dfrac{1+\\theta}{27}$，$1<\\theta\\leqq\\pi$ のとき $0<V<\\dfrac{2\\theta}{27}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) 回転軸に垂直な平面による切り口で考える．どの点も軸に垂直な平面内で回転するので，$V$ の体積は「切り口の長方形が通過する図形の面積」$\\times b$．切り口の長方形を $K=\\{(u,v)\\mid0\\leqq u\\leqq a,\\ 0\\leqq v\\leqq c\\}$ とし，原点（軸）のまわりに角 $t$（$0\\leqq t\\leqq\\theta$）回転したものを $K_t$ とする．$d=\\sqrt{a^2+c^2}$，対角線 $\\overrightarrow{(a,c)}$ の偏角を $\\psi_0$（$0<\\psi_0<\\frac\\pi2$）とする．\n\n偏角 $\\psi\\in\\left[0,\\frac\\pi2\\right]$ の方向の半直線が $K$ と共有する線分の長さを $g(\\psi)$ とすると，$g(\\psi)=\\frac a{\\cos\\psi}$（$0\\leqq\\psi\\leqq\\psi_0$）は増加，$g(\\psi)=\\frac c{\\sin\\psi}$（$\\psi_0\\leqq\\psi\\leqq\\frac\\pi2$）は減少で，最大値 $g(\\psi_0)=d$．\n点 X（極形式で距離 $\\rho>0$，偏角 $\\omega$，$0\\leqq\\omega<2\\pi$）が和集合 $U=\\bigcup K_t$ に属する $\\iff$ ある $t\\in[0,\\theta]$ で X を $-t$ 回転した点が $K$ に属する $\\iff$ $\\omega-t\\in\\left[0,\\frac\\pi2\\right]$ となる $t\\in[0,\\theta]$ があって $\\rho\\leqq g(\\omega-t)$．$\\omega$ で場合分けする（$\\theta+\\frac\\pi2\\leqq\\frac32\\pi<2\\pi$ に注意）．\n\\begin{itemize}\n  \\item $0\\leqq\\omega\\leqq\\psi_0$：$\\omega-t$ のとりうる値のうち $\\left[0,\\frac\\pi2\\right]$ に入るのは $[\\max(0,\\omega-\\theta),\\omega]$（$\\omega-t<0$ のとき，$2\\pi$ を加えても $[\\pi,2\\pi)$ にあり $\\left[0,\\frac\\pi2\\right]$ に入らない）．$g$ はここで増加なので，条件は $\\rho\\leqq g(\\omega)$，すなわち X$\\in K$．\n  \\item $\\psi_0\\leqq\\omega\\leqq\\psi_0+\\theta$：$t=\\omega-\\psi_0\\in[0,\\theta]$ がとれるので，条件は $\\rho\\leqq d$．\n  \\item $\\psi_0+\\theta<\\omega\\leqq\\theta+\\frac\\pi2$：使える値は $[\\omega-\\theta,\\min(\\omega,\\frac\\pi2)]\\subset(\\psi_0,\\frac\\pi2]$ で $g$ は減少，条件は $\\rho\\leqq g(\\omega-\\theta)$，すなわち X$\\in K_\\theta$．\n  \\item $\\theta+\\frac\\pi2<\\omega<2\\pi$：$\\omega-t\\in(\\frac\\pi2,2\\pi)$ となり条件をみたす $t$ はない．\n\\end{itemize}\nよって $U$ は，三角形 $\\{0\\leqq\\omega\\leqq\\psi_0\\}\\cap K$（面積 $\\frac{ac}2$），半径 $d$・中心角 $\\theta$ の扇形（面積 $\\frac\\theta2d^2$），三角形 $\\{\\psi_0+\\theta\\leqq\\omega\\}\\cap K_\\theta$（面積 $\\frac{ac}2$）を，境界だけを共有して合わせたもので，面積は $ac+\\frac\\theta2(a^2+c^2)$．体積は $\\boldsymbol{b\\left\\{ac+\\dfrac\\theta2(a^2+c^2)\\right\\}}$．\n\n(2) $s=a+c=1-b$ とおくと $a^2+c^2=s^2-2ac$ で\n\\[V=b\\left\\{\\frac\\theta2s^2+(1-\\theta)ac\\right\\},\\qquad 0<ac\\leqq\\frac{s^2}4\\ (\\text{等号は}\\ a=c).\\]\nまた $\\varphi(b)=b(1-b)^2$（$0<b<1$）とおくと $\\varphi'(b)=(1-b)^2-2b(1-b)=(1-b)(1-3b)$ より，$\\varphi$ は $0<b\\leqq\\frac13$ で増加，$\\frac13\\leqq b<1$ で減少するので，$bs^2=\\varphi(b)\\leqq\\varphi\\left(\\frac13\\right)=\\frac4{27}$（等号は $b=\\frac13$）．\n\\begin{itemize}\n  \\item $0<\\theta\\leqq1$：$1-\\theta\\geqq0$ なので $V\\leqq b\\left\\{\\frac\\theta2s^2+\\frac{(1-\\theta)s^2}4\\right\\}=\\frac{1+\\theta}4bs^2\\leqq\\frac{1+\\theta}{27}$．等号は $a=b=c=\\frac13$ で成り立つ．\n  \\item $1<\\theta\\leqq\\pi$：$1-\\theta<0$，$ac>0$ より $V<\\frac\\theta2bs^2\\leqq\\frac{2\\theta}{27}$．一方 $b=\\frac13$，$a=\\varepsilon$，$c=\\frac23-\\varepsilon$ とすると $\\varepsilon\\to+0$ で $V\\to\\frac{2\\theta}{27}$．\n\\end{itemize}\nまた (1) の式から $V>0$ である．\\textbf{値をすべてとること．} $a=c=\\frac{1-b}2$（$0<b\\leqq\\frac13$）とすると $ac=\\frac{s^2}4$ で $V=\\frac{1+\\theta}4\\varphi(b)$．これは $b$ の連続関数で，$b\\to+0$ で $0$ に近づき，$b=\\frac13$ で $\\frac{1+\\theta}{27}$ となるので，中間値の定理より $V$ は $0<V\\leqq\\frac{1+\\theta}{27}$ のすべての値をとる．$1<\\theta\\leqq\\pi$ のときはさらに $b=\\frac13$，$a=\\varepsilon$，$c=\\frac23-\\varepsilon$（$0<\\varepsilon\\leqq\\frac13$）とすると $V=\\frac13\\left\\{\\frac{2\\theta}9+(1-\\theta)\\varepsilon\\left(\\frac23-\\varepsilon\\right)\\right\\}$ は $\\varepsilon$ の連続関数で，$\\varepsilon=\\frac13$ で $\\frac{1+\\theta}{27}$，$\\varepsilon\\to+0$ で $\\frac{2\\theta}{27}$ に近づくから，中間値の定理より $\\frac{1+\\theta}{27}\\leqq V<\\frac{2\\theta}{27}$ のすべての値もとる．\n\\[\\boldsymbol{0<\\theta\\leqq1\\ \\text{のとき}\\ 0<V\\leqq\\frac{1+\\theta}{27},\\qquad 1<\\theta\\leqq\\pi\\ \\text{のとき}\\ 0<V<\\frac{2\\theta}{27}}.\\]\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "回転軸に垂直な断面で考えると，長方形が頂点のまわりに角 $\\theta$ 回転するときの通過領域は「2つの直角三角形＋半径が対角線の扇形」．体積は $b\\{ac+\\frac\\theta2(a^2+c^2)\\}$ で，$a^2+c^2=(a+c)^2-2ac$ により $ac$ の係数 $1-\\theta$ の符号で最大値の様子が変わる（$\\theta=1$ ラジアンが境目）．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) b(ac+(θ/2)(a^2+c^2))\n(2) 記述"
+  },
+  "methods": [],
+  "tags": [
+   "通過領域",
+   "扇形",
+   "相加相乗平均",
+   "場合分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-038",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 5,
+  "minutes": 40,
+  "theme": "ビーカーが3個残るまで続ける水の移し替え",
+  "topic": "ビーカーが3個残るまで続ける水の移し替え",
+  "statement": {
+   "tex": "容量1リットルの $m$ 個のビーカーに水が入っている．$m\\geqq4$ で空のビーカーはない．入っている水の総量は1リットルである．また $x$ リットルの水が入っているビーカーがただ1つあり，その他のビーカーには $x$ リットル未満の水しか入っていない．\n\nこのとき，水の入っているビーカーが3個になるまで，次の (a) から (c) までの操作を順に繰り返し行う．\n\\begin{enumerate}[label=(\\alph*)]\n  \\item 入っている水の量が最も少ないビーカーを1つ選ぶ．\n  \\item さらに，残りのビーカーの中から，入っている水の量が最も少ないものを1つ選ぶ．\n  \\item 次に，(a) で選んだビーカーの水を (b) で選んだビーカーにすべて移し，空になったビーカーを取り除く．\n\\end{enumerate}\nこの操作の過程で，入っている水の量が最も少ないビーカーの選び方が一通りに決まらないときは，そのうちのいずれも選ばれる可能性があるものとする．\n\\begin{enumerate}\n  \\item $x<\\dfrac15$ のとき，最初に $x$ リットルの水の入っていたビーカーは，操作の途中で空になって取り除かれるか，または最後まで残って水の量が増えていることを証明せよ．\n  \\item $x>\\dfrac27$ のとき，最初に $x$ リットルの水の入っていたビーカーは，最後まで $x$ リットルの水が入ったままで残ることを証明せよ．\n  \\item $x=\\dfrac27$ のときには (2) の結論が成り立たない場合があることを，例を挙げて示せ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) 証明　(2) 証明　(3) 例：$m=6$，$x=\\dfrac27$，他の5個がすべて $\\dfrac17$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "最初に $x$ リットル入っていたビーカーを $\\mathcal X$ とよぶ．$\\mathcal X$ が「取り除かれるか水が増える」$\\iff$ $\\mathcal X$ がある回の (a) または (b) で選ばれる．以下の事実を用いる．\n\\begin{itemize}\n  \\item[(i)] 水の総量は常に1．ビーカーは取り除かれるだけで新たに現れず，残っているビーカーの水は減らない．\n  \\item[(ii)] 各回で選ばれた2個の量は，選ばれなかったどのビーカーの量以下である．\n  \\item[(iii)] 操作はビーカーが4個以上あるときにだけ行われ，3個になると終わる．\n\\end{itemize}\n\n(1) $\\mathcal X$ が一度も選ばれないと仮定する．$\\mathcal X$ は最後まで $x$ のまま残り，最後に残る他の2個を U，V とする．U が一度も水を受け取っていなければ量は最初の量で $x$ 未満．受け取ったことがあれば，最後に受け取った回で (a) の量 $c$ と (b) の U の量 $d$ はともに選ばれなかった $\\mathcal X$ の量 $x$ 以下（(ii)）で，その後 U は変化しないので U の量は $c+d\\leqq2x$．V も同様．よって\n\\[1-x=(\\text{U の量})+(\\text{V の量})\\leqq4x,\\qquad x\\geqq\\frac15\\]\nとなり $x<\\frac15$ に矛盾．\\hfill$\\square$\n\n(2) $\\mathcal X$ がある回で選ばれたと仮定し，初めて選ばれる回を $S$ とする．$S$ の直前，$\\mathcal X$ の量は $x$ で，(iii) よりビーカーは4個以上．$S$ で選ばれたもう1個を Y（量 $y$）とする．$\\mathcal X$ は選ばれたので，選ばれなかった2個以上のビーカーの量はすべて $x$ 以上（(ii)）．そのうち2個を $\\mathrm W_1,\\mathrm W_2$（量 $w_1,w_2\\geqq x$）とする．$\\mathcal X$ 以外の最初の量は $x$ 未満なので，$\\mathrm W_1,\\mathrm W_2$ はともに $S$ より前に水を受け取っている．\n\n$\\mathrm W_1,\\mathrm W_2$ のうち最後に水を受け取った回が遅い方を W（量 $w$）とし，その回を $S'$ とする．$S'$ で W に移された量を $c$，W のそれまでの量を $d$ とすると $c\\leqq d$（(a) が最小）で，その後 $S$ まで W は変化しないから $w=c+d\\leqq2d$，すなわち $d\\geqq\\frac w2\\geqq\\frac x2$．\n\n一方 Y は $S$ の時点で残っているから $S'$ の時点にも存在し（(i)），$S'$ で選ばれたのは (a) のビーカー（取り除かれた）と W だけなので Y は選ばれていない．(ii) より $S'$ における Y の量は $d$ 以上で，(i) より $y\\geqq d\\geqq\\frac x2$．\n\n$\\mathcal X$，Y，$\\mathrm W_1$，$\\mathrm W_2$ は相異なるので\n\\[1\\geqq x+y+w_1+w_2\\geqq x+\\frac x2+x+x=\\frac{7x}2,\\qquad x\\leqq\\frac27\\]\nとなり $x>\\frac27$ に矛盾．よって $\\mathcal X$ は一度も選ばれず，最後まで $x$ リットルのまま残る．\\hfill$\\square$\n\n(3) $m=6$，$\\mathcal X$ に $\\frac27$，他の5個に $\\frac17$ ずつ（総量 $\\frac27+\\frac57=1$，他は $x$ 未満）．1回目：$\\frac17$ と $\\frac17$ を合わせ，$\\left\\{\\frac27(\\mathcal X),\\frac27,\\frac17,\\frac17,\\frac17\\right\\}$．2回目：同様に $\\left\\{\\frac27(\\mathcal X),\\frac27,\\frac27,\\frac17\\right\\}$．3回目（4個あるので行う）：(a) で $\\frac17$ を選び，(b) では量 $\\frac27$ の3個が同量で最小なので $\\mathcal X$ が選ばれる可能性があり，そのとき $\\mathcal X$ の水は $\\frac37$ に増える．よって $x=\\frac27$ では (2) の結論は成り立たない場合がある．"
+   }
+  ],
+  "idea": {
+   "tex": "一度も選ばれないなら，最後に残る他の2個はどちらも「$x$ 以下の2個を合わせたもの」で $2x$ 以下．逆に初めて選ばれる瞬間には，$x$ 以上の量をもつビーカーが2個以上あり，それらは合わせて作られたもの．後に作られた方の材料 $d$ は，その時点で残っていた他のどのビーカーの量以下でもあることが鍵．"
+  },
+  "methods": [],
+  "tags": [
+   "背理法",
+   "不変量",
+   "貪欲な併合",
+   "評価"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-039",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 5,
+  "minutes": 35,
+  "theme": "裏の回数で向きが回る歩行の平均位置と平均2乗距離",
+  "topic": "裏の回数で向きが回る歩行の平均位置と平均2乗距離",
+  "statement": {
+   "tex": "O を原点とする座標平面上で考える．$0$ 以上の整数 $k$ に対して，ベクトル $\\overrightarrow{v_k}$ を\n\\[\n\\overrightarrow{v_k}=\\left(\\cos\\frac{2k\\pi}3,\\ \\sin\\frac{2k\\pi}3\\right)\n\\]\nと定める．投げたとき表と裏がどちらも $\\dfrac12$ の確率で出るコインを $N$ 回投げて，座標平面上に点 $\\mathrm X_0,\\mathrm X_1,\\mathrm X_2,\\dots,\\mathrm X_N$ を以下の規則 (i)，(ii) に従って定める．\n\\begin{enumerate}[label=(\\roman*)]\n  \\item $\\mathrm X_0$ は O にある．\n  \\item $n$ を $1$ 以上 $N$ 以下の整数とする．$\\mathrm X_{n-1}$ が定まったとし，$n$ 回目のコイン投げで表が出た場合，$\\overrightarrow{\\mathrm{OX}_n}=\\overrightarrow{\\mathrm{OX}_{n-1}}+\\overrightarrow{v_k}$ により $\\mathrm X_n$ を定める．ただし，$k$ は1回目から $n$ 回目までのコイン投げで裏が出た回数とする．$n$ 回目のコイン投げで裏が出た場合，$\\mathrm X_n$ を $\\mathrm X_{n-1}$ と定める．\n\\end{enumerate}\n\\begin{enumerate}\n  \\item $\\mathrm X_N$ の $x$ 座標，$y$ 座標の期待値をそれぞれ $N$ で表せ．\n  \\item $|\\overrightarrow{\\mathrm{OX}_N}|^2$ の期待値 $E_N$ を $N$ で表せ．また，$\\displaystyle\\lim_{N\\to\\infty}(E_N-N)$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $x$ 座標 $\\dfrac12-\\dfrac{1}{\\sqrt3\\cdot2^N}\\cos\\dfrac{(2N+1)\\pi}6$，$y$ 座標 $\\dfrac{\\sqrt3}6-\\dfrac{1}{\\sqrt3\\cdot2^N}\\cos\\dfrac{(N-1)\\pi}3$　(2) $E_N=N-\\dfrac13+\\dfrac{2}{3\\cdot2^N}\\cos\\dfrac{(N+1)\\pi}3$，極限 $-\\dfrac13$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{複素数で表す．} 点 $(x,y)$ を複素数 $x+yi$ で表し，$\\omega=\\cos\\frac{2\\pi}3+i\\sin\\frac{2\\pi}3$ とすると $\\overrightarrow{v_k}$ は $\\omega^k$ に対応する．$N$ 回の表裏の出方 $2^N$ 通りは同様に確からしい．出方を1つ決め，1回目から $n$ 回目までの裏の回数を $T_n$（$T_0=0$）とすると，$n$ 回目が表のとき $T_n=T_{n-1}$ で，\n\\[\nz_N=\\sum_{n\\text{ 回目が表}}\\omega^{T_{n-1}}\n\\]\nが $\\mathrm X_N$ を表す．期待値は全 $2^N$ 通りについての和を $2^N$ で割ったもので，実部・虚部ごとに考えればよい．$\\eta=1+\\omega=\\frac12+\\frac{\\sqrt3}2i=\\cos\\frac\\pi3+i\\sin\\frac\\pi3$，$\\zeta=\\frac\\eta2$ とおく．\n\n(1) $n$ 回目が表である出方について $\\omega^{T_{n-1}}$ を足すと，1〜$(n-1)$ 回目で裏が $k$ 回の出方は ${}_{n-1}\\mathrm C_k$ 通り，$(n+1)$ 回目以降は $2^{N-n}$ 通りなので，二項定理より\n\\[\n\\sum\\omega^{T_{n-1}}=2^{N-n}\\sum_{k=0}^{n-1}{}_{n-1}\\mathrm C_k\\,\\omega^k=2^{N-n}\\eta^{\\,n-1}.\n\\]\nよって $z_N$ の期待値は\n\\[\n\\frac1{2^N}\\sum_{n=1}^N2^{N-n}\\eta^{n-1}=\\frac12\\sum_{n=1}^N\\zeta^{n-1}=\\frac12\\cdot\\frac{1-\\zeta^N}{1-\\zeta}.\n\\]\n$1-\\zeta=\\frac34-\\frac{\\sqrt3}4i$ より $\\dfrac1{1-\\zeta}=\\dfrac{\\frac34+\\frac{\\sqrt3}4i}{\\frac9{16}+\\frac3{16}}=1+\\dfrac{i}{\\sqrt3}$．ド・モアブルの定理より $\\zeta^N=\\dfrac{c_N+is_N}{2^N}$，$c_N=\\cos\\frac{N\\pi}3$，$s_N=\\sin\\frac{N\\pi}3$．\n\\[\n\\frac12\\left(1+\\frac i{\\sqrt3}\\right)\\left(1-\\frac{c_N}{2^N}-i\\frac{s_N}{2^N}\\right)\n=\\frac12\\left(1-\\frac{c_N}{2^N}+\\frac{s_N}{\\sqrt3\\,2^N}\\right)+\\frac i{2\\sqrt3}\\left(1-\\frac{c_N}{2^N}-\\frac{\\sqrt3\\,s_N}{2^N}\\right).\n\\]\n$c_N-\\frac{s_N}{\\sqrt3}=\\frac2{\\sqrt3}\\left(\\cos\\frac\\pi6c_N-\\sin\\frac\\pi6s_N\\right)=\\frac2{\\sqrt3}\\cos\\frac{(2N+1)\\pi}6$，$c_N+\\sqrt3s_N=2\\cos\\frac{(N-1)\\pi}3$ より\n\\[\nx\\text{ 座標の期待値}=\\boldsymbol{\\frac12-\\frac1{\\sqrt3\\cdot2^N}\\cos\\frac{(2N+1)\\pi}6},\n\\]\n\\[\ny\\text{ 座標の期待値}=\\boldsymbol{\\frac{\\sqrt3}6-\\frac1{\\sqrt3\\cdot2^N}\\cos\\frac{(N-1)\\pi}3}.\n\\]\n（$N=1$ で $\\left(\\frac12,0\\right)$，$N=2$ で $\\left(\\frac58,\\frac{\\sqrt3}8\\right)$ となり，直接の計算と一致する．）\n\n(2) $|z_N|^2=z_N\\overline{z_N}=\\sum_{m,n}\\omega^{T_m-T_n}$（$m,n$ は表の出た回全体を独立に動く）．$m=n$ の項は表の回数に等しく，$m<n$ の項と $n<m$ の項は共役で，組にすると $2\\cos\\frac{2\\pi(T_n-T_m)}3$．\n\n$m<n$ を固定し $d=n-m$ とする．$m$ 回目，$n$ 回目がともに表の出方について，$T_n-T_m$ は $(m+1)$〜$(n-1)$ 回目の $d-1$ 回中の裏の回数で，残り $N-d-1$ 回は自由．よってその和は\n\\[\n2^{N-d-1}\\sum_{k=0}^{d-1}{}_{d-1}\\mathrm C_k\\cdot2\\cos\\frac{2k\\pi}3=2^{N-d}\\,\\mathrm{Re}\\,\\eta^{\\,d-1}=2^{N-d}\\cos\\frac{(d-1)\\pi}3 .\n\\]\n表の回数の総和は $N\\cdot2^{N-1}$，差が $d$ の組 $(m,n)$ は $N-d$ 個なので\n\\[\nE_N=\\frac N2+\\sum_{d=1}^{N-1}(N-d)\\frac{1}{2^d}\\cos\\frac{(d-1)\\pi}3=\\frac N2+\\frac12\\,\\mathrm{Re}\\sum_{j=0}^{M-1}(M-j)\\zeta^j\\quad(M=N-1).\n\\]\n\\textbf{和の計算．} $\\sum_{j=0}^{M-1}(M-j)\\zeta^j=\\sum_{k=1}^{M}\\sum_{j=0}^{k-1}\\zeta^j=\\sum_{k=1}^M\\frac{1-\\zeta^k}{1-\\zeta}=\\frac{M}{1-\\zeta}-\\frac{\\zeta(1-\\zeta^M)}{(1-\\zeta)^2}$（$M=0$ でも両辺 $0$）．\n$\\frac1{1-\\zeta}=1+\\frac i{\\sqrt3}$，$\\frac1{(1-\\zeta)^2}=\\frac23+\\frac2{\\sqrt3}i=\\frac43\\left(\\cos\\frac\\pi3+i\\sin\\frac\\pi3\\right)$，$\\frac{\\zeta}{(1-\\zeta)^2}=\\frac12\\cdot\\frac43\\left(\\cos\\frac{2\\pi}3+i\\sin\\frac{2\\pi}3\\right)=\\frac23\\omega$．よって\n\\[\n\\mathrm{Re}\\sum_{j=0}^{M-1}(M-j)\\zeta^j=M-\\frac23\\mathrm{Re}\\,\\omega+\\frac23\\mathrm{Re}(\\omega\\zeta^M)=M+\\frac13+\\frac{2}{3\\cdot2^M}\\cos\\frac{(M+2)\\pi}3 .\n\\]\n$M=N-1$ を代入して\n\\[\nE_N=\\frac N2+\\frac12\\left(N-\\frac23+\\frac{2}{3\\cdot2^{N-1}}\\cos\\frac{(N+1)\\pi}3\\right)=\\boldsymbol{N-\\frac13+\\frac{2}{3\\cdot2^N}\\cos\\frac{(N+1)\\pi}3}.\n\\]\n（$N=1,2,3$ で $\\frac12,\\frac32,\\frac{21}8$ となり，直接の計算と一致する．）\n$\\left|\\frac{2}{3\\cdot2^N}\\cos\\frac{(N+1)\\pi}3\\right|\\leqq\\frac2{3\\cdot2^N}\\to0$ より $\\displaystyle\\lim_{N\\to\\infty}(E_N-N)=\\boldsymbol{-\\frac13}$．"
+   }
+  ],
+  "idea": {
+   "tex": "点を複素数で表すと $\\overrightarrow{v_k}\\leftrightarrow\\omega^k$，$X_N=\\sum_{\\text{表の回}}\\omega^{(\\text{それまでの裏の数})}$．全 $2^N$ 通りでの和をとると，二項定理で裏の回数の分布が $(1+\\omega)^{n}$ にまとまり，$1+\\omega=\\cos\\frac\\pi3+i\\sin\\frac\\pi3$ の $\\frac12$ 倍の等比級数になる．$|X_N|^2$ は表の回の対ごとに，間にある裏の数だけで決まる $\\cos$ の和になる．"
+  },
+  "methods": [],
+  "tags": [
+   "期待値",
+   "複素数平面",
+   "二項定理",
+   "等比数列の和",
+   "ド・モアブルの定理"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-040",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 4,
+  "minutes": 30,
+  "theme": "回転と「負の共役」で動く6乗根",
+  "topic": "回転と「負の共役」で動く6乗根",
+  "statement": {
+   "tex": "$\\omega=\\dfrac{-1+\\sqrt3\\,i}{2}$ とする．$n$ を正の整数とし，硬貨を $n$ 回投げて複素数 $z_0,z_1,\\dots,z_n$ を次のように定める．\n\\begin{itemize}\n  \\item $z_0=1$．\n  \\item $k=1,2,\\dots,n$ に対し，$k$ 回目に表が出れば $z_k=\\omega z_{k-1}$，裏が出れば $z_k=-\\overline{z_{k-1}}$ とする．\n\\end{itemize}\n\\begin{enumerate}\n  \\item $z_n$ が実数となる確率を求めよ．\n  \\item $z_n=1$ となる確率を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $\\dfrac13-\\dfrac13\\left(-\\dfrac12\\right)^n$　(2) $\\dfrac16+\\dfrac13\\left(-\\dfrac12\\right)^n$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\alpha=\\cos\\dfrac{\\pi}{3}+i\\sin\\dfrac{\\pi}{3}$ とおくと $\\alpha^6=1$，$\\alpha^3=-1$，$\\omega=\\alpha^2$，$\\overline{\\alpha^j}=\\alpha^{-j}$ である．\n$z=\\alpha^j$ のとき\n\\[\n\\omega z=\\alpha^{j+2},\\qquad -\\overline{z}=-\\alpha^{-j}=\\alpha^3\\alpha^{-j}=\\alpha^{3-j}\n\\]\nなので，$z_0=\\alpha^0$ から始めて帰納的に各 $z_k$ は $\\alpha^j$（$j$ は6を法として考える）の形であり，表で $j\\to j+2$，裏で $j\\to3-j$ と変化する．\n$P_n(j)$ を $z_n=\\alpha^j$ となる確率とすると，$z_{n+1}=\\alpha^j$ となるのは「$z_n=\\alpha^{j-2}$ で表」または「$z_n=\\alpha^{3-j}$ で裏」のときだから\n\\[\nP_{n+1}(j)=\\frac12\\bigl\\{P_n(j-2)+P_n(3-j)\\bigr\\}.\n\\]\n$j=0,1,2$ に対し $S_n(j)=P_n(j)+P_n(j+3)$，$D_n(j)=P_n(j)-P_n(j+3)$ とおく．$S_n(j+3)=S_n(j)$，$D_n(j+3)=-D_n(j)$ と約束すれば，これらは任意の整数 $j$ について意味をもつ．漸化式で $j$ と $j+3$ の式を足し引きすると，$(j+3)-2=(j-2)+3$，$3-(j+3)=-j$，$3-j=(-j)+3$ より\n\\[\nS_{n+1}(j)=\\frac12\\bigl\\{S_n(j-2)+S_n(-j)\\bigr\\},\\qquad\nD_{n+1}(j)=\\frac12\\bigl\\{D_n(j-2)-D_n(-j)\\bigr\\}.\n\\]\n$S$ の添字は3を法として考えてよいので\n\\[\nS_{n+1}(0)=\\tfrac12\\{S_n(1)+S_n(0)\\},\\quad S_{n+1}(1)=S_n(2),\\quad S_{n+1}(2)=\\tfrac12\\{S_n(0)+S_n(1)\\}.\n\\]\nまた $D_n(-2)=D_n(4)=-D_n(1)$，$D_n(-1)=D_n(5)=-D_n(2)$ より\n\\begin{gather*}\nD_{n+1}(0)=-\\tfrac12\\{D_n(1)+D_n(0)\\},\\qquad D_{n+1}(2)=\\tfrac12\\{D_n(0)+D_n(1)\\},\\\\\nD_{n+1}(1)=\\tfrac12\\{-D_n(2)+D_n(2)\\}=0.\n\\end{gather*}\n初期値は $P_0(0)=1$ から $S_0=(1,0,0)$，$D_0=(1,0,0)$（順に $j=0,1,2$）．\n\n(1) $z_n$ が実数 $\\iff z_n=\\pm1=\\alpha^0,\\alpha^3$ なので，求める確率は $s_n=S_n(0)$．\n$n\\geqq1$ では $S_n(2)=S_n(0)$ であり，したがって $n\\geqq1$ で $S_{n+1}(1)=S_n(2)=S_n(0)$．よって $n\\geqq1$ で\n\\[\ns_{n+2}=\\frac12\\bigl\\{s_{n+1}+S_{n+1}(1)\\bigr\\}=\\frac12(s_{n+1}+s_n).\n\\]\n$s_1=\\frac12(0+1)=\\frac12$，$S_1(1)=S_0(2)=0$ より $s_2=\\frac12\\left(\\frac12+0\\right)=\\frac14$．\n漸化式から $s_{n+2}+\\frac12s_{n+1}=s_{n+1}+\\frac12s_n$ なので，$n\\geqq1$ で $s_{n+1}+\\frac12s_n=s_2+\\frac12s_1=\\frac12$．\nこれは $s_{n+1}-\\frac13=-\\frac12\\left(s_n-\\frac13\\right)$ と書けるから，$s_n-\\frac13=\\left(-\\frac12\\right)^{n-1}\\left(\\frac12-\\frac13\\right)=-\\frac13\\left(-\\frac12\\right)^n$．\n\\[\n\\boldsymbol{s_n=\\frac13-\\frac13\\left(-\\frac12\\right)^n}.\n\\]\n\n(2) $D_n(1)=0$ がすべての $n\\geqq0$ で成り立つ（$n=0$ は初期値，$n\\geqq1$ は上の式）から，$D_{n+1}(0)=-\\frac12D_n(0)$，$D_0(0)=1$ より $D_n(0)=\\left(-\\frac12\\right)^n$．\n$P_n(0)=\\frac12\\{S_n(0)+D_n(0)\\}$ だから\n\\[\nP_n(0)=\\frac12\\left\\{\\frac13-\\frac13\\left(-\\frac12\\right)^n+\\left(-\\frac12\\right)^n\\right\\}=\\boldsymbol{\\frac16+\\frac13\\left(-\\frac12\\right)^n}.\n\\]\n（確認：$n=1$ のとき $0$，$n=2$ のとき $\\frac14$ で，直接の計算と一致する．）"
+   }
+  ],
+  "idea": {
+   "tex": "$z_k$ は1の6乗根 $\\alpha^j$（$\\alpha=\\cos\\frac{\\pi}{3}+i\\sin\\frac{\\pi}{3}$）の上を動き，表で $j\\to j+2$，裏で $j\\to3-j$．状態を「$j$ と $j+3$ の組」でまとめた和 $S$ と差 $D$ を考えると，$S$ は3状態の連鎖，$D$ はただちに1項漸化式に落ちる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 1/3-(1/3)(-1/2)^n\n(2) 1/6+(1/3)(-1/2)^n"
+  },
+  "methods": [],
+  "tags": [
+   "確率",
+   "複素数平面",
+   "1の6乗根",
+   "漸化式",
+   "対称性による組分け"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-041",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 5,
+  "minutes": 35,
+  "theme": "重みつきの積が1になる1の $p$ 乗根の組",
+  "topic": "重みつきの積が1になる1の $p$ 乗根の組",
+  "statement": {
+   "tex": "$p$ を素数とする．2以上の整数 $n$ に対し，次の条件(イ)，(ロ)をみたす複素数の組 $(z_1,z_2,\\dots,z_n)$ の個数を $b_n$ とする．\n\\begin{itemize}\n  \\item[(イ)] $k=1,2,\\dots,n$ に対し，$z_k{}^p=1$ かつ $z_k\\neq1$．\n  \\item[(ロ)] $z_1\\,z_2{}^2\\,z_3{}^3\\cdots z_n{}^n=1$．\n\\end{itemize}\n\\begin{enumerate}\n  \\item $p=3$，$n=6$ のとき $b_6$ を求めよ．\n  \\item $n$ を $p$ で割った商を $q$ とするとき，$b_n$ を $n,p,q$ で表せ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $24$　(2) $b_n=\\dfrac{(p-1)^n+(-1)^{n-q}(p-1)^{q+1}}{p}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\zeta=\\cos\\dfrac{2\\pi}p+i\\sin\\dfrac{2\\pi}p$ とおく．$z^p=1$ の解は $\\zeta^j$（$j=0,1,\\dots,p-1$）で，整数 $t$ について $\\zeta^t=1\\iff t$ は $p$ の倍数．$U=\\{\\zeta^j\\mid1\\leqq j\\leqq p-1\\}$（1以外の $p$ 乗根，$p-1$ 個）とする．\n\n\\textbf{補題1．} $U$ の元 $m$ 個の組で積が1となるものの個数を $a_m$ とすると $a_m=\\dfrac{(p-1)^m+(-1)^m(p-1)}{p}$（$m\\geqq1$）．\\\\\n証明：$a_1=0$．長さ $m$ の組 $(p-1)^m$ 個のうち積が1でないもの $(p-1)^m-a_m$ 個は，積の逆数（$U$ の元）を末尾に加えることでちょうど1通りに積が1の長さ $m+1$ の組に延び，積が1のものは延びない（加える元が1になる）．よって $a_{m+1}=(p-1)^m-a_m$．\n与式は $m=1$ で0，また $(p-1)^m-\\frac{(p-1)^m+(-1)^m(p-1)}{p}=\\frac{(p-1)^{m+1}+(-1)^{m+1}(p-1)}{p}$ をみたすので，帰納的に成り立つ．\\hfill$\\square$\n\n\\textbf{補題2．} $k$ が $p$ の倍数でなければ，$z\\mapsto z^k$ は $U$ から $U$ への1対1対応．$k$ が $p$ の倍数なら $U$ のすべての $z$ で $z^k=1$．\\\\\n証明：後半は $(\\zeta^j)^k=(\\zeta^p)^{jk/p}=1$．前半：$1\\leqq j\\leqq p-1$ のとき，$p$ は素数で $j,k$ を割り切らないから $jk$ も割り切らず，$(\\zeta^j)^k=\\zeta^{jk}\\in U$．$\\zeta^{jk}=\\zeta^{j'k}$ なら $p\\mid(j-j')k$，よって $p\\mid j-j'$，$|j-j'|<p$ より $j=j'$．$U$ は有限集合なので単射は全単射．\\hfill$\\square$\n\n$K=\\{k\\mid1\\leqq k\\leqq n,\\ p\\nmid k\\}$ とすると $|K|=n-q$．補題2より条件(ロ)は $\\prod_{k\\in K}z_k{}^k=1$ と同値で，$k\\notin K$ の $z_k$（$q$ 個）は $U$ から自由に選べる．$w_k=z_k{}^k$（$k\\in K$）とおくと，補題2より $(z_k)_{k\\in K}$ と $(w_k)_{k\\in K}\\in U^{n-q}$ は1対1に対応し，条件は $\\prod w_k=1$．$p\\geqq2$ より $q\\leqq\\frac n2<n$，$n-q\\geqq1$ なので補題1が使えて\n\\[\nb_n=(p-1)^q\\,a_{n-q}=\\boldsymbol{\\frac{(p-1)^n+(-1)^{n-q}(p-1)^{q+1}}{p}}.\n\\]\n\n(1) $p=3$，$n=6$ では $q=2$ で $b_6=\\dfrac{2^6+2^3}{3}=\\boldsymbol{24}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$p$ が素数なら，$p$ の倍数でない $k$ に対し $z\\mapsto z^k$ は「1以外の $p$ 乗根」全体の並べかえ．$p$ の倍数番目の $z_k$ は条件に効かず自由に選べる．こうして重みつきの条件は，長さ $n-q$ の「積が1」の数え上げ（漸化式 $a_{m+1}=(p-1)^m-a_m$）に帰着する．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 24\n(2) $b_n$：((p-1)^n+(-1)^(n-q)(p-1)^(q+1))/p"
+  },
+  "methods": [],
+  "tags": [
+   "場合の数",
+   "1のp乗根",
+   "素数の性質",
+   "全単射",
+   "漸化式"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-042",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 4,
+  "minutes": 35,
+  "theme": "2点を通る切り口の円の短い弧と長い弧",
+  "topic": "2点を通る切り口の円の短い弧と長い弧",
+  "statement": {
+   "tex": "原点 O を中心とする半径1の球面を $S$ とし，$S$ 上の2点を A$(1,0,0)$，B$(0,1,0)$ とする．2点 A，B を通る平面で $S$ を切ったときの切り口の円周は，A，B によって2つの弧に分けられる．その短い方の長さを $L_1$，長い方の長さを $L_2$ とする（2つが等しいときは $L_1=L_2$ とする）．A，B を通る平面をすべて考えるとき，\n\\begin{enumerate}\n  \\item $L_1$ のとりうる値の範囲を求めよ．\n  \\item $L_2$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $\\dfrac{\\pi}{2}\\leqq L_1\\leqq\\dfrac{\\sqrt2}{2}\\pi$　(2) $\\dfrac{\\sqrt2}{2}\\pi\\leqq L_2\\leqq\\dfrac{3}{2}\\pi$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "\\textbf{切り口の円の半径．}A，B を通る平面 $\\pi$ と O との距離を $h$，O から $\\pi$ に下ろした垂線の足を H とすると，切り口は H を中心とする半径 $r=\\sqrt{1-h^2}$ の円．AB の中点を N$(\\frac12,\\frac12,0)$ とすると $\\mathrm{ON}=\\frac{\\sqrt2}{2}$．\nHN は $\\pi$ 上にあり OH $\\perp$ HN なので $h=\\mathrm{OH}\\leqq\\mathrm{ON}=\\frac{\\sqrt2}2$（H$=$N のときも成立）．よって $\\frac{\\sqrt2}2\\leqq r\\leqq1$．\n逆に $0\\leqq\\psi\\leqq\\frac\\pi2$ に対し $\\vec n=\\left(\\frac{\\cos\\psi}{\\sqrt2},\\frac{\\cos\\psi}{\\sqrt2},\\sin\\psi\\right)$（単位ベクトル，$\\vec n\\cdot\\overrightarrow{\\mathrm{AB}}=0$）に垂直で A を通る平面は B も通り，O との距離は $|\\vec n\\cdot\\overrightarrow{\\mathrm{OA}}|=\\frac{\\cos\\psi}{\\sqrt2}$．これは $\\psi$ について連続で $\\frac{\\sqrt2}2$ から $0$ まで動くので，$r$ は $\\left[\\frac{\\sqrt2}2,1\\right]$ のすべての値をとる．\n\n\\textbf{弧長．}$d=\\frac{\\mathrm{AB}}2=\\frac{\\sqrt2}{2}$．半径 $r$ の円で弦 AB に対する短い弧の中心角を $2\\varphi$（$0<\\varphi\\leqq\\frac\\pi2$）とすると $\\sin\\varphi=\\frac dr$．$r$ が $\\left[\\frac{\\sqrt2}2,1\\right]$ を動くとき $\\sin\\varphi$ は $\\left[\\frac{\\sqrt2}2,1\\right]$ を動き，$\\varphi$ は $\\left[\\frac\\pi4,\\frac\\pi2\\right]$ を連続的にすべて動く．\n\\[L_1=2r\\varphi=\\sqrt2\\,\\frac{\\varphi}{\\sin\\varphi},\\qquad L_2=2r(\\pi-\\varphi)=\\sqrt2\\,\\frac{\\pi-\\varphi}{\\sin\\varphi}.\\]\n（$\\varphi=\\frac\\pi2$ のとき両者は等しい．）\n\n(1) $f(\\varphi)=\\dfrac{\\varphi}{\\sin\\varphi}$ について $f'(\\varphi)=\\dfrac{\\sin\\varphi-\\varphi\\cos\\varphi}{\\sin^2\\varphi}$．$k(\\varphi)=\\sin\\varphi-\\varphi\\cos\\varphi$ は $k(0)=0$，$k'(\\varphi)=\\varphi\\sin\\varphi>0$（$0<\\varphi\\leqq\\frac\\pi2$）より正．よって $f$ は狭義増加で，\n$L_1$ は $\\varphi=\\frac\\pi4$ で $\\sqrt2\\cdot\\frac{\\pi/4}{\\sqrt2/2}=\\frac\\pi2$，$\\varphi=\\frac\\pi2$ で $\\frac{\\sqrt2}2\\pi$．連続性より\n\\[\\boldsymbol{\\frac\\pi2\\leqq L_1\\leqq\\frac{\\sqrt2}{2}\\pi}.\\]\n\n(2) $g(\\varphi)=\\dfrac{\\pi-\\varphi}{\\sin\\varphi}$ について $g'(\\varphi)=\\dfrac{-\\sin\\varphi-(\\pi-\\varphi)\\cos\\varphi}{\\sin^2\\varphi}<0$（$\\frac\\pi4\\leqq\\varphi\\leqq\\frac\\pi2$ で $\\cos\\varphi\\geqq0$）．\n$L_2$ は $\\varphi=\\frac\\pi4$ で $\\sqrt2\\cdot\\frac{3\\pi/4}{\\sqrt2/2}=\\frac32\\pi$，$\\varphi=\\frac\\pi2$ で $\\frac{\\sqrt2}2\\pi$．よって\n\\[\\boldsymbol{\\frac{\\sqrt2}{2}\\pi\\leqq L_2\\leqq\\frac32\\pi}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "A，B を通る平面の切り口の円の半径を $r$ とすると，弦の半分 $d$ は一定で，短い弧の中心角の半分 $\\varphi$ は $\\sin\\varphi=\\dfrac dr$．弧長は $L_1=\\dfrac{2d\\varphi}{\\sin\\varphi}$，$L_2=\\dfrac{2d(\\pi-\\varphi)}{\\sin\\varphi}$ と $\\varphi$ だけの関数になり，$\\dfrac{\\varphi}{\\sin\\varphi}$ は増加，$\\dfrac{\\pi-\\varphi}{\\sin\\varphi}$ は減少．$r$ の範囲は O から平面までの距離で決まる．"
+  },
+  "methods": [],
+  "tags": [
+   "球の切り口",
+   "弧長",
+   "単調性",
+   "中間値の定理"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-043",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 4,
+  "minutes": 35,
+  "theme": "経度差を変えたときの大円航路の短縮率",
+  "topic": "経度差を変えたときの大円航路の短縮率",
+  "statement": {
+   "tex": "地球を半径1の球とみなし，北緯 $60^\\circ$ の2地点 A，B の経度の差を $2\\beta$（$0<\\beta\\leqq\\dfrac{\\pi}{2}$）とする．A から B へ同じ緯度の円に沿って進む経路のうち短い方の長さを $l_1$，大円に沿って進む経路のうち短い方の長さを $l_2$ とする．ただし，大円とは球の中心を通る平面で球面を切ったときの切り口の円のことであり，角は弧度法で表す．\n\\begin{enumerate}\n  \\item $l_1$ を $\\beta$ で表し，$\\sin\\dfrac{l_2}{2}$ を $\\beta$ で表せ．\n  \\item $\\beta$ が $0<\\beta\\leqq\\dfrac{\\pi}{2}$ の範囲を動くとき，$\\dfrac{l_2}{l_1}$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $l_1=\\beta$，$\\sin\\dfrac{l_2}{2}=\\dfrac12\\sin\\beta$　(2) $\\dfrac23\\leqq\\dfrac{l_2}{l_1}<1$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) 北緯 $60^\\circ$ の円は $z=\\frac{\\sqrt3}2$ 上の半径 $\\frac12$ の円で，A，B はこの円上で中心角 $2\\beta$（$\\leqq\\pi$）をなす．よって $\\boldsymbol{l_1=\\frac12\\cdot2\\beta=\\beta}$，弦 $\\mathrm{AB}=2\\cdot\\frac12\\sin\\beta=\\sin\\beta$．\nA，B，O は同一直線上にない（A，B の $z$ 座標は等しく正）ので，A，B を通る大円は平面 OAB の切り口でただ1つ．その半径は1で，弦 AB に対する短い弧の中心角を $2\\gamma$（$0<\\gamma\\leqq\\frac\\pi2$）とすると $\\mathrm{AB}=2\\sin\\gamma$，$l_2=2\\gamma$．よって\n\\[\\boldsymbol{\\sin\\frac{l_2}{2}=\\frac12\\sin\\beta}.\\]\n\n(2) $\\rho(\\beta)=\\dfrac{l_2}{l_1}=\\dfrac{2\\gamma}{\\beta}$．$\\gamma$ は $\\sin\\gamma=\\frac12\\sin\\beta\\leqq\\frac12$ より $0<\\gamma\\leqq\\frac\\pi6$ で，$\\sin\\gamma<\\sin\\beta$ から $\\gamma<\\beta$．\n$\\gamma$ は $\\frac12\\sin\\beta$ に $\\sin$（$0<x<\\frac\\pi2$ で微分係数 $\\cos x>0$）の逆関数を合成したものなので微分可能で，$\\cos\\gamma\\cdot\\gamma'=\\frac12\\cos\\beta$．\n\n\\textbf{単調性．}$0<\\beta<\\frac\\pi2$ で\n\\[\\rho'(\\beta)=\\frac{2(\\beta\\gamma'-\\gamma)}{\\beta^2},\\qquad \\beta\\gamma'-\\gamma=\\frac{\\beta\\cos\\beta-2\\gamma\\cos\\gamma}{2\\cos\\gamma}.\\]\n$k(x)=\\dfrac{x\\cos x}{\\sin x}$（$0<x\\leqq\\frac\\pi2$）は $k'(x)=\\dfrac{\\sin x\\cos x-x}{\\sin^2x}=\\dfrac{\\sin2x-2x}{2\\sin^2x}<0$ で狭義減少．$\\gamma<\\beta$ より $k(\\beta)<k(\\gamma)$ で，$\\sin\\beta=2\\sin\\gamma>0$ を掛けて\n\\[\\beta\\cos\\beta<\\sin\\beta\\cdot\\frac{\\gamma\\cos\\gamma}{\\sin\\gamma}=2\\gamma\\cos\\gamma.\\]\nよって $\\rho'<0$ で，$\\rho$ は $\\left(0,\\frac\\pi2\\right]$ で狭義減少（$\\beta=\\frac\\pi2$ では連続）．\n\n\\textbf{両端．}$\\beta=\\frac\\pi2$ のとき $\\sin\\gamma=\\frac12$，$\\gamma=\\frac\\pi6$ で $\\rho=\\dfrac{\\pi/3}{\\pi/2}=\\dfrac23$．\n$\\beta\\to+0$ のとき，$0<x\\leqq\\frac\\pi2$ で $\\sin x\\geqq\\frac2\\pi x$（$\\sin$ は上に凸）より $0<\\gamma\\leqq\\frac\\pi2\\sin\\gamma=\\frac\\pi4\\sin\\beta\\to0$．したがって\n\\[\\rho=\\frac{2\\gamma}{\\beta}=\\frac{\\gamma}{\\sin\\gamma}\\cdot\\frac{\\sin\\beta}{\\beta}\\to1.\\]\n狭義減少なので $\\rho(\\beta)<\\rho\\left(\\frac\\beta2\\right)<1$ であり，連続性から $\\left[\\frac23,1\\right)$ のすべての値をとる．\n\\[\\boldsymbol{\\frac23\\leqq\\frac{l_2}{l_1}<1}.\\]"
+   }
+  ],
+  "idea": {
+   "tex": "同緯度の円と大円は弦 AB を共有するので，弦の長さで2つの弧を結びつける：$l_1=\\beta$，$\\sin\\dfrac{l_2}{2}=\\dfrac12\\sin\\beta$．比 $\\dfrac{l_2}{l_1}$ の増減は $\\dfrac{x}{\\tan x}$ が減少であることに帰着する．経度差 $180^\\circ$ では大円が北極を通り，比は $\\dfrac23$．"
+  },
+  "methods": [],
+  "tags": [
+   "球面上の距離",
+   "弦の長さ",
+   "逆関数の微分",
+   "単調性",
+   "極限"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-044",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 4,
+  "minutes": 35,
+  "theme": "内積の大小による頂点の並べ方の総数",
+  "topic": "内積の大小による頂点の並べ方の総数",
+  "statement": {
+   "tex": "$xyz$ 空間内の有限個の点 $\\mathrm P_1,\\dots,\\mathrm P_N$ とベクトル $\\vec v$ に対し，$k\\neq m$ のとき $\\overrightarrow{\\mathrm P_k\\mathrm P_m}\\cdot\\vec v\\neq0$ が成り立つとする．このとき $N$ 個の点を内積 $\\overrightarrow{\\mathrm{OP}_k}\\cdot\\vec v$ の大きい順に1列に並べる（O は原点）．$\\vec v$ がこの条件をみたしながら動くとき，現れる並べ方の総数を考える．\n\\begin{enumerate}\n  \\item 6点 $(\\pm1,0,0)$，$(0,\\pm1,0)$，$(0,0,\\pm1)$（正八面体の頂点）のとき，並べ方は何通りか．\n  \\item 8点 $(\\pm1,\\pm1,\\pm1)$（立方体の頂点，複号任意）のとき，並べ方は何通りか．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $48$ 通り　(2) $96$ 通り"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\vec v=(a,b,c)$ とする．\n\n(1) 内積の値は $\\pm a,\\pm b,\\pm c$．$\\overrightarrow{\\mathrm P_k\\mathrm P_m}$ は $(\\pm2,0,0)$ などと $(\\pm1,\\pm1,0)$ などの形なので，条件は「$a,b,c\\neq0$ かつ $|a|,|b|,|c|$ が相異なる」．\n絶対値の大きい順に $L>M>S>0$ とすると，値の順は $L>M>S>-S>-M>-L$ で，各値を与える頂点は「どの座標か」と「その符号」で決まる．したがって並べ方は\n（$|a|,|b|,|c|$ の大小の順 $3!$ 通り）$\\times$（$a,b,c$ の符号 $2^3$ 通り）で決まる．\n逆に1位，2位，3位の頂点を見れば，最大・中間・最小の絶対値をもつ座標とその符号がわかるので，異なる組は異なる並べ方を与える．各組は例えば絶対値 $3,2,1$ を割り当てて実現できる．よって $\\boldsymbol{48}$ 通り．\n\n(2) 頂点 $(p_1,p_2,p_3)$ の値は $p_1a+p_2b+p_3c$．$\\overrightarrow{\\mathrm P_k\\mathrm P_m}$ は各成分が $0,\\pm2$（全部は0でない）なので，条件は\n「$a,b,c\\neq0$，$|a|,|b|,|c|$ が相異なり，最大の絶対値 $L$ が他の2つの和と異なる」\n（$\\varepsilon_1a+\\varepsilon_2b+\\varepsilon_3c\\neq0$，$\\varepsilon_i\\in\\{0,\\pm1\\}$ で全部は0でない，と同値）．\n$\\sigma_i$ を $a,b,c$ の符号とし，頂点ごとに $e_i=p_i\\sigma_i$ とおくと値は $e_L L+e_M M+e_S S$（$e_L$ などは最大・中間・最小の絶対値をもつ座標の $e_i$）．8つの値は\n\\[\\begin{aligned}&L+M+S>L+M-S>L-M+S>\\{L-M-S,\\ -L+M+S\\}\\\\&\\qquad>-L+M-S>-L-M+S>-L-M-S\\end{aligned}\\]\nの順で（隣どうしの差 $2S$，$2(M-S)$，$2(L-M)$ などはすべて正），中括弧の2つの順は $L-(M+S)$ の符号で決まる．よって並べ方は\n（符号 $8$ 通り）$\\times$（絶対値の大小の順 $6$ 通り）$\\times$（$L$ と $M+S$ の大小 $2$ 通り）\nの組で決まる．逆に1位の頂点から符号 $(\\sigma_1,\\sigma_2,\\sigma_3)$ が，2位・3位の頂点が1位と異なる座標から最小・中間の絶対値の座標が，4位の頂点が1位と2つの座標で異なるか1つで異なるかから $L$ と $M+S$ の大小がわかる．よって異なる組は異なる並べ方を与える．\n各組は絶対値として $(4,2,1)$（$L>M+S$）または $(4,3,2)$（$L<M+S$）を割り当てて実現できる．したがって $8\\times6\\times2=\\boldsymbol{96}$ 通り．"
+   }
+  ],
+  "idea": {
+   "tex": "$\\vec v=(a,b,c)$ との内積で頂点を並べる．正八面体では値は $\\pm a,\\pm b,\\pm c$ で，並べ方は「符号」と「$|a|,|b|,|c|$ の大小」で決まる．立方体では値は $\\pm|a|\\pm|b|\\pm|c|$ で，絶対値を $L>M>S$ とすると順位は1か所（$L-M-S$ と $-L+M+S$）を除いて決まり，そこは $L$ と $M+S$ の大小で決まる．並べ方からこれらの情報を復元できるので，数え上げは単射になる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 48通り\n(2) 96通り"
+  },
+  "methods": [],
+  "tags": [
+   "内積",
+   "場合の数",
+   "対称性",
+   "全単射"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-045",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 4,
+  "minutes": 30,
+  "theme": "和が0の3数の巡回式",
+  "topic": "和が0の3数の巡回式",
+  "statement": {
+   "tex": "実数 $x,y,z$ が $x+y+z=0$，$x^2+y^2+z^2=12$ をみたしながら動く．\n\\begin{enumerate}\n  \\item $x^2+xy+y^2$ の値を求めよ．また，$T=x^2y+y^2z+z^2x$ を $x,y$ の式で表せ．\n  \\item $T$ のとりうる値の範囲を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $x^2+xy+y^2=6$，$T=x^3+3x^2y-y^3$　(2) $-12\\sqrt2\\leqq T\\leqq12\\sqrt2$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "(1) $z=-x-y$ を代入して $x^2+y^2+(x+y)^2=12$，$\\boldsymbol{x^2+xy+y^2=6}$．\n$T=x^2y+y^2(-x-y)+(x+y)^2x=\\boldsymbol{x^3+3x^2y-y^3}$．\n\n(2) $\\omega=\\frac{-1+\\sqrt3i}2$，$w=x-y\\omega=\\left(x+\\frac y2\\right)-\\frac{\\sqrt3}2yi$ とおく．$|w|^2=\\left(x+\\frac y2\\right)^2+\\frac34y^2=x^2+xy+y^2=6$．逆に $|w|=\\sqrt6$ の複素数 $w$ に対し $y=-\\frac2{\\sqrt3}\\mathrm{Im}\\,w$，$x=\\mathrm{Re}\\,w-\\frac y2$ は実数で条件をみたす．よって $(x,y)$ と $|w|=\\sqrt6$ の $w$ は1対1に対応する．\n$\\omega^3=1$ より $w^3=x^3-y^3-3x^2y\\,\\omega+3xy^2\\omega^2$．$\\omega=-\\frac12+\\frac{\\sqrt3}2i$，$\\omega^2=-\\frac12-\\frac{\\sqrt3}2i$ より\n\\[\\mathrm{Re}\\,w^3=x^3-y^3+\\tfrac32x^2y-\\tfrac32xy^2,\\qquad\\mathrm{Im}\\,w^3=-\\tfrac{3\\sqrt3}2(x^2y+xy^2).\\]\nよって $T=\\mathrm{Re}\\,w^3+\\frac32(x^2y+xy^2)=\\mathrm{Re}\\,w^3-\\frac1{\\sqrt3}\\mathrm{Im}\\,w^3$．\n$w=\\sqrt6(\\cos\\phi+i\\sin\\phi)$ とおくとド・モアブルの定理より $w^3=6\\sqrt6(\\cos3\\phi+i\\sin3\\phi)$ で\n\\[T=6\\sqrt6\\left(\\cos3\\phi-\\tfrac1{\\sqrt3}\\sin3\\phi\\right)=12\\sqrt2\\left(\\tfrac{\\sqrt3}2\\cos3\\phi-\\tfrac12\\sin3\\phi\\right)=12\\sqrt2\\cos\\left(3\\phi+\\tfrac\\pi6\\right).\\]\n$\\phi$ はすべての実数をとるので $\\boldsymbol{-12\\sqrt2\\leqq T\\leqq12\\sqrt2}$．"
+   }
+  ],
+  "idea": {
+   "tex": "$z=-x-y$ を代入すると条件は $x^2+xy+y^2=6$，巡回式は $x^3+3x^2y-y^3$．$x^2+xy+y^2=|x-y\\omega|^2$ と見て $w=x-y\\omega$ を半径 $\\sqrt6$ の円周上で動かすと，巡回式は $\\mathrm{Re}\\,w^3-\\frac1{\\sqrt3}\\mathrm{Im}\\,w^3$ となり，ド・モアブルの定理で1つの余弦にまとまる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 記述\n(2) -12 sqrt(2)<=T<=12sqrt(2)"
+  },
+  "methods": [],
+  "tags": [
+   "対称式",
+   "巡回式",
+   "複素数平面",
+   "ド・モアブルの定理"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "X-MIX-046",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "X-20",
+  "level": 4,
+  "minutes": 30,
+  "theme": "外側に続けて作る相似三角形",
+  "topic": "外側に続けて作る相似三角形",
+  "statement": {
+   "tex": "複素数平面上に O$(0)$，A$(1)$ と，虚部が正の複素数 $\\beta$ で表される点 B$(\\beta)$ がある．$\\triangle\\mathrm{OAB}$ の外側に $\\triangle\\mathrm{BAC}$ を，さらに $\\triangle\\mathrm{BAC}$ の外側に $\\triangle\\mathrm{CAD}$ を，\n\\[\n\\triangle\\mathrm{OAB}\\sim\\triangle\\mathrm{BAC}\\sim\\triangle\\mathrm{CAD}\\quad(\\text{頂点はこの順に対応})\n\\]\nとなるように作る．ここで「$\\triangle\\mathrm{BAC}$ が $\\triangle\\mathrm{OAB}$ の外側にある」とは，C が直線 AB に関して O と反対側にあることとする（$\\triangle\\mathrm{CAD}$ についても同様）．\n\\begin{enumerate}\n  \\item C，D を表す複素数を $\\beta$ で表せ．\n  \\item D が実軸上にあるような点 B の軌跡を求め，図示せよ．\n  \\item D が実軸上にあり，かつ $\\mathrm{OD}=2$ となる B をすべて求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $\\mathrm C:\\ 1-(1-\\beta)^2$，$\\mathrm D:\\ 1-(1-\\beta)^3$　(2) A$(1)$ を端点とし実軸の正の向きと $60^\\circ$，$120^\\circ$ をなす2本の半直線（端点 A を除く）　(3) $\\beta=\\dfrac12+\\dfrac{\\sqrt3}2i$，$\\beta=1+\\dfrac{\\sqrt[3]3}{2}+\\dfrac{\\sqrt3\\sqrt[3]3}{2}i$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$w=1-\\beta$ とおく．$\\mathrm{Im}\\,\\beta>0$ より $\\mathrm{Im}\\,w<0$ で，$w=r(\\cos\\varphi+i\\sin\\varphi)$，$r>0$，$-\\pi<\\varphi<0$ と書ける．\n\n(1) $\\triangle\\mathrm{BAC}\\sim\\triangle\\mathrm{OAB}$（B$\\leftrightarrow$O，A$\\leftrightarrow$A，C$\\leftrightarrow$B）より $\\angle\\mathrm{BAC}=\\angle\\mathrm{OAB}$，$\\frac{\\mathrm{AC}}{\\mathrm{AB}}=\\frac{\\mathrm{AB}}{\\mathrm{AO}}$．\nA から O へのベクトルは $-1$，B へのベクトルは $\\beta-1=-w$ で，$\\frac{\\beta-1}{0-1}=w$ だから，半直線 AB は半直線 AO を A のまわりに角 $\\varphi$ 回転したものである．半直線 AB と角 $|\\varphi|$ をなす半直線は，AB を $\\varphi$ 回転したものと $-\\varphi$ 回転したもの（$=$ 半直線 AO）の2本で，$0<|\\varphi|<\\pi$ よりこれらは相異なり，直線 AB に関して対称（反対側）にある．C は直線 AB に関して O と反対側にあるので，半直線 AC は AB を $\\varphi$ 回転したもので，\n\\[\n\\frac{\\mathrm C-1}{\\beta-1}=\\frac{\\mathrm{AC}}{\\mathrm{AB}}(\\cos\\varphi+i\\sin\\varphi)=\\frac{\\mathrm{AB}}{\\mathrm{AO}}(\\cos\\varphi+i\\sin\\varphi)=w.\n\\]\nよって $\\mathrm C-1=w(\\beta-1)=-w^2$．同様に（半直線 AC は AB を $\\varphi$ 回転したもので，$0<|\\varphi|<\\pi$ なので同じ議論が使える）$\\frac{\\mathrm D-1}{\\mathrm C-1}=w$，$\\mathrm D-1=-w^3$．\n\\[\n\\boldsymbol{\\mathrm C=1-(1-\\beta)^2,\\qquad \\mathrm D=1-(1-\\beta)^3}.\n\\]\n\n(2) D が実数 $\\iff w^3$ が実数 $\\iff \\sin3\\varphi=0$．$-3\\pi<3\\varphi<0$ より $3\\varphi=-\\pi,-2\\pi$，すなわち $\\varphi=-\\frac\\pi3,-\\frac{2\\pi}3$．\n$\\beta=1-w=1+r\\{\\cos(\\varphi+\\pi)+i\\sin(\\varphi+\\pi)\\}$ で，$\\varphi+\\pi=\\frac{2\\pi}3,\\frac\\pi3$．$r>0$ は任意なので，B の軌跡は\n\\[\n\\boldsymbol{\\text{点 A}(1)\\text{ から出て，実軸の正の向きと }60^\\circ\\text{ および }120^\\circ\\text{ をなす2本の半直線（端点 A を除く）}}\n\\]\n（$\\beta=1+r\\left(\\frac12+\\frac{\\sqrt3}2i\\right)$，$\\beta=1+r\\left(-\\frac12+\\frac{\\sqrt3}2i\\right)$，$r>0$）．\n\n(3) $\\varphi=-\\frac{2\\pi}3$（$60^\\circ$ の半直線）のとき $w^3=r^3(\\cos(-2\\pi)+i\\sin(-2\\pi))=r^3$，$\\mathrm D=1-r^3$．$|1-r^3|=2$ と $r>0$ より $r^3=3$，$r=\\sqrt[3]3$．\n$\\varphi=-\\frac\\pi3$（$120^\\circ$ の半直線）のとき $w^3=r^3(\\cos(-\\pi)+i\\sin(-\\pi))=-r^3$，$\\mathrm D=1+r^3=2$ より $r=1$．\n\\[\n\\boldsymbol{\\beta=1+\\frac{\\sqrt[3]3}2+\\frac{\\sqrt3\\sqrt[3]3}2i\\quad(\\mathrm D=-2),\\qquad \\beta=\\frac12+\\frac{\\sqrt3}2i\\quad(\\mathrm D=2)}.\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "外側に作る相似三角形は，A を中心とする同じ回転・拡大 $z-1\\mapsto w(z-1)$（$w=1-\\beta$）を繰り返すことになる．$\\mathrm D=1-w^3$ が実数 $\\iff$ $w^3$ が実数で，$\\arg w\\in(-\\pi,0)$ から $\\arg w=-\\frac\\pi3,-\\frac{2\\pi}3$．"
+  },
+  "methods": [],
+  "tags": [
+   "複素数平面",
+   "回転と拡大",
+   "相似",
+   "軌跡"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
  }
 ]

@@ -1581,5 +1581,154 @@
    },
    "verified": false
   }
+ },
+ {
+  "id": "B-STA-034",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "B-14",
+  "level": 4,
+  "minutes": 30,
+  "theme": "3つの中心に関する対称移動のくり返し",
+  "topic": "3つの中心に関する対称移動のくり返し",
+  "statement": {
+   "tex": "1個のさいころを用意する．数直線上に石を置き，さいころを投げて，1または2の目が出れば座標0の点に関して対称な点に，3または4の目が出れば座標1の点に関して対称な点に，5または6の目が出れば座標2の点に関して対称な点に，石を移動する．はじめ石は原点にあるとし，$n$ を正の整数とする．さいころを $2n$ 回投げたあとの石の座標を $X$ とする．\n\\begin{enumerate}\n  \\item $X$ のとりうる値の最大値 $M$ と，$X=M$ となる確率を求めよ．\n  \\item $X=4n-4$ となる確率を求めよ．\n  \\item $X^2$ の期待値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $M=4n$，確率 $\\dfrac{1}{9^n}$　(2) $\\dfrac{n(2n+1)}{9^n}$　(3) $\\dfrac{16n}{3}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$k$ 回目に出た目に応じて中心 $c_k\\in\\{0,1,2\\}$（各確率 $\\frac13$，独立）が決まり，石の座標 $x_k$ は $x_k=2c_k-x_{k-1}$（$x_0=0$）．両辺に $(-1)^k$ をかけると $(-1)^kx_k=2(-1)^kc_k+(-1)^{k-1}x_{k-1}$ なので，$k=1$ から $2n$ まで足して\n\\[\nX=x_{2n}=2\\sum_{k=1}^{2n}(-1)^kc_k.\n\\]\n$k$ が偶数なら $u_k=c_k$，奇数なら $u_k=2-c_k$ とおく．$u_1,\\dots,u_{2n}$ は独立で，各々 $0,1,2$ を確率 $\\frac13$ ずつとる．奇数の $k$ は $n$ 個あるので\n\\[\nX=2\\Bigl(\\sum_{k=1}^{2n}u_k-2n\\Bigr).\n\\]\n\n(1) $\\sum u_k\\leqq4n$ より $X\\leqq4n$ で，等号はすべての $u_k=2$ のときに限る．よって $\\boldsymbol{M=4n}$，確率 $\\left(\\frac13\\right)^{2n}=\\boldsymbol{\\dfrac1{9^n}}$．\n\n(2) $X=4n-4\\iff\\sum u_k=4n-2\\iff\\sum_{k}(2-u_k)=2$．$v_k=2-u_k\\in\\{0,1,2\\}$ の和が2となるのは，1つの $v_k$ が2で他が0（$2n$ 通り），または2つの $v_k$ が1で他が0（${}_{2n}\\mathrm C_2=n(2n-1)$ 通り）．よって\n\\[\n\\frac{2n+n(2n-1)}{3^{2n}}=\\boldsymbol{\\frac{n(2n+1)}{9^n}}.\n\\]\n\n(3) $w_k=u_k-1$ とおくと $X=2\\sum w_k$，$E(w_k)=0$，$E(w_k^2)=\\frac{1+0+1}{3}=\\frac23$．$j\\neq k$ では独立性から $E(w_jw_k)=E(w_j)E(w_k)=0$．よって\n\\[\nE(X^2)=4\\Bigl\\{\\sum_kE(w_k^2)+\\sum_{j\\ne k}E(w_jw_k)\\Bigr\\}=4\\cdot2n\\cdot\\frac23=\\boldsymbol{\\frac{16n}{3}}.\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "中心 $c$ に関する対称移動は $x\\mapsto2c-x$．$(-1)^kx_k$ を考えると和が望遠鏡式に消え，$x_{2n}=2\\sum_{k=1}^{2n}(-1)^kc_k$．奇数回目の $c_k$ を $2-c_k$ に置きかえると独立な一様変数の和になり，最大値付近の個数は「不足分の配り方」で数え，2乗の期待値は分散の和で求まる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $M$：4n ; 確率：1/9^n\n(2) n(2n+1)/9^n\n(3) 16n/3"
+  },
+  "methods": [],
+  "tags": [
+   "確率",
+   "点対称移動の合成",
+   "符号つき和",
+   "重複組合せ",
+   "分散"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "B-STA-035",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "B-14",
+  "level": 4,
+  "minutes": 30,
+  "theme": "4色4番号の玉から4個取り出したときの孤立した玉",
+  "topic": "4色4番号の玉から4個取り出したときの孤立した玉",
+  "statement": {
+   "tex": "袋の中に青色，赤色，白色，黒色の形の同じ玉がそれぞれ4個ずつ入っている．各色の4個の玉にはそれぞれ1，2，3，4の番号がついている．これら16個の玉をよくかきまぜて袋から同時に4個の玉を取り出す．取り出した4個のうちに，同色のものが他になく，同番号のものも他にない玉の個数を得点とする．\n\\begin{enumerate}\n  \\item 得点が4となる確率を求めよ．\n  \\item 得点が3となることはないことを示せ．\n  \\item 得点の期待値を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $\\dfrac{6}{455}$　(2) 証明　(3) $\\dfrac{48}{65}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "取り出し方は ${}_{16}\\mathrm C_4=1820$ 通りで同様に確からしい．取り出した玉のうち，同色も同番号も他にない玉を「孤立した玉」とよぶ．\n\n(1) 得点4 $\\iff$ 4個の色がすべて異なり番号もすべて異なる．4色が1個ずつなので，各色に番号を重複なく割り当てる方法で $4!=24$ 通り．確率は $\\dfrac{24}{1820}=\\boldsymbol{\\dfrac{6}{455}}$．\n\n(2) 3個の玉 $A,B,C$ が孤立しているとし，残りを $D$ とする．$A,B,C$ はそれぞれ他の3個と色も番号も異なるので，特に $D$ の色は $A,B,C$ のどの色とも異なり，$D$ の番号も $A,B,C$ のどの番号とも異なる．よって $D$ も孤立しており，得点は4．したがって得点がちょうど3になることはない．\\hfill$\\square$\n\n(3) 16個の玉 $b$ それぞれについて，「$b$ が取り出され，かつ孤立する」とき1，そうでないとき0をとる確率変数 $I_b$ を考えると，得点 $=\\sum_bI_b$．$b$ を含み $b$ が孤立する取り出し方は，他の3個を $b$ と色も番号も異なる $3\\times3=9$ 個から選ぶ ${}_9\\mathrm C_3=84$ 通り．よって $E(I_b)=\\frac{84}{1820}$ で，期待値の性質から\n\\[\nE(\\text{得点})=\\sum_bE(I_b)=16\\cdot\\frac{84}{1820}=\\boldsymbol{\\frac{48}{65}}.\n\\]"
+   }
+  ],
+  "idea": {
+   "tex": "得点4は「色も番号も全部異なる」4個で，色と番号の対応（並べかえ）の数 $4!$ だけある．得点3は，孤立した3個が色3つ・番号3つを使い切るので残り1個も孤立し不可能．期待値は16個の玉それぞれが「取り出されて孤立する」確率の和として求める．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) 6/455\n(2) 証明\n(3) 48/65"
+  },
+  "methods": [],
+  "tags": [
+   "確率",
+   "期待値の線形性",
+   "指示変数",
+   "数え上げ"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
+ },
+ {
+  "id": "B-STA-036",
+  "schema": "lemma.problem/1",
+  "kind": "written",
+  "field": "B-14",
+  "level": 5,
+  "minutes": 35,
+  "theme": "直前と同じ頂点を選ばない中点の反復",
+  "topic": "直前と同じ頂点を選ばない中点の反復",
+  "statement": {
+   "tex": "$xy$ 平面上の正三角形ABCを考える．ABCの重心は原点Oにあり，$|\\overrightarrow{\\mathrm{OA}}|=1$ とする．$\\mathrm{P}_0=\\mathrm{O}$ とし，次の操作で点 $\\mathrm{P}_1,\\mathrm{P}_2,\\dots$ を作る．\n\\begin{itemize}\n  \\item 1回目は3頂点A，B，Cから1点を等確率 $\\frac13$ で選んで $\\mathrm{X}_1$ とする．\n  \\item $n\\geqq2$ のとき，$n$ 回目は $\\mathrm{X}_{n-1}$ 以外の2頂点から1点を等確率 $\\frac12$ で選んで $\\mathrm{X}_n$ とする．\n  \\item $\\mathrm{P}_n$ は線分 $\\mathrm{P}_{n-1}\\mathrm{X}_n$ の中点とする．\n\\end{itemize}\n$|\\overrightarrow{\\mathrm{OP}_n}|^2$ の期待値を $E_n$ とおく．\n\\begin{enumerate}\n  \\item $E_1$，$E_2$ を求めよ．\n  \\item $1\\leqq i<j$ のとき，内積 $\\overrightarrow{\\mathrm{OX}_i}\\cdot\\overrightarrow{\\mathrm{OX}_j}$ の期待値を求めよ．\n  \\item $E_n$ を求めよ．\n\\end{enumerate}"
+  },
+  "answer": {
+   "tex": "(1) $E_1=\\dfrac14$，$E_2=\\dfrac3{16}$　(2) $\\left(-\\dfrac12\\right)^{j-i}$　(3) $E_n=\\dfrac15\\left\\{1-\\left(-\\dfrac14\\right)^n\\right\\}$"
+  },
+  "solutions": [
+   {
+    "id": "main",
+    "kind": "main",
+    "tex": "$\\vec a_i=\\overrightarrow{\\mathrm{OX}_i}$ と書く．$|\\vec a_i|=1$ で，異なる2頂点については $\\overrightarrow{\\mathrm{OA}}\\cdot\\overrightarrow{\\mathrm{OB}}=\\cos120^\\circ=-\\frac12$ など．\n\n(1) $\\overrightarrow{\\mathrm{OP}_1}=\\frac12\\vec a_1$ より $E_1=\\boldsymbol{\\dfrac14}$．$\\overrightarrow{\\mathrm{OP}_2}=\\frac14\\vec a_1+\\frac12\\vec a_2$ で，$\\mathrm X_2\\neq\\mathrm X_1$ だから常に\n\\[|\\overrightarrow{\\mathrm{OP}_2}|^2=\\frac1{16}+\\frac14+2\\cdot\\frac18\\cdot\\left(-\\frac12\\right)=\\frac3{16},\\qquad E_2=\\boldsymbol{\\frac3{16}}.\\]\n\n(2) $m\\geqq0$ に対し $q_m$ を $\\mathrm X_{i+m}=\\mathrm X_i$ となる確率とする．$q_0=1$．$\\mathrm X_{i+m}=\\mathrm X_i$ のとき $\\mathrm X_{i+m+1}\\neq\\mathrm X_i$，$\\mathrm X_{i+m}\\neq\\mathrm X_i$ のとき $\\mathrm X_i$ は次に選ばれうる2頂点の一方なので確率 $\\frac12$ で $\\mathrm X_{i+m+1}=\\mathrm X_i$．よって\n\\[q_{m+1}=\\frac12(1-q_m),\\qquad q_m-\\frac13=\\left(-\\frac12\\right)^m\\left(1-\\frac13\\right),\\quad q_m=\\frac13+\\frac23\\left(-\\frac12\\right)^m.\\]\n$\\vec a_i\\cdot\\vec a_j$ は $\\mathrm X_j=\\mathrm X_i$ なら $1$，そうでなければ $-\\frac12$ なので，期待値は\n\\[q_{j-i}-\\frac12(1-q_{j-i})=\\frac{3q_{j-i}-1}2=\\boldsymbol{\\left(-\\frac12\\right)^{j-i}}.\\]\n\n(3) $\\overrightarrow{\\mathrm{OP}_n}=\\frac12\\overrightarrow{\\mathrm{OP}_{n-1}}+\\frac12\\vec a_n$，$\\overrightarrow{\\mathrm{OP}_0}=\\vec0$ から帰納的に $\\overrightarrow{\\mathrm{OP}_n}=\\displaystyle\\sum_{i=1}^n\\frac{\\vec a_i}{2^{n-i+1}}$．$\\alpha=n-i+1$，$\\beta=n-j+1$ と番号を付け替えると，$i<j\\iff\\beta<\\alpha$，$j-i=\\alpha-\\beta$ で，期待値の線形性と (2) より\n\\[E_n=\\sum_{\\alpha=1}^n\\frac1{4^\\alpha}+2\\sum_{1\\leqq\\beta<\\alpha\\leqq n}\\frac{1}{2^{\\alpha+\\beta}}\\left(-\\frac12\\right)^{\\alpha-\\beta}=\\sum_{\\alpha=1}^n\\frac1{4^\\alpha}+2\\sum_{\\alpha=2}^n\\frac1{4^\\alpha}\\sum_{d=1}^{\\alpha-1}(-1)^d.\\]\n$\\sum_{d=1}^{\\alpha-1}(-1)^d$ は $\\alpha$ が偶数なら $-1$，奇数なら $0$．よって\n\\[E_n=\\frac{1-4^{-n}}3-2\\sum_{\\substack{2\\leqq\\alpha\\leqq n\\\\ \\alpha:\\text{偶数}}}\\frac1{4^\\alpha}.\\]\n\\begin{itemize}\n  \\item $n=2m$：偶数番目の和は $\\sum_{l=1}^m16^{-l}=\\frac{1-4^{-n}}{15}$ で，$E_n=(1-4^{-n})\\left(\\frac13-\\frac2{15}\\right)=\\frac{1-4^{-n}}5$．\n  \\item $n=2m+1$：偶数番目の和は $\\frac{1-4^{-(n-1)}}{15}$ で，$E_n=\\frac{1-4^{-n}}3-\\frac{2(1-4\\cdot4^{-n})}{15}=\\frac{1+4^{-n}}5$．\n\\end{itemize}\nまとめて\n\\[\\boldsymbol{E_n=\\frac15\\left\\{1-\\left(-\\frac14\\right)^n\\right\\}}.\\]\n（$n=1,2$ で (1) と一致する．選び方を制限しない場合の $\\frac13(1-4^{-n})$ と比べ，極限は $\\frac13$ から $\\frac15$ に下がる．）\n\\hfill$\\square$"
+   }
+  ],
+  "idea": {
+   "tex": "$\\overrightarrow{\\mathrm{OP}_n}=\\sum_{i=1}^n\\dfrac{\\overrightarrow{\\mathrm{OX}_i}}{2^{n-i+1}}$．選び方に記憶があるので交差項が消えない．$\\mathrm{X}_j=\\mathrm{X}_i$ となる確率 $q_{j-i}$ は $q_{m+1}=\\frac12(1-q_m)$ をみたし，内積の期待値は $\\left(-\\frac12\\right)^{j-i}$．交差項の和は符号が交互になり，$n$ の偶奇で形が分かれるように見えて一つの式にまとまる．"
+  },
+  "grading": {
+   "format": "lemma-input/1",
+   "spec": "(1) $E_1$：1/4 ; $E_2$：3/16\n(2) 記述\n(3) $E_n$：(1/5)(1-(-1/4)^n)"
+  },
+  "methods": [],
+  "tags": [
+   "期待値",
+   "内積",
+   "推移確率",
+   "漸化式",
+   "ベクトル"
+  ],
+  "provenance": {
+   "created": "2026-10-30"
+  },
+  "quality": {
+   "status": "published",
+   "checks": {
+    "dual": false,
+    "sympy": true,
+    "human": false
+   },
+   "verified": false
+  }
  }
 ]
