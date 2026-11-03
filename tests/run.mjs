@@ -39,6 +39,7 @@ process.exit(ok ? 0 : 1);`]],
   ['すべての数式を KaTeX で描画できる', 'node', ['tools/check_katex.cjs']],
   ['自動採点の回帰テスト', 'node', ['tests/answer.test.mjs']],
   ['catalog.js の単体テスト（getProblem・v0.6 の学習記録）', 'node', ['tests/catalog.test.mjs']],
+  ['同期の単体テスト（記録の合わせ方・にせ Supabase との通信）', 'node', ['tests/sync.test.mjs']],
 ];
 if (process.argv.includes('--e2e')) steps.push(['ブラウザでの通し操作', 'node', ['tests/e2e.mjs']]);
 

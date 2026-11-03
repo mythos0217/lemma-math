@@ -6,15 +6,37 @@ import http from 'http';
 import path from 'path';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
+import { createMockSupabase } from './mock-supabase.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
+let fakeDataVersion = null;
+const mock = createMockSupabase({ key: 'sb_publishable_e2e' });   // 同期のテスト用（このサーバーの /mock/ で応える）   // Service Worker のテスト用：index.json の dataVersion を差し替える
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   if (p.endsWith('/')) p += 'index.html';
+  if (p.startsWith('/mock/')) {
+    let body = ''; req.on('data', c => { body += c; });
+    req.on('end', async () => {
+      const r = await mock.handle({ method: req.method, url: req.url, headers: req.headers, body: body || null });
+      res.writeHead(r.status, { 'Content-Type': 'application/json' }); res.end(r.body);
+    });
+    return;
+  }
+  if (p === '/js/config.js') {
+    res.writeHead(200, { 'Content-Type': 'text/javascript' });
+    const v = fs.readFileSync(path.join(root, 'js/config.js'), 'utf8').match(/FILE_VERSION = '([^']+)'/)[1];
+    return res.end(`export const FILE_VERSION = '${v}';
+export const SUPABASE_URL = 'http://localhost:${server.address().port}/mock';
+export const SUPABASE_KEY = 'sb_publishable_e2e';`);
+  }
+  if (fakeDataVersion && p === '/data/index.json') {
+    const d = JSON.parse(fs.readFileSync(path.join(root, p), 'utf8')); d.dataVersion = fakeDataVersion;
+    res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(d));
+  }
   const f = path.join(root, p);
   if (!f.startsWith(root) || !fs.existsSync(f)) { res.writeHead(404); return res.end(); }
   res.writeHead(200, { 'Content-Type': TYPES[path.extname(f)] || 'application/octet-stream' });
@@ -27,8 +49,8 @@ let fail = 0, pass = 0;
 const ok = (cond, msg) => { if (cond) pass++; else { fail++; console.log('FAIL', msg); } };
 const browser = await chromium.launch();
 
-async function newPage({ state = null, route = null } = {}) {
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, acceptDownloads: true, serviceWorkers: 'block' });
+async function newPage({ state = null, route = null, sw = false } = {}) {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, acceptDownloads: true, serviceWorkers: sw ? 'allow' : 'block' });
   if (state) await ctx.addInitScript((s) => { if (!sessionStorage.getItem('seeded')) { sessionStorage.setItem('seeded', '1'); localStorage.setItem('lemma.v2', s); } }, JSON.stringify(state));
   const page = await ctx.newPage();
   page.errors = [];
@@ -125,6 +147,109 @@ try {
     const b = page.locator('.banner');
     ok(await b.count() === 1 && (await b.innerText()).includes('data/f-I-01.json'), '古い本文ファイルを読むと警告が出る');
     ok(await page.locator('#inputs input').count() > 0, '警告が出ても問題は解ける');
+  }
+  // 5. 自己採点の前に解答・解説が出る／設定に「問題データ」が無い
+  {
+    const page = await newPage();
+    await page.goto(U + '#today'); await page.waitForTimeout(1200);
+    await page.evaluate("__lemma.open(['A-COM-020'])"); await page.waitForTimeout(800);
+    await page.locator('#conf button').nth(1).click();
+    await page.click('#reveal'); await page.waitForTimeout(400);
+    const order = await page.evaluate(() => { const a = document.querySelector('#solbox'), b = document.querySelector('#self'); return !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)); });
+    ok(order, '自己採点の問題で、解答・解説が「どうだった？」より前に出る');
+    await page.locator('#self button').first().click(); await page.waitForTimeout(300);
+    ok(await page.locator('#solbox').count() === 1, '採点後も解答・解説は1つだけ');
+    await page.goto(U + '#settings'); await page.waitForTimeout(500);
+    ok(!(await page.locator('#view').innerText()).includes('問題データ'), '設定に「問題データ」の項目が無い');
+    ok(page.errors.length === 0, `ページのエラーなし ${page.errors}`);
+  }
+  // 6. 検索・問題セット・共有リンク・得意苦手の図
+  {
+    const old = JSON.parse(fs.readFileSync(path.join(root, 'tests/fixtures/state-v0.6.json'), 'utf8'));
+    const page = await newPage({ state: old });
+    await page.goto(U + '#today'); await page.waitForTimeout(1500);
+    ok(await page.locator('#sets .set-card').count() >= 3, '今日の画面に問題セット');
+    await page.fill('#sq', '回転体'); await page.press('#sq', 'Enter'); await page.waitForTimeout(1500);
+    const n = await page.locator('.res-row').count();
+    ok(n > 0 && (await page.locator('#sres').innerText()).includes('見つかりました'), `検索「回転体」で結果が出る（${n}件表示）`);
+    await page.click('#sgo'); await page.waitForTimeout(1000);
+    ok(await page.locator('#conf button').count() === 3, '検索結果から演習が始まる');
+    await page.goto(U + '#set=col-induction'); await page.waitForTimeout(1500);
+    ok(page.url().endsWith('#today') && await page.locator('#conf button').count() === 3, '#set= のリンクで問題セットが始まる');
+    await page.goto(U + '#ids=I-QF-109,q01'); await page.waitForTimeout(1500);
+    ok((await page.locator('.chip').allInnerTexts()).some(t => t.includes('2次関数')), '#ids= のリンクで指定の問題が出る');
+    await page.goto(U + '#map'); await page.waitForTimeout(800);
+    const fields = JSON.parse(fs.readFileSync(path.join(root, 'data/index.json'), 'utf8')).fields.length;
+    ok(await page.locator('.strength svg.radar').count() === 1 && await page.locator('.strength .tile').count() === fields, `得意・苦手の図（レーダー＋${fields}分野のタイル）`);
+    await page.locator('.strength .tile').first().click(); await page.waitForTimeout(1000);
+    ok(await page.locator('#conf button').count() === 3, 'タイルをタップするとその分野の演習');
+    ok(page.errors.length === 0, `ページのエラーなし ${page.errors}`);
+  }
+  // 7. Service Worker：データ用キャッシュが版で分かれ、版が変わると古い本文が捨てられる。オフラインでも開いた分野は解ける
+  {
+    const page = await newPage({ sw: true });
+    await page.goto(U + '#today');
+    await page.waitForFunction(() => navigator.serviceWorker.controller, null, { timeout: 15000 }).catch(() => {});
+    await page.reload(); await page.waitForTimeout(1200);
+    await page.evaluate("__lemma.open(['I-EXP-001'])"); await page.waitForTimeout(1200);
+    const v = JSON.parse(fs.readFileSync(path.join(root, 'data/index.json'), 'utf8')).dataVersion;
+    const keys = await page.evaluate(async () => caches.keys());
+    ok(keys.includes('lemma-data-' + v) && keys.some(k => k.startsWith('lemma-v')), `コード用とデータ用のキャッシュが分かれる ${keys}`);
+    ok(await page.evaluate(async () => !!(await caches.match('data/f-I-01.json'))), '開いた分野の本文がキャッシュされる');
+    await page.context().setOffline(true);
+    await page.goto(U + '#today'); await page.waitForTimeout(1200);
+    await page.evaluate("__lemma.open(['I-EXP-001'])"); await page.waitForTimeout(1200);
+    ok(await page.locator('#inputs input').count() === 7, 'オフラインでも開いた分野の問題が解ける');
+    await page.context().setOffline(false);
+    fakeDataVersion = 'e2enewversion';
+    await page.goto(U + '#today'); await page.waitForTimeout(1500);
+    await page.evaluate(async () => fetch('data/index.json', { cache: 'no-cache' }));
+    await page.waitForTimeout(500);
+    const keys2 = await page.evaluate(async () => caches.keys());
+    ok(keys2.includes('lemma-data-e2enewversion') && !keys2.includes('lemma-data-' + v), `データの版が変わると古いデータ用キャッシュを消す ${keys2}`);
+    ok(!(await page.evaluate(async () => !!(await caches.match('data/f-I-01.json')))), '古い版の本文は残らない');
+    fakeDataVersion = null;
+  }
+  // 8. アカウントと同期：2台の端末でログインすると記録が合わさる（にせ Supabase）
+  {
+    const old = JSON.parse(fs.readFileSync(path.join(root, 'tests/fixtures/state-v0.6.json'), 'utf8'));
+    const login = async (page) => {
+      await page.goto(U + '#settings'); await page.waitForTimeout(1500);
+      await page.fill('#acct-email', 'me@example.com'); await page.click('#acct-send'); await page.waitForTimeout(500);
+      await page.fill('#acct-code', '000000'); await page.click('#acct-verify'); await page.waitForTimeout(500);
+      const wrong = await page.locator('#acct-err').innerText();
+      await page.fill('#acct-code', '123456'); await page.click('#acct-verify'); await page.waitForTimeout(1500);
+      return wrong;
+    };
+    const A = await newPage({ state: { ...old, log: old.log.slice(0, 25) } });
+    const wrong = await login(A);
+    ok(/コード/.test(wrong), '違うコードでは日本語のエラーが出る');
+    ok((await A.locator('#acct').innerText()).includes('me@example.com') && (await A.locator('#acct-state').innerText()).includes('最後の同期'), '端末A：ログインして同期できる');
+    const B = await newPage({ state: { ...old, log: old.log.slice(20) } });
+    await login(B);
+    const nB = await B.evaluate(() => JSON.parse(localStorage.getItem('lemma.v2')).log.length);
+    ok(nB === old.log.length, `端末B：両方の端末の記録が合わさる（${nB}件）`);
+    await A.click('#acct-now'); await A.waitForTimeout(1500);
+    const nA = await A.evaluate(() => JSON.parse(localStorage.getItem('lemma.v2')).log.length);
+    ok(nA === old.log.length, '端末A：「今すぐ同期」で端末Bの記録も入る');
+    // 解いたあとは自動で同期の予約が入る（ここでは画面を閉じたときの同期で確かめる）
+    await A.evaluate("__lemma.open(['I-QF-109'])"); await A.waitForTimeout(800);
+    await A.locator('#conf button').nth(1).click();
+    const inp = A.locator('#inputs input');
+    await inp.nth(0).fill('x^2-8x+10'); await inp.nth(1).fill('4'); await inp.nth(2).fill('-3');
+    await A.click('#judge'); await A.waitForTimeout(500);
+    await A.evaluate(() => { Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true }); document.dispatchEvent(new Event('visibilitychange')); });
+    await A.waitForTimeout(1500);
+    const srv = [...mock.rows.values()][0].state.log.map(l => l.p);
+    ok(srv.includes('I-QF-109'), 'アプリを閉じるときに、解いた結果がサーバーに送られる');
+    await A.goto(U + '#settings'); await A.waitForTimeout(1200);
+    await A.click('#acct-out'); await A.waitForTimeout(1200);
+    ok(await A.locator('#acct-email').count() === 1 && (await A.evaluate(() => JSON.parse(localStorage.getItem('lemma.v2')).log.length)) > 0, 'ログアウトしても端末の記録は残る');
+    await B.goto(U + '#settings'); await B.waitForTimeout(1200);
+    await B.click('#acct-del'); await B.waitForTimeout(1200);
+    ok(mock.rows.size === 0 && mock.users.size === 0, '退会でサーバーの記録とアカウントが消える');
+    const real = (es) => es.filter(e => !/status of 403/.test(e));   // わざと違うコードを入れたときの 403 は除く
+    ok(real(A.errors).length === 0 && real(B.errors).length === 0, `ページのエラーなし ${A.errors} ${B.errors}`);
   }
 } finally {
   await browser.close();

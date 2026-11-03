@@ -57,6 +57,10 @@
   },
   "createdBy": {
    "type": "string"
+  },
+  "order": {
+   "type": "integer",
+   "description": "表示順（小さいほど先）"
   }
  }
 }

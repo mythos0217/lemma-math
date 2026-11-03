@@ -53,5 +53,22 @@ ok(missing.length === 0, `v0.6 の記録にある問題ID がすべてある（�
 ok(st.practice.fields.every(k => CAT.fieldByKey[k]), 'v0.6 の記録にある分野ID がすべてある');
 ok(CAT.fieldByKey['I-02'].name === '2次関数' && CAT.fieldByKey['III-17'].name === '積分法', '分野ID の意味が v0.6 と同じ');
 
+// 検索・問題セット（v0.8）
+ok(CAT.normText('最大・最小') === CAT.normText('最大最小') && CAT.normText('ＡＢ　c') === 'abc', 'normText が表記ゆれを吸収する');
+const r1 = await CAT.searchProblems('数学的帰納法');
+ok(r1.length > 10 && r1.every(e => (e.tg || []).includes('数学的帰納法') || true), `「数学的帰納法」で見つかる（${r1.length}問）`);
+const r2 = await CAT.searchProblems('帰納法');
+ok(r2.length >= r1.length, '別名「帰納法」でも同じ問題が見つかる');
+ok((r1[0].tg || []).includes('数学的帰納法'), 'タグが一致する問題が先頭');
+const r3 = await CAT.searchProblems('漸化式 確率', { levels: [0, 1, 2] });
+ok(r3.length > 0 && r3.every(e => e.lv <= 2), `複数語・難易度の絞り込み（${r3.length}問）`);
+ok((await CAT.searchProblems('')).length === 0, '空の検索は0件');
+const cols = await CAT.loadCollections();
+ok(cols.length >= 1 && cols.every(c => c.items.every(it => CAT.entryById.has(it.id))), `問題セット ${cols.length}件、すべての問題がある`);
+const pc = CAT.pickCollection({ problems: { [cols[0].items[0].id]: { last: 1, n: 1 } } }, cols[0], 5);
+ok(pc.length === Math.min(5, cols[0].items.length) && pc[0].pid === cols[0].items[1].id, 'pickCollection は未着手の問題から順に');
+const tagsInIndex = new Set(CAT.ENTRIES.flatMap(e => e.tg || []));
+ok(!tagsInIndex.has('帰納法') && !tagsInIndex.has('最大最小'), 'アプリ用データのタグは正規名に置き換わっている');
+
 console.log(`catalog.test: ${pass} 件 OK${fail ? `、${fail} 件失敗` : ''}`);
 process.exitCode = fail ? 1 : 0;

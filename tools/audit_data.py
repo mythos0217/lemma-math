@@ -143,6 +143,39 @@ def audit(xlsx=None):
             if k not in tkeys:
                 E.append(f'taxonomy.json の builtinUnits {u} → {k} が分野にない')
 
+    # 4b. 問題セット・検索の索引・タグ辞書
+    if content is not None:
+        allc = {p['id'] for _, p in content}
+        for f in sorted((CONTENT / 'collections').glob('*.json')) if (CONTENT / 'collections').exists() else []:
+            c = json.loads(f.read_text(encoding='utf-8'))
+            if f.stem != c.get('id'):
+                E.append(f'問題セット {f.name}: ファイル名と id（{c.get("id")}）が違う')
+            for it in c.get('items', []):
+                if it['id'] not in allc:
+                    E.append(f'問題セット {c.get("id")}: 問題 {it["id"]} が無い')
+                elif it['id'] in hidden:
+                    W['問題セットに入っている非表示の問題'] += 1
+        tg = CONTENT / 'tags.json'
+        if tg.exists():
+            seen = {}
+            for t in json.loads(tg.read_text(encoding='utf-8'))['tags']:
+                for s2 in [t['name']] + t.get('aliases', []):
+                    k = re.sub(r'[・･\s、,／/()（）「」\-−ー~〜]', '', __import__('unicodedata').normalize('NFKC', s2).lower())
+                    if k in seen and seen[k] != t['name']:
+                        E.append(f'タグ辞書：「{s2}」が「{seen[k]}」と「{t["name"]}」の両方にある')
+                    seen[k] = t['name']
+    for name in ('search.json', 'collections.json'):
+        f = DATA / name
+        if 'dataVersion' in idx and f.exists():
+            v = json.loads(f.read_text(encoding='utf-8')).get('dataVersion')
+            if v != idx['dataVersion']:
+                E.append(f'data/{name} の dataVersion {v} が index.json と違う')
+    sf = DATA / 'search.json'
+    if sf.exists():
+        sids = [i for i, _ in json.loads(sf.read_text(encoding='utf-8'))['items']]
+        if set(sids) != set(ids):
+            E.append(f'検索の索引（data/search.json）と問題一覧が合わない（{len(set(sids) ^ set(ids))}件）')
+
     # 5. 問題ID の台帳（消えた ID がないか）
     golden = GOLDEN / 'ids.txt'
     if golden.exists():

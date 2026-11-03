@@ -161,6 +161,10 @@ def run(src, content, data, new_fields=False):
         subprocess.run([node, str(TOOLS / 'builtin_to_content.mjs'), str(content)], check=True, capture_output=True)
     else:
         notes.append('node が無いので内蔵問題（builtin.json）は更新していません')
+    import tags as TG
+    _, added = TG.update(content)
+    if added:
+        notes.append(f'タグ辞書に新しいタグを {added}語 足しました（content/tags.json）')
     r = BA.build(content, data)
     return n, notes, r
 
